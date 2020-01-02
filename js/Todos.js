@@ -5,36 +5,36 @@ class Todos {
   }
 
   createTodoElement(todo) {
-    const todoContainer = document.createElement("div");
-    todoContainer.classList.add("todo");
+    const todoContainer = document.createElement('div');
+    todoContainer.classList.add('todo');
 
     if (todo.completed) {
-      todoContainer.classList.add("completed");
+      todoContainer.classList.add('completed');
     }
 
-    const toggleButton = document.createElement("input");
-    toggleButton.classList.add("todo-checkbox");
-    toggleButton.type = "checkbox";
+    const toggleButton = document.createElement('input');
+    toggleButton.classList.add('todo-checkbox');
+    toggleButton.type = 'checkbox';
     toggleButton.checked = todo.completed;
 
-    toggleButton.addEventListener("submit", event => {
+    toggleButton.addEventListener('submit', (event) => {
       event.preventDefault();
 
       this.dispatch(actions.TODOS.TOGGLE, todo.id);
       toggleButton.checked = todo.completed;
 
       if (todo.completed) {
-        todoContainer.classList.add("completed");
+        todoContainer.classList.add('completed');
       } else {
-        todoContainer.classList.remove("completed");
+        todoContainer.classList.remove('completed');
       }
     });
 
-    const deleteButton = document.createElement("button");
-    deleteButton.classList.add("todo-delete");
-    deleteButton.innerHTML = "delete";
+    const deleteButton = document.createElement('button');
+    deleteButton.classList.add('todo-delete');
+    deleteButton.innerHTML = 'delete';
 
-    deleteButton.addEventListener("click", event => {
+    deleteButton.addEventListener('click', (event) => {
       event.preventDefault();
 
       this.dispatch(actions.TODOS.DELETE, todo.id);
@@ -42,11 +42,11 @@ class Todos {
       this.todosContainer.removeChild(todoContainer);
     });
 
-    const inner = document.createElement("div");
-    inner.classList.add("todo-inner");
+    const inner = document.createElement('div');
+    inner.classList.add('todo-inner');
     inner.innerHTML = todo.inner;
 
-    inner.addEventListener("dblclick", async () => {
+    inner.addEventListener('dblclick', async () => {
       event.preventDefault();
 
       const newInner = await this.updateTodo(inner);
@@ -62,13 +62,13 @@ class Todos {
   }
 
   async updateTodo(innerContainer) {
-    return new Promise(resolve => {
-      const form = document.createElement("form");
-      const input = document.createElement("input");
+    return new Promise((resolve) => {
+      const form = document.createElement('form');
+      const input = document.createElement('input');
 
       form.append(input);
 
-      form.addEventListener("submit", event => {
+      form.addEventListener('submit', (event) => {
         event.preventDefault();
         const inner = input.value;
 
@@ -77,13 +77,13 @@ class Todos {
 
       input.value = innerContainer.innerHTML;
 
-      innerContainer.innerHTML = "";
+      innerContainer.innerHTML = '';
       innerContainer.append(form);
     });
   }
 
   draw() {
-    this.todoManager.todos.forEach(todo => {
+    this.todoManager.todos.forEach((todo) => {
       const todoElement = this.createTodoElement(todo);
 
       this.todosContainer.append(todoElement);
