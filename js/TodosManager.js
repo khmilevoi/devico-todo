@@ -1,22 +1,10 @@
-const idGenerator = (() => {
-  let currentId = 0;
-
-  return () => currentId++;
-})();
-
 class TodosManager {
   constructor() {
     this.todos = [];
   }
 
   add(inner) {
-    const id = idGenerator();
-
-    const todo = {
-      inner,
-      id,
-      completed: false
-    };
+    const todo = new Todo(inner);
 
     this.todos.push(todo);
 
