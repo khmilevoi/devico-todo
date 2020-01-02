@@ -43,6 +43,7 @@ class Todo {
       });
 
       const inner = document.createElement("div");
+      inner.classList.add("todo-inner");
       inner.innerHTML = todo.inner;
 
       todoContainer.append(toggleButton, inner, deleteButton);

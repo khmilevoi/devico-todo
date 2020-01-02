@@ -6,7 +6,7 @@ const idGenerator = (() => {
 
 class TodoManager {
   constructor() {
-    this.todos = [];
+    this.todos = [{inner: "asdasdas", completed: false, id: -1}];
   }
 
   add(inner) {

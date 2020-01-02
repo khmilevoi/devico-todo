@@ -8,6 +8,7 @@
   width: 100%;
   height: 100vh;
   font-size: 14px;
+  font-family: sans-serif;
 }
 
 #controls {
@@ -28,7 +29,8 @@
   margin-right: 20px;
   border-radius: 9999999px;
   border: none;
-  overflow: hidden;
+  outline: none;
+  padding: 10px;
 }
 
 #addTodoButton {
@@ -37,8 +39,57 @@
   background-color: #f4f4f4;
   color: #0278b7;
   border: none;
-  overflow: hidden;
+  outline: none;
   border-radius: 50%;
   font-size: 2rem;
 }
 
+#todos {
+  width: 100%;
+  height: calc(100% - 70px);
+  padding: 0 30px;
+}
+
+.todo {
+  width: 100%;
+  display: flex;
+  padding: 0 20px;
+  border-bottom: solid 1px rgba(0, 0, 0, 0.1);
+}
+
+.todo > * {
+  margin: 10px;
+}
+
+.todo-checkbox {
+  flex: 1;
+}
+
+.todo-inner {
+  flex: 10;
+}
+
+.todo.completed .todo-inner {
+  text-decoration: line-through;
+}
+
+.todo:hover .todo-delete {
+  opacity: 1;
+}
+
+.todo-delete {
+  flex: 2;
+  text-transform: uppercase;
+  background-color: rgba(252, 39, 24, 0.5);
+  color: #fff;
+  border-radius: 5px;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: 0.1s;
+  opacity: 0;
+}
+
+.todo-delete:hover {
+  background-color: rgb(252, 39, 24);
+}
