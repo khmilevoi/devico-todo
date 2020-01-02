@@ -1,6 +1,8 @@
 class TodosManager {
   constructor() {
     this.todos = [];
+
+    this.todos.push(new Todo("123"))
   }
 
   add(inner) {
@@ -22,5 +24,11 @@ class TodosManager {
     const currentState = this.todos[index].completed;
 
     return (this.todos[index].completed = !currentState);
+  }
+
+  update(id, inner) {
+    const index = this.todos.findIndex(todo => todo.id === id);
+
+    return (this.todos[index].inner = inner);
   }
 }

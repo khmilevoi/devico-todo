@@ -2,7 +2,8 @@ function generateAction(prefix) {
   return {
     ADD: `${prefix}.ADD`,
     TOGGLE: `${prefix}.TOGGLE`,
-    DELETE: `${prefix}.DELETE`
+    DELETE: `${prefix}.DELETE`,
+    UPDATE: `${prefix}.UPDATE`
   };
 }
 

@@ -10,7 +10,7 @@ window.onload = () => {
       <button type="submit" class="addTodoButton">+</button>
     </form>
   </div>`;
-
+  
   const todoManager = new TodosManager();
   const [todosContainer] = root.getElementsByClassName("todos");
 
@@ -23,7 +23,9 @@ window.onload = () => {
     event.preventDefault();
 
     const inner = todoText.value;
-    todo.dispatch(actions.ADD, inner, todoManager);
+    const newTodo = todo.dispatch(actions.TODOS.ADD, inner, todoManager);
+
+    todosContainer.append(todo.createTodoElement(newTodo));
 
     todoText.value = "";
   });
