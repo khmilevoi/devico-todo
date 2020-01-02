@@ -1,11 +1,23 @@
 window.onload = () => {
-  const todoManager = new TodoManager();
-  const todosContainer = document.getElementById("todos");
+  const root = document.body;
 
-  const todo = new Todo(todoManager, todosContainer);
+  root.innerHTML = `
+  <div class="root">
+    <div class="todos"></div>
 
-  const todoText = document.getElementById("addTodoText");
-  const todoForm = document.getElementById("controls");
+    <form class="controls">
+      <input type="text" class="addTodoText" />
+      <button type="submit" class="addTodoButton">+</button>
+    </form>
+  </div>`;
+
+  const todoManager = new TodosManager();
+  const [todosContainer] = root.getElementsByClassName("todos");
+
+  const todo = new Todos(todoManager, todosContainer);
+
+  const [todoText] = document.getElementsByClassName("addTodoText");
+  const [todoForm] = document.getElementsByClassName("controls");
 
   todoForm.addEventListener("submit", event => {
     event.preventDefault();
@@ -16,5 +28,5 @@ window.onload = () => {
     todoText.value = "";
   });
 
-  todo.draw(todosContainer, todoManager);
+  todo.draw();
 };

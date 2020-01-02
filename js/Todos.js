@@ -1,10 +1,4 @@
-const actions = {
-  ADD: "todo/add",
-  DELETE: "todo/delete",
-  TOGGLE: "todo/toggle"
-};
-
-class Todo {
+class Todos {
   constructor(todoManager, todosContainer) {
     this.todoManager = todoManager;
     this.todosContainer = todosContainer;

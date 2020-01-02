@@ -4,9 +4,9 @@ const idGenerator = (() => {
   return () => currentId++;
 })();
 
-class TodoManager {
+class TodosManager {
   constructor() {
-    this.todos = [{inner: "asdasdas", completed: false, id: -1}];
+    this.todos = [];
   }
 
   add(inner) {
