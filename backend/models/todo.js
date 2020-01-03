@@ -2,11 +2,11 @@ import mongoose from 'mongoose';
 
 const { Schema } = mongoose;
 
-const Todo = new Schema({
+const TodoSchema = new Schema({
   inner: { type: String },
-  completed: { type: Boolean, default: false }
+  completed: { type: Boolean, default: false },
 });
 
-const model = mongoose.model('Todo', Todo);
+const Todo = mongoose.model('Todo', TodoSchema);
 
-module.exports = model;
+export default Todo;

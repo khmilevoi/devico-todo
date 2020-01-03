@@ -1,32 +1,45 @@
 /* eslint-disable no-console */
 
 import Koa from 'koa';
+import cors from 'koa-cors';
 import route from 'koa-route';
 import logger from 'koa-logger';
+import mongoose from 'mongoose';
+import bodyParser from 'koa-bodyparser';
 
-// import mongoose from 'mongoose';
-
-const todosController = require('./controllers/todos');
+import todosController from './controllers/todos';
 
 const app = new Koa();
 
+app.use(cors());
+app.use(bodyParser());
 app.use(logger());
+
 app.use(route.get('/todos', todosController.list));
+app.use(route.get('/todos/:id', todosController.todo));
+app.use(route.post('/todos/add', todosController.add));
+app.use(route.post('/todos/toggle/:id', todosController.toggle));
+app.use(route.delete('/todos/delete/:id', todosController.delete));
+app.use(route.post('/todos/update/:id', todosController.update));
 
 const PORT = 3000;
 
-app.listen(PORT);
+app.listen(PORT).on('connection', () => {
+  console.log(`Connection open to ${PORT}`);
+});
 
-// const connString = 'mongodb://localhost:27017/test';
-// mongoose.connect(connString, {
-//   useUnifiedTopology: true,
-//   useNewUrlParser: true,
-// });
+const connString = 'mongodb://localhost/todo';
+mongoose.connect(connString, {
+  useUnifiedTopology: true,
+  useNewUrlParser: true,
+});
 
-// mongoose.connection.on('connected', () => {
-//   console.log(`Connection open to ${connString}`);
-// });
+const db = mongoose.connection;
 
-// mongoose.connection.on('disconnected', () => {
-//   console.log('Mongoose default connection disconnected');
-// });
+db.once('open', () => {
+  console.log(`Open to ${connString}`);
+});
+
+db.on('error', (err) => {
+  console.log(err);
+});

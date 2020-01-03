@@ -17,10 +17,10 @@ class Todos {
     toggleButton.type = 'checkbox';
     toggleButton.checked = todo.completed;
 
-    toggleButton.addEventListener('submit', (event) => {
+    toggleButton.addEventListener('click', async event => {
       event.preventDefault();
 
-      this.dispatch(actions.TODOS.TOGGLE, todo.id);
+      this.todoManager.dispatch(actions.TODOS.TOGGLE, todo.id);
       toggleButton.checked = todo.completed;
 
       if (todo.completed) {
@@ -34,10 +34,10 @@ class Todos {
     deleteButton.classList.add('todo-delete');
     deleteButton.innerHTML = 'delete';
 
-    deleteButton.addEventListener('click', (event) => {
+    deleteButton.addEventListener('click', async event => {
       event.preventDefault();
 
-      this.dispatch(actions.TODOS.DELETE, todo.id);
+      this.todoManager.dispatch(actions.TODOS.DELETE, todo.id);
 
       this.todosContainer.removeChild(todoContainer);
     });
@@ -46,12 +46,15 @@ class Todos {
     inner.classList.add('todo-inner');
     inner.innerHTML = todo.inner;
 
-    inner.addEventListener('dblclick', async () => {
+    inner.addEventListener('dblclick', async event => {
       event.preventDefault();
 
       const newInner = await this.updateTodo(inner);
 
-      this.dispatch(actions.TODOS.UPDATE, { id: todo.id, inner: newInner });
+      this.todoManager.dispatch(actions.TODOS.UPDATE, {
+        id: todo.id,
+        inner: newInner
+      });
 
       inner.innerHTML = todo.inner;
     });
@@ -62,13 +65,13 @@ class Todos {
   }
 
   async updateTodo(innerContainer) {
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       const form = document.createElement('form');
       const input = document.createElement('input');
 
       form.append(input);
 
-      form.addEventListener('submit', (event) => {
+      form.addEventListener('submit', event => {
         event.preventDefault();
         const inner = input.value;
 
@@ -82,35 +85,11 @@ class Todos {
     });
   }
 
-  draw() {
-    this.todoManager.todos.forEach((todo) => {
+  async draw() {
+    this.todoManager.todos.forEach(todo => {
       const todoElement = this.createTodoElement(todo);
 
       this.todosContainer.append(todoElement);
     });
-  }
-
-  dispatch(action, payload) {
-    switch (action) {
-      case actions.TODOS.ADD: {
-        return this.todoManager.add(payload);
-      }
-
-      case actions.TODOS.DELETE: {
-        return this.todoManager.delete(payload);
-      }
-
-      case actions.TODOS.TOGGLE: {
-        return this.todoManager.toggle(payload);
-      }
-
-      case actions.TODOS.UPDATE: {
-        return this.todoManager.update(payload.id, payload.inner);
-      }
-
-      default: {
-        return;
-      }
-    }
   }
 }
