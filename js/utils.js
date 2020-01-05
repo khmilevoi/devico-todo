@@ -1,4 +1,3 @@
-/* eslint-disable no-plusplus */
 const idGenerator = (() => {
   let currentId = 0;
 
@@ -21,9 +20,9 @@ const makeAddQuery = (inner) => makeQuery(`/todos/add?inner=${inner}`);
 
 const makeToggleQuery = (id) => makeQuery(`/todos/toggle/${id}`);
 
-const makeDeleteQuery = (id) => makeQuery(`/todos/delete${id}`);
+const makeDeleteQuery = (id) => makeQuery(`/todos/delete/${id}`);
 
-const makeUpdateQuery = (id, inner) => makeQuery(`/todos/update${id}?inner=${inner}`);
+const makeUpdateQuery = (id, inner) => makeQuery(`/todos/update/${id}?inner=${inner}`);
 
 const query = async (str, method) => fetch(str, { method }).then((data) => data.json());
 

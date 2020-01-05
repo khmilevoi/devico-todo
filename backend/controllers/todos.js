@@ -1,7 +1,7 @@
-import TodoModel from '../models/todo';
+import TodoModel from "../models/todo";
 
 const todos = {
-  list: async (ctx) => {
+  list: async ctx => {
     const res = await TodoModel.find();
     ctx.body = res;
   },
@@ -9,31 +9,31 @@ const todos = {
     const res = await TodoModel.findById(id);
     ctx.body = res;
   },
-  add: async (ctx) => {
+  add: async ctx => {
     const { inner } = ctx.query;
+    const todo = await TodoModel.create({ inner });
 
-    await TodoModel.create({ inner });
-
-    ctx.body = await TodoModel.find();
+    ctx.body = todo;
   },
   toggle: async (ctx, id) => {
     const res = await TodoModel.findById(id);
-    await TodoModel.updateOne(res, { completed: !res.completed });
-
-    ctx.body = await TodoModel.find();
+    const todo = await TodoModel.updateOne(res, { completed: !res.completed });
+    console.log(todo);
+    
+    ctx.body = todo;
   },
   delete: async (ctx, id) => {
-    await TodoModel.deleteOne({ _id: id });
+    const todo = await TodoModel.deleteOne({ _id: id });
 
-    ctx.body = await TodoModel.find();
+    ctx.body = todo;
   },
   update: async (ctx, id) => {
     const { inner } = ctx.query;
     const res = await TodoModel.findById(id);
-    await TodoModel.updateOne(res, { inner });
+    const todo = await TodoModel.updateOne(res, { inner });
 
-    ctx.body = await TodoModel.find();
-  },
+    ctx.body = todo;
+  }
 };
 
 export default todos;

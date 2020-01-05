@@ -7,58 +7,66 @@ class TodosManagerServer {
     return todos.map(todo => new Todo(todo.inner, todo._id, todo.completed));
   }
 
-  async getList() {
-    return (this.todos = this.parseTodos(await getListQuery()));
+  async getList(callback) {
+    return callback((this.todos = this.parseTodos(await getListQuery())));
   }
 
-  async add(inner) {
-    return (this.todos = this.parseTodos(await addQuery(inner)));
+  async add(inner, callback) {
+    const response = await addQuery(inner);
+
+    const todo = new Todo(response.inner, response._id, response.completed);
+    this.todos.push(todo);
+    return callback(todo);
   }
 
-  async delete(id) {
-    return (this.todos = this.parseTodos(await deleteQuery(id)));
+  async delete(id, callback) {
+    const response = await deleteQuery(id);
+
+    const index = this.todos.findIndex(todo => todo._id === response._id);
+    return callback(this.todos.splice(index, 1));
   }
 
-  async toggle(id) {
-    return (this.todos = this.parseTodos(await toggleQuery(id)));
+  async toggle(id, callback) {
+    await toggleQuery(id);
+
+    const index = this.todos.findIndex(todo => todo._id === id);
+    const currentState = this.todos[index].completed;
+    this.todos[index].completed = !currentState;
+    return callback(this.todos[index].completed);
   }
 
-  async update(id, inner) {
-    return (this.todos = this.parseTodos(await updateQuery(id, inner)));
+  async update(id, inner, callback) {
+    await updateQuery(id, inner);
+
+    const index = this.todos.findIndex(todo => todo._id === id);
+    this.todos[index].inner = inner;
+    return callback(this.todos[index].inner);
   }
 
-  async dispatch(action, payload) {
+  async dispatch(action, payload, callback) {
     switch (action) {
       case actions.TODOS.GET_LIST: {
-        return await this.getList();
+        return this.getList(callback);
       }
 
       case actions.TODOS.ADD: {
-        const todos = await this.add(payload);
-
-        return todos.find(todo => todo.id === payload);
+        return this.add(payload, callback);
       }
 
       case actions.TODOS.DELETE: {
-        const todos = await this.delete(payload);
-
-        return todos.find(todo => todo.id === payload);
+        return this.delete(payload, callback);
       }
 
       case actions.TODOS.TOGGLE: {
-        const todos = await this.toggle(payload);
-
-        return todos.find(todo => todo.id === payload);
+        return this.toggle(payload, callback);
       }
 
       case actions.TODOS.UPDATE: {
-        const todos = await this.update(payload.id, payload.inner);
-
-        return todos.find(todo => todo.id === payload.id);
+        return this.update(payload.id, payload.inner, callback);
       }
 
       default: {
-        return {};
+        return null;
       }
     }
   }

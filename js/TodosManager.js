@@ -1,53 +1,59 @@
 class TodosManager {
   constructor() {
     this.todos = [];
-
-    this.todos.push(new Todo('123'));
   }
 
-  add(inner) {
+  getList(callback) {
+    return callback(this.todos);
+  }
+
+  add(inner, callback) {
     const todo = new Todo(inner);
 
     this.todos.push(todo);
 
-    return todo;
+    return callback(todo);
   }
 
-  delete(id) {
-    const index = this.todos.findIndex((todo) => todo.id === id);
+  delete(id, callback) {
+    const index = this.todos.findIndex(todo => todo._id === id);
 
-    return this.todos.splice(index, 1);
+    return callback(this.todos.splice(index, 1));
   }
 
-  toggle(id) {
-    const index = this.todos.findIndex((todo) => todo.id === id);
+  toggle(id, callback) {
+    const index = this.todos.findIndex(todo => todo._id === id);
     const currentState = this.todos[index].completed;
     this.todos[index].completed = !currentState;
-    return this.todos[index].completed;
+    return callback(this.todos[index].completed);
   }
 
-  update(id, inner) {
-    const index = this.todos.findIndex((todo) => todo.id === id);
+  update(id, inner, callback) {
+    const index = this.todos.findIndex(todo => todo._id === id);
     this.todos[index].inner = inner;
-    return this.todos[index].inner;
+    return callback(this.todos[index].inner);
   }
 
-  dispatch(action, payload) {
+  dispatch(action, payload, callback) {
     switch (action) {
+      case actions.TODOS.GET_LIST: {
+        return this.getList(callback)
+      }
+
       case actions.TODOS.ADD: {
-        return this.add(payload);
+        return this.add(payload, callback);
       }
 
       case actions.TODOS.DELETE: {
-        return this.delete(payload);
+        return this.delete(payload, callback);
       }
 
       case actions.TODOS.TOGGLE: {
-        return this.toggle(payload);
+        return this.toggle(payload, callback);
       }
 
       case actions.TODOS.UPDATE: {
-        return this.update(payload.id, payload.inner);
+        return this.update(payload.id, payload.inner, callback);
       }
 
       default: {
