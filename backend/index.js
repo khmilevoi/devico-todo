@@ -14,6 +14,8 @@ const app = new Koa();
 app.use(cors());
 app.use(bodyParser());
 app.use(logger());
+app.use(route.routes());
+app.use(route.allowedMethods());
 
 app.use(route.get('/todos', todosController.list));
 app.use(route.get('/todos/:id', todosController.todo));

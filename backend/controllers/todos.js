@@ -1,7 +1,7 @@
-import TodoModel from "../models/todo";
+import TodoModel from '../models/todo';
 
 const todos = {
-  list: async ctx => {
+  list: async (ctx) => {
     const res = await TodoModel.find();
     ctx.body = res;
   },
@@ -9,7 +9,7 @@ const todos = {
     const res = await TodoModel.findById(id);
     ctx.body = res;
   },
-  add: async ctx => {
+  add: async (ctx) => {
     const { inner } = ctx.query;
     const todo = await TodoModel.create({ inner });
 
@@ -18,8 +18,7 @@ const todos = {
   toggle: async (ctx, id) => {
     const res = await TodoModel.findById(id);
     const todo = await TodoModel.updateOne(res, { completed: !res.completed });
-    console.log(todo);
-    
+
     ctx.body = todo;
   },
   delete: async (ctx, id) => {
@@ -33,7 +32,7 @@ const todos = {
     const todo = await TodoModel.updateOne(res, { inner });
 
     ctx.body = todo;
-  }
+  },
 };
 
 export default todos;
