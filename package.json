@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "npx http-server",
-    "server": "nodemon --exec babel-node backend/index.js"
+    "server": "nodemon --exec babel-node backend/index.js",
+    "debug": "node --nolazy --inspect-brk=3000 backend/index.js"
   },
   "repository": {
     "type": "git",
@@ -27,11 +28,14 @@
   },
   "dependencies": {
     "@koa/cors": "^3.0.0",
+    "crypto-js": "^3.1.9-1",
+    "dotenv": "^8.2.0",
+    "jsonwebtoken": "^8.5.1",
     "koa": "^2.11.0",
     "koa-bodyparser": "^4.2.1",
     "koa-cors": "0.0.16",
+    "koa-jwt": "^3.6.0",
     "koa-logger": "^3.2.1",
-    "koa-route": "^3.2.0",
     "koa-router": "^7.4.0",
     "mongodb": "^3.4.1",
     "mongoose": "^5.8.4"

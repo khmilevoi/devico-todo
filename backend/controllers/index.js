@@ -1,16 +1,35 @@
 import Router from 'koa-router';
 
 import todosController from './todos';
+import authController from './auth';
 
-export default function configureRouter() {
+const configureTodosRouter = () => {
   const router = new Router({ prefix: '/todos' });
 
   router.get('/', todosController.list);
   router.get('/:id', todosController.todo);
-  router.post('/add', todosController.add);
-  router.put('/toggle/:id', todosController.toggle);
-  router.delete('/delete/:id', todosController.delete);
-  router.put('/update/:id', todosController.update);
+  router.post('/', todosController.add);
+  router.put('/:id', todosController.toggle);
+  router.delete('/:id', todosController.delete);
+  router.patch('/:id', todosController.update);
+
+  return router.routes();
+};
+
+const configureAuthRouter = () => {
+  const router = new Router({ prefix: '/auth' });
+
+  router.post('/', authController.register);
+  router.get('/', authController.login);
+
+  return router.routes();
+};
+
+export default function configureRouter() {
+  const router = new Router();
+
+  router.use(configureTodosRouter());
+  router.use(configureAuthRouter());
 
   return [router.routes(), router.allowedMethods()];
 }

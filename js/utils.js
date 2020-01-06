@@ -8,26 +8,20 @@ const config = {
   PORT: 3000,
 };
 
-const makeQuery = (query) => `http://localhost:${config.PORT}${query}`;
+const createURL = (query) => `http://localhost:${config.PORT}${query}`;
 
-const makeGetListQuery = () => makeQuery('/todos');
+const makeQuery = (query, method = GET, body = null) => {
+  const url = createURL(query);
 
-const makeAddQuery = (inner) => makeQuery(`/todos/add?inner=${inner}`);
+  if (method === GET) {
+    return fetch(url, { method }).then((data) => data.json());
+  }
 
-const makeToggleQuery = (id) => makeQuery(`/todos/toggle/${id}`);
+  return fetch(url, { method, body: JSON.stringify(body) }).then((data) => data.json());
+};
 
-const makeDeleteQuery = (id) => makeQuery(`/todos/delete/${id}`);
-
-const makeUpdateQuery = (id, inner) => makeQuery(`/todos/update/${id}?inner=${inner}`);
-
-const query = async (str, method) => fetch(str, { method }).then((data) => data.json());
-
-const getListQuery = () => query(makeGetListQuery(), GET);
-
-const addQuery = (inner) => query(makeAddQuery(inner), POST);
-
-const toggleQuery = (id) => query(makeToggleQuery(id), PUT);
-
-const deleteQuery = (id) => query(makeDeleteQuery(id), DELETE);
-
-const updateQuery = (id, inner) => query(makeUpdateQuery(id, inner), PUT);
+const getListQuery = () => makeQuery('/todos');
+const addQuery = (inner) => makeQuery(`/todos?inner=${inner}`, POST);
+const toggleQuery = (id) => makeQuery(`/todos/${id}`, PUT);
+const deleteQuery = (id) => makeQuery(`/todos/${id}`, DELETE);
+const updateQuery = (id, inner) => makeQuery(`/todos/${id}?inner=${inner}`, PATCH);
