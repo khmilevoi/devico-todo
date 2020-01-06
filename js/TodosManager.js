@@ -16,20 +16,20 @@ class TodosManager {
   }
 
   delete(id, callback) {
-    const index = this.todos.findIndex(todo => todo._id === id);
+    const index = this.todos.findIndex((todo) => todo._id === id);
 
     return callback(this.todos.splice(index, 1));
   }
 
   toggle(id, callback) {
-    const index = this.todos.findIndex(todo => todo._id === id);
+    const index = this.todos.findIndex((todo) => todo._id === id);
     const currentState = this.todos[index].completed;
     this.todos[index].completed = !currentState;
     return callback(this.todos[index].completed);
   }
 
   update(id, inner, callback) {
-    const index = this.todos.findIndex(todo => todo._id === id);
+    const index = this.todos.findIndex((todo) => todo._id === id);
     this.todos[index].inner = inner;
     return callback(this.todos[index].inner);
   }
@@ -37,7 +37,7 @@ class TodosManager {
   dispatch(action, payload, callback) {
     switch (action) {
       case actions.TODOS.GET_LIST: {
-        return this.getList(callback)
+        return this.getList(callback);
       }
 
       case actions.TODOS.ADD: {

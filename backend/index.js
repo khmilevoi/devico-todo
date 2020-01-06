@@ -14,15 +14,13 @@ const app = new Koa();
 app.use(cors());
 app.use(bodyParser());
 app.use(logger());
-app.use(route.routes());
-app.use(route.allowedMethods());
 
 app.use(route.get('/todos', todosController.list));
 app.use(route.get('/todos/:id', todosController.todo));
 app.use(route.post('/todos/add', todosController.add));
-app.use(route.post('/todos/toggle/:id', todosController.toggle));
+app.use(route.put('/todos/toggle/:id', todosController.toggle));
 app.use(route.delete('/todos/delete/:id', todosController.delete));
-app.use(route.post('/todos/update/:id', todosController.update));
+app.use(route.put('/todos/update/:id', todosController.update));
 
 const PORT = 3000;
 

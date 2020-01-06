@@ -8,10 +8,6 @@ const config = {
   PORT: 3000,
 };
 
-const POST = 'POST';
-const GET = 'GET';
-const DELETE = 'DELETE';
-
 const makeQuery = (query) => `http://localhost:${config.PORT}${query}`;
 
 const makeGetListQuery = () => makeQuery('/todos');
@@ -30,8 +26,8 @@ const getListQuery = () => query(makeGetListQuery(), GET);
 
 const addQuery = (inner) => query(makeAddQuery(inner), POST);
 
-const toggleQuery = (id) => query(makeToggleQuery(id), POST);
+const toggleQuery = (id) => query(makeToggleQuery(id), PUT);
 
 const deleteQuery = (id) => query(makeDeleteQuery(id), DELETE);
 
-const updateQuery = (id, inner) => query(makeUpdateQuery(id, inner), POST);
+const updateQuery = (id, inner) => query(makeUpdateQuery(id, inner), PUT);

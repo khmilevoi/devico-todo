@@ -11,3 +11,8 @@ function generateAction(prefix) {
 const actions = {
   TODOS: generateAction('LIST.TODO'),
 };
+
+const POST = 'POST';
+const GET = 'GET';
+const DELETE = 'DELETE';
+const PUT = 'PUT';
