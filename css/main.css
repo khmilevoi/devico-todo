@@ -49,6 +49,8 @@ body {
   width: 100%;
   height: calc(100% - 70px);
   padding: 0 30px;
+  display: flex;
+  flex-direction: column-reverse;
   overflow: hidden;
   overflow-y: scroll;
 }
