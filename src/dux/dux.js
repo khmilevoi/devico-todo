@@ -12,7 +12,7 @@ export const createStore = (reducer, initialState = {}, middleware) => {
     dispatch: (action) => {
       state = reducer(state, action);
 
-      listeners.forEach((listener) => listener(state));
+      listeners.forEach((listener) => listener(action, state));
 
       return state;
     },

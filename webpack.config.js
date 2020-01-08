@@ -46,7 +46,7 @@ module.exports = {
     }),
     new CleanWebpackPlugin(),
     new CopyPlugin([
-      { from: path.resolve(__dirname, 'public/favicon.ico'), to: '' },
+      { from: path.resolve(__dirname, 'public'), to: '' },
     ]),
   ],
 };
