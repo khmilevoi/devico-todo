@@ -1,5 +1,5 @@
-import { initialState } from '../../constants/initialState';
-import { todos } from '../../constants/actionTypes';
+import { initialState } from 'constants/initialState';
+import { todos } from 'constants/actionTypes';
 
 export const todosReducer = (state = initialState.todos, { type, payload }) => {
   switch (type) {

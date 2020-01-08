@@ -1,5 +1,5 @@
-import { initialState } from '../../constants/initialState';
-import { error } from '../../constants/actionTypes';
+import { initialState } from 'constants/initialState';
+import { error } from 'constants/actionTypes';
 
 export const errorReducer = (state = initialState.error, { type, payload }) => {
   switch (type) {

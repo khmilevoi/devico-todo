@@ -18,6 +18,8 @@ module.exports = {
     'import/prefer-default-export': 'off',
     'no-underscore-dangle': 0,
     'no-shadow': 0,
-    'no-console': 0
+    'no-console': 0,
+    'import/no-unresolved': 0,
+    'import/extensions': 0
   }
 };

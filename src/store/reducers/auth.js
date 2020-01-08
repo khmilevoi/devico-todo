@@ -1,5 +1,5 @@
-import { initialState } from '../../constants/initialState';
-import { auth } from '../../constants/actionTypes';
+import { initialState } from 'constants/initialState';
+import { auth } from 'constants/actionTypes';
 
 export const authReducer = (state = initialState.auth, { type, payload }) => {
   switch (type) {

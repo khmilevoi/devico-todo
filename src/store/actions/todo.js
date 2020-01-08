@@ -1,11 +1,11 @@
-import { todos } from '../../constants/actionTypes';
+import { todos } from 'constants/actionTypes';
 import {
   addQuery,
   toggleQuery,
   deleteQuery,
   updateQuery,
-} from '../../utils/queries';
-import { Todo } from '../../shared/Todo';
+} from 'utils/queries';
+import { Todo } from 'shared/Todo';
 
 export const setList = (list) => ({
   type: todos.LIST.SET,

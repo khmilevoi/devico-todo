@@ -1,4 +1,4 @@
-import { combineReducers } from '../../dux';
+import { combineReducers } from 'dux';
 
 import { todosReducer } from './todo';
 import { authReducer } from './auth';

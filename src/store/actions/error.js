@@ -1,4 +1,4 @@
-import { error } from '../../constants/actionTypes';
+import { error } from 'constants/actionTypes';
 
 export const setError = (error) => ({
   type: error.SET,

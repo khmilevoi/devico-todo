@@ -15,13 +15,13 @@ module.exports = {
   devServer: {
     contentBase: './dist',
   },
-  // resolve: {
-  //   modules: [
-  //     'node_modules',
-  //     '**/node-mondules/**',
-  //     path.resolve(__dirname, 'src'),
-  //   ],
-  // },
+  resolve: {
+    modules: [
+      'node_modules',
+      '**/node-mondules/**',
+      path.resolve(__dirname, 'src'),
+    ],
+  },
   module: {
     rules: [
       // {

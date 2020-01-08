@@ -1,6 +1,6 @@
-import { auth } from '../../constants/actionTypes';
-import { loginQuery, registerQuery } from '../../utils/queries';
-import { User } from '../../shared/User';
+import { auth } from 'constants/actionTypes';
+import { loginQuery, registerQuery } from 'utils/queries';
+import { User } from 'shared/User';
 
 export const setUser = (user) => ({
   type: auth.USER.SET,

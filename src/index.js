@@ -1,9 +1,9 @@
-import { configureStore } from './store/configureStore';
+import { configureStore } from 'store/configureStore';
 
-import { initialState } from './constants/initialState';
-import { logIn } from './store/actions/auth';
+import { initialState } from 'constants/initialState';
+import { logIn } from 'store/actions/auth';
 
-import './index.css';
+import 'index.css';
 
 const store = configureStore(initialState);
 

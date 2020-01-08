@@ -1,4 +1,4 @@
-import { methods } from '../constants/methods';
+import { methods } from 'constants/methods';
 
 const config = {
   PORT: 3000,
