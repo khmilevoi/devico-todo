@@ -1,4 +1,12 @@
 const createMarkup = (root) => {
+  const header = document.createElement('header');
+  header.classList.add('header');
+
+  const auth = document.createElement('div');
+  auth.classList.add('auth');
+
+  header.append(auth);
+
   const todos = document.createElement('div');
   todos.classList.add('todos');
 
@@ -15,7 +23,7 @@ const createMarkup = (root) => {
 
   controls.append(addTodoText, addTodoButton);
 
-  root.append(todos, controls);
+  root.append(header, todos, controls);
   addTodoText.focus();
 };
 
@@ -24,27 +32,45 @@ window.onload = async () => {
 
   createMarkup(root);
 
-  // const todoManager = new TodosManager();
-  const todoManager = new TodosManagerServer();
-  const [todosContainer] = root.getElementsByClassName('todos');
+  const ws = new WebService(3000);
 
-  const todo = new Todos(todoManager, todosContainer);
+  const auth = new Auth(ws);
+  const [authContainer] = root.getElementsByClassName('auth');
 
-  const [todoText] = document.getElementsByClassName('addTodoText');
-  const [todoForm] = document.getElementsByClassName('controls');
+  const login = new Login(auth, authContainer);
 
-  todoForm.addEventListener('submit', (event) => {
-    event.preventDefault();
+  ws.setHeadersCreator(() => {
+    if (auth.user) {
+      return { Authorization: `Bearer ${auth.user.token}` };
+    }
 
-    const inner = todoText.value;
-
-    if (inner.trim().length === 0) return;
-
-    todo.todoManager.dispatch(actions.TODOS.ADD, inner, (newTodo) => {
-      todosContainer.append(todo.createTodoElement(newTodo));
-      todoText.value = '';
-    });
+    return {};
   });
 
-  todo.draw();
+  login.draw(() => {
+    // const todoManager = new TodosManager();
+    const todoManager = new TodosManagerServer(ws);
+    const [todosContainer] = root.getElementsByClassName('todos');
+    todosContainer.innerHTML = '';
+
+    const todo = new Todos(todoManager, todosContainer);
+
+    const [todoText] = document.getElementsByClassName('addTodoText');
+    const [todoForm] = document.getElementsByClassName('controls');
+
+    todoForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+
+      const inner = todoText.value;
+
+      if (inner.trim().length === 0) return;
+
+      todo.todoManager.dispatch(actions.TODOS.ADD, inner, (newTodo) => {
+        todosContainer.append(todo.createTodoElement(newTodo));
+        todoText.value = '';
+      });
+    });
+
+    todo.draw();
+  });
 };
