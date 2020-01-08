@@ -3,6 +3,23 @@ const createAccessActions = (prefix) => ({
   DELETE: `${prefix}.DELETE`,
 });
 
+const createListActions = (prefix) => ({
+  SET: `${prefix}.SET`,
+  ADD: `${prefix}.ADD`,
+  TOGGLE: `${prefix}.TOGGLE`,
+  UPDATE: `${prefix}.UPDATE`,
+  DELETE: `${prefix}.DELETE`,
+});
+
 export const auth = {
-  ...createAccessActions('USER'),
+  USER: createAccessActions('USER'),
+  ERROR: createAccessActions('ERROR'),
+};
+
+export const todos = {
+  LIST: createListActions('TODO'),
+};
+
+export const error = {
+  ...createAccessActions('ERROR'),
 };
