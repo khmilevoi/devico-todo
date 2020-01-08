@@ -9,4 +9,5 @@ const store = configureStore(initialState);
 
 store.subscribe((...args) => console.log(args));
 
+
 store.dispatch(logIn('Karina', '12345'));
