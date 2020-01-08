@@ -1,4 +1,4 @@
-import { methods } from '../constants/methods';
+import { methods } from 'constants/methods';
 
 const config = {
   PORT: 3000,
@@ -6,7 +6,7 @@ const config = {
 
 const createURL = (query) => `http://localhost:${config.PORT}${query}`;
 
-const makeQuery = (query, method = methods.GET, body = {}, headers) => {
+const makeQuery = async (query, method = methods.GET, body = {}, headers) => {
   const url = createURL(query);
 
   const params = {
@@ -21,7 +21,13 @@ const makeQuery = (query, method = methods.GET, body = {}, headers) => {
     params.body = JSON.stringify(body);
   }
 
-  return fetch(url, params).then((data) => data.json());
+  const response = await fetch(url, params).then((data) => data.json());
+
+  if (response.ok) {
+    return response;
+  }
+
+  throw response;
 };
 
 export const getListQuery = () => makeQuery('/todos');

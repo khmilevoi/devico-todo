@@ -1,6 +1,6 @@
-import { auth } from '../../constants/actionTypes';
-import { loginQuery, registerQuery } from '../../utils/queries';
-import { User } from '../../shared/User';
+import { auth } from 'constants/actionTypes';
+import { loginQuery, registerQuery } from 'utils/queries';
+import { User } from 'shared/User';
 
 export const setUser = (user) => ({
   type: auth.USER.SET,
@@ -42,8 +42,6 @@ export const register = (login, password) => async (dispatch) => {
 
     dispatch(setUser(user));
   } catch (error) {
-    console.log(error);
-
     dispatch(setError(error));
   }
 };

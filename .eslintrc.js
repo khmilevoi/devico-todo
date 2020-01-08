@@ -16,8 +16,10 @@ module.exports = {
   rules: {
     'linebreak-style': 0,
     'import/prefer-default-export': 'off',
-    'no-console': 0,
     'no-underscore-dangle': 0,
-    'no-shadow': 0
+    'no-shadow': 0,
+    'no-console': 0,
+    'import/no-unresolved': 0,
+    'import/extensions': 0
   }
 };

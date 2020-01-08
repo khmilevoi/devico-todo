@@ -6,4 +6,7 @@ export const initialState = {
   todos: {
     list: [],
   },
+  error: {
+    list: [],
+  },
 };

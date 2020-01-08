@@ -16,6 +16,10 @@ export const auth = {
   ERROR: createAccessActions('ERROR'),
 };
 
-export const todo = {
+export const todos = {
   LIST: createListActions('TODO'),
+};
+
+export const error = {
+  ...createAccessActions('ERROR'),
 };
