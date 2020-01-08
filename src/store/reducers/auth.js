@@ -5,29 +5,29 @@ export const authReducer = (state = initialState.auth, { type, payload }) => {
   switch (type) {
     case auth.USER.SET: {
       return {
-        user: payload,
         ...state,
+        user: payload,
       };
     }
 
     case auth.USER.DELETE: {
       return {
-        user: null,
         ...state,
+        user: null,
       };
     }
 
     case auth.ERROR.SET: {
       return {
-        error: payload,
         ...state,
+        error: payload,
       };
     }
 
     case auth.ERROR.DELETE: {
       return {
-        error: null,
         ...state,
+        error: null,
       };
     }
 

@@ -5,8 +5,8 @@ export const todosReducer = (state = initialState.todos, { type, payload }) => {
   switch (type) {
     case todos.LIST.SET: {
       return {
-        list: payload,
         ...state,
+        list: payload,
       };
     }
 

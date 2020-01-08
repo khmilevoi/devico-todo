@@ -17,6 +17,7 @@ module.exports = {
     'linebreak-style': 0,
     'import/prefer-default-export': 'off',
     'no-underscore-dangle': 0,
-    'no-shadow': 0
+    'no-shadow': 0,
+    'no-console': 0
   }
 };

@@ -19,3 +19,7 @@ export const auth = {
 export const todos = {
   LIST: createListActions('TODO'),
 };
+
+export const error = {
+  ...createAccessActions('ERROR'),
+};

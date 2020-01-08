@@ -22,19 +22,21 @@ export const deleteError = () => ({
 
 export const logIn = (login, password) => async (dispatch) => {
   try {
-    const { token } = loginQuery(login, password);
+    const { token } = await loginQuery(login, password);
 
     const user = new User(login, token);
 
     dispatch(setUser(user));
   } catch (error) {
+    console.log(error);
+
     dispatch(setError(error));
   }
 };
 
 export const register = (login, password) => async (dispatch) => {
   try {
-    const { token } = registerQuery(login, password);
+    const { token } = await registerQuery(login, password);
 
     const user = new User(login, token);
 
