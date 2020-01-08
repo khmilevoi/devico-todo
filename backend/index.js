@@ -16,12 +16,19 @@ dotenv.config();
 
 const app = new Koa();
 
-app.use(jwt({ secret: process.env.SECRET }).unless({ path: [/^\/auth/] }));
-
 app.use(cors());
 app.use(bodyParser());
 app.use(logger());
 app.use(useResolve());
+
+app.use((ctx, next) => {
+  console.log('BODY: ', ctx.request.body);
+  console.log('REQUEST: ', ctx.request);
+
+  return next();
+});
+
+app.use(jwt({ secret: process.env.SECRET }).unless({ path: [/^\/auth/] }));
 
 app.use(...configureRouter());
 

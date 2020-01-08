@@ -20,7 +20,7 @@ const configureAuthRouter = () => {
   const router = new Router({ prefix: '/auth' });
 
   router.post('/', authController.register);
-  router.get('/', authController.login);
+  router.put('/', authController.login);
 
   return router.routes();
 };

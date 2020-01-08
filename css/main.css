@@ -47,7 +47,7 @@ body {
 
 .todos {
   width: 100%;
-  height: calc(100% - 70px);
+  height: calc(100% - 140px);
   padding: 0 30px;
   overflow: hidden;
   overflow-y: scroll;
@@ -95,4 +95,24 @@ body {
 
 .todo-delete:hover {
   background-color: rgb(252, 39, 24);
+}
+
+.header {
+  width: 100%;
+  height: 70px;
+  padding: 0 30px;
+  background-color: #0278d7;
+}
+
+.auth {
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+  padding: 10px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.auth >* {
+  margin: 0 5px;
 }
