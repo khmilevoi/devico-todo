@@ -6,7 +6,7 @@ class Auth {
   }
 
   createUser(login, token) {
-    return (this.user = new User(login, token));
+    this.user = new User(login, token);
   }
 
   deleteUser() {
