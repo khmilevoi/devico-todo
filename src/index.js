@@ -1,15 +1,14 @@
 import { logger } from 'middlewares/logger';
 
 import { configureStore } from 'store/configureStore';
-
 import { initialState } from 'constants/initialState';
 
 import { App } from 'App';
 
-import 'index.css';
+import 'index.scss';
 
-export const store = configureStore(initialState);
+const store = configureStore(initialState);
 store.subscribe(logger());
 
 const app = new App(store, document.body);
-app.render();
+document.body.append(app.mount());

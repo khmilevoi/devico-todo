@@ -23,7 +23,7 @@ export const localStorageReducer = (
     }
 
     case auth.USER.DELETE: {
-      const keys = Object.keys(payload);
+      const keys = ['login', 'token'];
 
       removeFromLocalStorage(keys);
 

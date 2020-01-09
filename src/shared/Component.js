@@ -1,25 +1,49 @@
-import { createElement } from 'utils/createElement';
+export const createElement = (type = 'div', props = {}, childrens = []) => {
+  const element = document.createElement(type);
+
+  Object.entries(props).forEach(([name, value]) => {
+    if (name === 'style') {
+      Object.entries(value).forEach(([prop, val]) => {
+        element.style[prop] = val;
+      });
+    } else {
+      const attr = document.createAttribute(name);
+
+      attr.value = value;
+
+      element.setAttributeNode(attr);
+    }
+  });
+
+  childrens.forEach((children) => {
+    if (typeof children === 'object') {
+      element.append(children);
+    } else {
+      element.append(children);
+    }
+  });
+
+  return element;
+};
 
 export class Component {
-  constructor(store, root) {
+  constructor(store) {
     this.store = store;
-    this.root = root;
 
     this.init();
-    this.render();
   }
 
-  createComponent(name, Comp) {
-    const root = createElement('div', { class: name });
+  createComponent(Comp) {
+    const component = new Comp(this.store);
 
-    const el = new Comp(this.store, root);
+    const element = component.mount();
 
-    this.root.append(root);
-
-    return el;
+    return element;
   }
 
   init() {}
+
+  mounted() {}
 
   dispatch(action) {
     return this.store.dispatch(action);
@@ -31,5 +55,12 @@ export class Component {
 
   render() {
     throw new Error('render not defined');
+  }
+
+  mount() {
+    const element = this.render();
+    this.mounted();
+
+    return element;
   }
 }

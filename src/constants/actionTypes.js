@@ -20,10 +20,6 @@ export const todos = {
   LIST: createListActions('TODO'),
 };
 
-export const error = {
-  ...createAccessActions('ERROR'),
-};
-
 export const localStorage = {
   ...createAccessActions('LOCAL_STORAGE'),
 };
