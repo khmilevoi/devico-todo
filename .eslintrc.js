@@ -10,7 +10,7 @@ module.exports = {
     SharedArrayBuffer: 'readonly'
   },
   parserOptions: {
-    ecmaVersion: 2018,
+    ecmaVersion: 2019,
     sourceType: 'module'
   },
   rules: {
@@ -20,6 +20,8 @@ module.exports = {
     'no-shadow': 0,
     'no-console': 0,
     'import/no-unresolved': 0,
-    'import/extensions': 0
+    'import/extensions': 0,
+    'no-plusplus': 0,
+    'class-methods-use-this': 0
   }
 };

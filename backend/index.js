@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-
 import dotenv from 'dotenv';
 
 import Koa from 'koa';
@@ -27,6 +25,14 @@ app.use((ctx, next) => {
 
   return next();
 });
+
+app.use((ctx, next) => next().catch((error) => {
+  if (error.status === 401) {
+    ctx.unauthorized({ message: 'Unauthorized' });
+  } else {
+    throw error;
+  }
+}));
 
 app.use(jwt({ secret: process.env.SECRET }).unless({ path: [/^\/auth/] }));
 
