@@ -1,5 +1,6 @@
 import { auth } from 'constants/actionTypes';
-import { loginQuery, registerQuery } from 'utils/queries';
+import { checkQuery, loginQuery, registerQuery } from 'utils/queries';
+
 import { User } from 'shared/User';
 
 export const setUser = (user) => ({
@@ -20,6 +21,14 @@ export const deleteError = () => ({
   type: auth.ERROR.DELETE,
 });
 
+export const error = (err) => (dispatch) => {
+  dispatch(setError(err));
+
+  if (err.status === 401) {
+    dispatch(deleteUser());
+  }
+};
+
 export const logIn = (login, password) => async (dispatch) => {
   try {
     const { token } = await loginQuery(login, password);
@@ -27,10 +36,8 @@ export const logIn = (login, password) => async (dispatch) => {
     const user = new User(login, token);
 
     dispatch(setUser(user));
-  } catch (error) {
-    console.log(error);
-
-    dispatch(setError(error));
+  } catch (err) {
+    dispatch(error(err));
   }
 };
 
@@ -41,7 +48,7 @@ export const register = (login, password) => async (dispatch) => {
     const user = new User(login, token);
 
     dispatch(setUser(user));
-  } catch (error) {
-    dispatch(setError(error));
+  } catch (err) {
+    dispatch(error(err));
   }
 };

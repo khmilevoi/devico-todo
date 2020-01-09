@@ -1,13 +1,14 @@
+import { logger } from 'middlewares/logger';
+
 import { configureStore } from 'store/configureStore';
-
 import { initialState } from 'constants/initialState';
-import { logIn } from 'store/actions/auth';
 
-import 'index.css';
+import { App } from 'App';
+
+import 'index.scss';
 
 const store = configureStore(initialState);
+store.subscribe(logger());
 
-store.subscribe((...args) => console.log(args));
-
-
-store.dispatch(logIn('Karina', '12345'));
+const app = new App(store, document.body);
+document.body.append(app.mount());

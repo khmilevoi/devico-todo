@@ -9,4 +9,5 @@ export const initialState = {
   error: {
     list: [],
   },
+  localStorage: null,
 };
