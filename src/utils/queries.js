@@ -23,11 +23,13 @@ const makeQuery = async (query, method = methods.GET, body = {}, headers) => {
 
   const response = await fetch(url, params).then((data) => data.json());
 
-  if (response.ok) {
-    return response;
+  console.log(response);
+
+  if (response.ok === false) {
+    throw response;
   }
 
-  throw response;
+  return response;
 };
 
 export const getListQuery = () => makeQuery('/todos');

@@ -23,3 +23,7 @@ export const todos = {
 export const error = {
   ...createAccessActions('ERROR'),
 };
+
+export const localStorage = {
+  ...createAccessActions('LOCAL_STORAGE'),
+};

@@ -1,13 +1,15 @@
+import { logger } from 'middlewares/logger';
+
 import { configureStore } from 'store/configureStore';
 
 import { initialState } from 'constants/initialState';
-import { logIn } from 'store/actions/auth';
+
+import { App } from 'App';
 
 import 'index.css';
 
-const store = configureStore(initialState);
+export const store = configureStore(initialState);
+store.subscribe(logger());
 
-store.subscribe((...args) => console.log(args));
-
-
-store.dispatch(logIn('Karina', '12345'));
+const app = new App(store, document.body);
+app.render();

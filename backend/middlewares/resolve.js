@@ -1,26 +1,26 @@
 const useResolve = () => {
   function resolve(body) {
-    this.body = body;
+    this.body = { ...body, ok: true };
     this.status = 200;
   }
 
   function badRequest(body) {
-    this.body = body;
+    this.body = { ...body, ok: false };
     this.status = 400;
   }
 
   function unauthorized(body) {
-    this.body = body;
+    this.body = { ...body, ok: false };
     this.status = 401;
   }
 
   function forbidden(body) {
-    this.body = body;
+    this.body = { ...body, ok: false };
     this.status = 403;
   }
 
   function notFound(body) {
-    this.body = body;
+    this.body = { ...body, ok: false };
     this.status = 404;
   }
 

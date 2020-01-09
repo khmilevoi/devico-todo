@@ -21,7 +21,9 @@
   },
   "homepage": "https://github.com/khmilevoi/devico-todo#readme",
   "devDependencies": {
+    "@babel/cli": "^7.7.7",
     "@babel/core": "^7.7.7",
+    "@babel/node": "^7.7.7",
     "@babel/preset-env": "^7.7.7",
     "babel-cli": "^6.26.0",
     "babel-loader": "^8.0.6",

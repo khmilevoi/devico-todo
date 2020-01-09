@@ -28,8 +28,6 @@ export const logIn = (login, password) => async (dispatch) => {
 
     dispatch(setUser(user));
   } catch (error) {
-    console.log(error);
-
     dispatch(setError(error));
   }
 };
