@@ -1,0 +1,61 @@
+.todos {
+  width: 100%;
+  height: calc(100% - 100px);
+  overflow: hidden;
+  overflow-y: scroll;
+}
+
+.todo {
+  width: 100%;
+  max-width: 900px;
+  min-height: 40px;
+  margin: 0 auto;
+  padding: 15px;
+  display: flex;
+  border-bottom: $transparent-silver 1px solid;
+
+  &__checkbox {
+    &-wrapper {
+      flex: 1;
+    }
+
+    &-label {
+      width: 15px;
+      height: 15px;
+      text-align: center;
+      line-height: 13px;
+      color: white;
+      border-radius: #{$infinity}px;
+      display: block;
+      background-color: $main;
+      border: $main 1px solid;
+      cursor: pointer;
+    }
+
+    &-input {
+      display: none;
+    }
+
+    &-input:checked ~ &-label {
+      background-color: white;
+    }
+  }
+
+  &__inner {
+    &-wrapper {
+      flex: 6;
+    }
+
+    &-text {
+    }
+  }
+
+  &__delete {
+    &-wrapper {
+      flex: 1;
+    }
+
+    &-button {
+    }
+  }
+}
