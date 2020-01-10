@@ -26,6 +26,13 @@ export const createElement = (type = 'div', props = {}, childrens = []) => {
   return element;
 };
 
+export const mount = (component) => {
+  const element = component.render();
+  component.mounted();
+
+  return element;
+};
+
 export class Component {
   constructor(store) {
     this.store = store;
@@ -36,7 +43,7 @@ export class Component {
   createComponent(Comp, ...props) {
     const component = new Comp(this.store, ...props);
 
-    const element = component.mount();
+    const element = mount(component);
 
     return element;
   }
@@ -59,12 +66,5 @@ export class Component {
 
   render() {
     throw new Error('render not defined');
-  }
-
-  mount() {
-    const element = this.render();
-    this.mounted();
-
-    return element;
   }
 }
