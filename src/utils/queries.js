@@ -37,7 +37,7 @@ const makeQuery = async (query, method = methods.GET, body = {}, token) => {
   return response;
 };
 
-export const getListQuery = (token) => makeQuery('/todos', null, null, token);
+export const getListQuery = (token, owner) => makeQuery(`/todos?owner=${owner}`, methods.GET, null, token);
 export const addQuery = (inner, owner, token) => makeQuery(`/todos?inner=${inner}&owner=${owner}`, methods.POST, null, token);
 export const toggleQuery = (id, token) => makeQuery(`/todos/${id}`, methods.PUT, null, token);
 export const deleteQuery = (id, token) => makeQuery(`/todos/${id}`, methods.DELETE, null, token);

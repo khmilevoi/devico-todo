@@ -4,8 +4,10 @@ import {
   toggleQuery,
   deleteQuery,
   updateQuery,
+  getListQuery,
 } from 'utils/queries';
 import { Todo } from 'shared/Todo';
+import { error } from './auth';
 
 export const setList = (list) => ({
   type: todos.LIST.SET,
@@ -32,14 +34,32 @@ export const updateItem = (id, inner) => ({
   payload: { id, inner },
 });
 
-export const add = (inner) => async (dispatch) => {
+export const getList = (owner, token) => async (dispatch) => {
   try {
-    const response = await addQuery(inner);
+    const { res } = await getListQuery(token, owner);
 
-    const todo = new Todo(response.inner, response._id, response.completed);
+    const todos = res.map(
+      ({
+        inner, _id, owner, completed,
+      }) => new Todo(inner, _id, owner, completed),
+    );
+
+    dispatch(setList(todos));
+  } catch (err) {
+    dispatch(error(err));
+  }
+};
+
+export const add = (inner, owner, token) => async (dispatch) => {
+  try {
+    const { res } = await addQuery(inner, owner, token);
+
+    const todo = new Todo(res.inner, res._id, res.completed);
 
     dispatch(addItem(todo));
-  } catch (error) {}
+  } catch (err) {
+    dispatch(error(err));
+  }
 };
 
 export const toggle = (id) => async (dispatch) => {
@@ -47,7 +67,9 @@ export const toggle = (id) => async (dispatch) => {
     await toggleQuery(id);
 
     dispatch(toggleItem(id));
-  } catch (error) {}
+  } catch (err) {
+    dispatch(error(err));
+  }
 };
 
 export const del = (id) => async (dispatch) => {
@@ -55,7 +77,9 @@ export const del = (id) => async (dispatch) => {
     await deleteQuery(id);
 
     dispatch(deleteItem(id));
-  } catch (error) {}
+  } catch (err) {
+    dispatch(error(err));
+  }
 };
 
 export const update = (id, inner) => async (dispatch) => {
@@ -63,5 +87,7 @@ export const update = (id, inner) => async (dispatch) => {
     await updateQuery(id, inner);
 
     dispatch(updateItem(id, inner));
-  } catch (error) {}
+  } catch (err) {
+    dispatch(error(err));
+  }
 };

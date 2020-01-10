@@ -27,7 +27,7 @@ const auth = {
 
       const { _id } = UserModel.create({ login, password: encryptedPassword });
 
-      return ctx.resolve({ token, login, id: _id });
+      return ctx.resolve({ token, login, _id });
     }
 
     return ctx.badRequest({ message: 'User exist' });
@@ -47,7 +47,7 @@ const auth = {
     if (check) {
       const token = createToken(user.login);
 
-      return ctx.resolve({ token, login, id: user._id });
+      return ctx.resolve({ token, login, _id: user._id });
     }
 
     return ctx.unauthorized({ message: 'Bad password' });

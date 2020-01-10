@@ -96,23 +96,13 @@ export class Auth extends Component {
     // subscribes
 
     this.subscribe(({ type, payload }) => {
-      console.log('AUTH: ', type);
-
       switch (type) {
-        case auth.USER.SET: {
-          return authElement.classList.add('disable');
-        }
-
-        case auth.USER.DELETE: {
-          return authElement.classList.remove('disable');
-        }
-
         case auth.ERROR.SET: {
-          return errorContainer.innerHTML = payload.message;
+          return (errorContainer.innerHTML = payload.message);
         }
 
         case auth.ERROR.DELETE: {
-          return errorContainer.innerHTML = '';
+          return (errorContainer.innerHTML = '');
         }
 
         default:

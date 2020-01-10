@@ -29,7 +29,7 @@ export const error = (err) => (dispatch) => {
 
 export const logIn = (login, password) => async (dispatch) => {
   try {
-    const { token, id, login: currentLogin } = await loginQuery(
+    const { token, _id: id, login: currentLogin } = await loginQuery(
       login,
       password,
     );
@@ -43,7 +43,7 @@ export const logIn = (login, password) => async (dispatch) => {
 
 export const register = (login, password) => async (dispatch) => {
   try {
-    const { token, id, login: currentLogin } = await registerQuery(
+    const { token, _id: id, login: currentLogin } = await registerQuery(
       login,
       password,
     );
