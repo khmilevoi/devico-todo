@@ -16,10 +16,10 @@ export const createElement = (type = 'div', props = {}, childrens = []) => {
   });
 
   childrens.forEach((children) => {
-    if (typeof children === 'object') {
+    if (children instanceof HTMLElement) {
       element.append(children);
     } else {
-      element.append(children);
+      element.innerText += children;
     }
   });
 

@@ -21,17 +21,31 @@ export class Todos extends Component {
         case auth.USER.SET: {
           const { id, token } = payload;
 
-          return this.dispatch(getList(id, token));
+          this.dispatch(getList(id, token));
+
+          break;
         }
 
         case todos.LIST.SET: {
           const list = this.createList(payload);
 
-          return todosElement.append(...list);
+          todosElement.innerHTML = '';
+
+          todosElement.append(...list);
+
+          break;
+        }
+
+        case todos.LIST.ADD: {
+          const item = this.createComponent(Todo, payload);
+
+          todosElement.append(item);
+
+          break;
         }
 
         default:
-          return null;
+          break;
       }
     });
 

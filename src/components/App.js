@@ -1,11 +1,13 @@
 import { Component, createElement } from 'shared/Component';
 
-import { Auth } from 'components/Auth';
-import { Header } from 'components/Header';
-import { Todos } from 'components/Todos/index';
-
 import { readLocalStorage } from 'store/actions/localStorage';
 import { auth } from 'constants/actionTypes';
+
+import { Auth } from './Auth';
+import { Header } from './Header';
+import { Todos } from './Todos/index';
+
+import { AddTodo } from './AddTodo';
 
 export class App extends Component {
   mounted() {
@@ -17,8 +19,13 @@ export class App extends Component {
 
     const header = this.createComponent(Header);
     const todos = this.createComponent(Todos);
+    const addTodo = this.createComponent(AddTodo);
 
-    const content = createElement('div', { class: 'content' }, [header, todos]);
+    const content = createElement('div', { class: 'content' }, [
+      header,
+      todos,
+      addTodo,
+    ]);
 
     const root = createElement('div', { id: 'root' }, [authComponent, content]);
 

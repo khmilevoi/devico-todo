@@ -28,10 +28,12 @@ export class Auth extends Component {
     const loginInput = createElement('input', {
       class: 'auth__form-input auth__form-item',
       placeholder: 'login',
+      type: 'login',
     });
     const passwordInput = createElement('input', {
       class: 'auth__form-input auth__form-item',
       placeholder: 'password',
+      type: 'password',
     });
     const confirmButton = createElement(
       'button',
@@ -98,15 +100,17 @@ export class Auth extends Component {
     this.subscribe(({ type, payload }) => {
       switch (type) {
         case auth.ERROR.SET: {
-          return (errorContainer.innerHTML = payload.message);
+          errorContainer.innerHTML = payload.message;
+          break;
         }
 
         case auth.ERROR.DELETE: {
-          return (errorContainer.innerHTML = '');
+          errorContainer.innerHTML = '';
+          break;
         }
 
         default:
-          return null;
+          break;
       }
     });
 

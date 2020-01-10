@@ -14,7 +14,7 @@ dotenv.config();
 
 const app = new Koa();
 
-app.use(cors());
+app.use(cors({ methods: '*' }));
 app.use(bodyParser());
 app.use(logger());
 app.use(useResolve());
@@ -22,7 +22,7 @@ app.use(useResolve());
 app.use((ctx, next) => {
   console.log('BODY: ', ctx.request.body);
   console.log('REQUEST: ', ctx.request);
-
+  console.log(ctx);
   return next();
 });
 

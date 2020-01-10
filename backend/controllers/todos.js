@@ -18,7 +18,9 @@ const todos = {
     ctx.resolve({ res });
   },
   add: async (ctx) => {
-    const { inner, owner } = ctx.query;
+    const { body } = ctx.request;
+    const { inner, owner } = body;
+
     const res = await TodoModel.create({ inner, owner });
 
     ctx.resolve({ res });
@@ -41,7 +43,9 @@ const todos = {
   update: async (ctx) => {
     const { id } = ctx.params;
 
-    const { inner } = ctx.query;
+    const { body } = ctx.request;
+    const { inner } = body;
+
     const todo = await TodoModel.findById(id);
     const res = await TodoModel.updateOne(todo, { inner });
 

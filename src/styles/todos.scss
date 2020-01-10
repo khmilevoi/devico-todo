@@ -3,6 +3,7 @@
   height: calc(100% - 100px);
   overflow: hidden;
   overflow-y: scroll;
+  border-bottom: $transparent-silver 1px solid;
 }
 
 .todo {
@@ -22,13 +23,16 @@
     &-label {
       width: 15px;
       height: 15px;
+      font-size: 10px;
       text-align: center;
-      line-height: 13px;
+      line-height: 10px;
       color: white;
       border-radius: #{$infinity}px;
       display: block;
       background-color: $main;
       border: $main 1px solid;
+      transform: rotateY(180deg) rotateZ(-45deg);
+      user-select: none;
       cursor: pointer;
     }
 
@@ -43,19 +47,38 @@
 
   &__inner {
     &-wrapper {
-      flex: 6;
+      margin: 0 5px;
+      flex: 10;
     }
 
     &-text {
+      word-break: break-word;
+      padding: 2px;
+
+      &[contenteditable='true'] {
+        border: $main 1px solid;
+        border-radius: 2px;
+        outline: none;
+      }
     }
+  }
+
+  &:hover &__delete-wrapper {
+    opacity: 1;
   }
 
   &__delete {
     &-wrapper {
       flex: 1;
+      opacity: 0;
+      transition: 0.2s;
     }
 
     &-button {
+      padding: 2px 3px;
+      border-radius: 2px;
+      background-color: $red;
+      color: white;
     }
   }
 }
