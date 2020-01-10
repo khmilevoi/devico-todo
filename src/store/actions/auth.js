@@ -1,11 +1,9 @@
 import { auth } from 'constants/actionTypes';
-import { checkQuery, loginQuery, registerQuery } from 'utils/queries';
+import { loginQuery, registerQuery } from 'utils/queries';
 
-import { User } from 'shared/User';
-
-export const setUser = (user) => ({
+export const setUser = (id, login, token) => ({
   type: auth.USER.SET,
-  payload: user,
+  payload: { id, login, token },
 });
 
 export const deleteUser = () => ({
@@ -31,11 +29,13 @@ export const error = (err) => (dispatch) => {
 
 export const logIn = (login, password) => async (dispatch) => {
   try {
-    const { token } = await loginQuery(login, password);
+    const { token, id, login: currentLogin } = await loginQuery(
+      login,
+      password,
+    );
 
-    const user = new User(login, token);
-
-    dispatch(setUser(user));
+    dispatch(setUser(id, currentLogin, token));
+    dispatch(deleteError());
   } catch (err) {
     dispatch(error(err));
   }
@@ -43,11 +43,13 @@ export const logIn = (login, password) => async (dispatch) => {
 
 export const register = (login, password) => async (dispatch) => {
   try {
-    const { token } = await registerQuery(login, password);
+    const { token, id, login: currentLogin } = await registerQuery(
+      login,
+      password,
+    );
 
-    const user = new User(login, token);
-
-    dispatch(setUser(user));
+    dispatch(setUser(id, currentLogin, token));
+    dispatch(deleteError());
   } catch (err) {
     dispatch(error(err));
   }

@@ -22,6 +22,7 @@ module.exports = {
     'import/no-unresolved': 0,
     'import/extensions': 0,
     'no-plusplus': 0,
-    'class-methods-use-this': 0
+    'class-methods-use-this': 0,
+    'no-return-assign': 0
   }
 };

@@ -42,9 +42,14 @@ export class Auth extends Component {
       ['Send'],
     );
 
+    const errorContainer = createElement('div', {
+      class: 'auth__form-error',
+    });
+
     const form = createElement('form', { class: 'auth__form' }, [
       loginInput,
       passwordInput,
+      errorContainer,
       confirmButton,
     ]);
 
@@ -90,7 +95,7 @@ export class Auth extends Component {
 
     // subscribes
 
-    this.subscribe(({ type }) => {
+    this.subscribe(({ type, payload }) => {
       console.log('AUTH: ', type);
 
       switch (type) {
@@ -100,6 +105,14 @@ export class Auth extends Component {
 
         case auth.USER.DELETE: {
           return authElement.classList.remove('disable');
+        }
+
+        case auth.ERROR.SET: {
+          return errorContainer.innerHTML = payload.message;
+        }
+
+        case auth.ERROR.DELETE: {
+          return errorContainer.innerHTML = '';
         }
 
         default:

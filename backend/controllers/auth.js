@@ -1,8 +1,10 @@
 import jsonwebtoken from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
 
 import UserModel from '../models/user';
 
 const getUserByLogin = (login) => UserModel.findOne({ login });
+const encrypt = (data) => bcrypt.hash(data, process.env.SALT);
 
 const createToken = (login) => jsonwebtoken.sign(
   { data: login, exp: Date.now() / 1000 + 60 * 60 },
@@ -21,10 +23,11 @@ const auth = {
 
     if (!user) {
       const token = createToken(login);
+      const encryptedPassword = await encrypt(password);
 
-      UserModel.create({ login, password });
+      const { _id } = UserModel.create({ login, password: encryptedPassword });
 
-      return ctx.resolve({ token });
+      return ctx.resolve({ token, login, id: _id });
     }
 
     return ctx.badRequest({ message: 'User exist' });
@@ -39,10 +42,12 @@ const auth = {
       return ctx.unauthorized({ message: 'Bad login' });
     }
 
-    if (user.password === password) {
+    const check = await bcrypt.compare(password, user.password);
+
+    if (check) {
       const token = createToken(user.login);
 
-      return ctx.resolve({ token });
+      return ctx.resolve({ token, login, id: user._id });
     }
 
     return ctx.unauthorized({ message: 'Bad password' });

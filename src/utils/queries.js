@@ -38,13 +38,10 @@ const makeQuery = async (query, method = methods.GET, body = {}, token) => {
 };
 
 export const getListQuery = (token) => makeQuery('/todos', null, null, token);
-export const addQuery = (inner, token) => makeQuery(`/todos?inner=${inner}`, methods.POST, null, token);
+export const addQuery = (inner, owner, token) => makeQuery(`/todos?inner=${inner}&owner=${owner}`, methods.POST, null, token);
 export const toggleQuery = (id, token) => makeQuery(`/todos/${id}`, methods.PUT, null, token);
 export const deleteQuery = (id, token) => makeQuery(`/todos/${id}`, methods.DELETE, null, token);
 export const updateQuery = (id, inner, token) => makeQuery(`/todos/${id}?inner=${inner}`, methods.PATCH, null, token);
 
-// export const checkQuery = (token) => makeQuery('/auth', methods.GET, null, {
-//   Authorization: `Bearer ${token}`,
-// });
 export const loginQuery = (login, password) => makeQuery('/auth', methods.PUT, { login, password });
 export const registerQuery = (login, password) => makeQuery('/auth', methods.POST, { login, password });

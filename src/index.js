@@ -3,9 +3,9 @@ import { logger } from 'middlewares/logger';
 import { configureStore } from 'store/configureStore';
 import { initialState } from 'constants/initialState';
 
-import { App } from 'App';
+import { App } from 'components/App';
 
-import 'index.scss';
+import 'styles/index.scss';
 
 const store = configureStore(initialState);
 store.subscribe(logger());

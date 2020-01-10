@@ -12,11 +12,14 @@ export class App extends Component {
   }
 
   render() {
-    const header = this.createComponent(Header);
-    const todos = this.createComponent(Todos);
     const auth = this.createComponent(Auth);
 
-    const root = createElement('div', { id: 'root' }, [header, todos, auth]);
+    const header = this.createComponent(Header);
+    const todos = this.createComponent(Todos);
+
+    const content = createElement('div', { class: 'content' }, [header, todos]);
+
+    const root = createElement('div', { id: 'root' }, [auth, content]);
 
     return root;
   }

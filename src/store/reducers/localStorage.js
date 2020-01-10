@@ -9,6 +9,8 @@ const removeFromLocalStorage = (keys) => {
   keys.forEach((key) => window.localStorage.removeItem(key));
 };
 
+const clearLocalStorage = () => window.localStorage.clear();
+
 export const localStorageReducer = (
   state = initialState.localStorage,
   { type, payload },
@@ -23,9 +25,7 @@ export const localStorageReducer = (
     }
 
     case auth.USER.DELETE: {
-      const keys = ['login', 'token'];
-
-      removeFromLocalStorage(keys);
+      clearLocalStorage();
 
       return null;
     }

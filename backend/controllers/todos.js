@@ -14,8 +14,8 @@ const todos = {
     ctx.resolve(res);
   },
   add: async (ctx) => {
-    const { inner } = ctx.query;
-    const todo = await TodoModel.create({ inner });
+    const { inner, owner } = ctx.query;
+    const todo = await TodoModel.create({ inner, owner });
 
     ctx.resolve(todo);
   },
