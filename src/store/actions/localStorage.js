@@ -1,5 +1,4 @@
 import { localStorage } from 'constants/actionTypes';
-import { User } from 'shared/User';
 
 import { setUser, deleteUser } from './auth';
 
@@ -11,12 +10,10 @@ export const setLocalStorage = (ls) => ({
 export const readLocalStorage = () => (dispatch) => {
   const ls = window.localStorage;
 
-  const { login, token } = ls;
+  const { id, login, token } = ls;
 
-  if (login && token) {
-    const user = new User(login, token);
-
-    dispatch(setUser(user));
+  if (login && token && id) {
+    dispatch(setUser(id, login, token));
     dispatch(setLocalStorage(ls));
   } else {
     dispatch(deleteUser());

@@ -7,7 +7,7 @@ const CopyPlugin = require('copy-webpack-plugin');
 module.exports = {
   mode: 'development',
   devtool: 'inline-source-map',
-  entry: './src/index.js',
+  entry: { index: './src/index.js' },
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].bundle.js',
@@ -45,8 +45,6 @@ module.exports = {
       title: 'Todo',
     }),
     new CleanWebpackPlugin(),
-    new CopyPlugin([
-      { from: path.resolve(__dirname, 'public'), to: '' },
-    ]),
+    new CopyPlugin([{ from: path.resolve(__dirname, 'public'), to: '' }]),
   ],
 };

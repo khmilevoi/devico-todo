@@ -2,46 +2,54 @@ import TodoModel from '../models/todo';
 
 const todos = {
   list: async (ctx) => {
-    const res = await TodoModel.find();
+    const { owner } = ctx.query;
 
-    ctx.resolve(res);
+    const res = await TodoModel.find({ owner });
+
+    console.log(res);
+
+    ctx.resolve({ res });
   },
   todo: async (ctx) => {
     const { id } = ctx.params;
 
     const res = await TodoModel.findById(id);
 
-    ctx.resolve(res);
+    ctx.resolve({ res });
   },
   add: async (ctx) => {
-    const { inner } = ctx.query;
-    const todo = await TodoModel.create({ inner });
+    const { body } = ctx.request;
+    const { inner, owner } = body;
 
-    ctx.resolve(todo);
+    const res = await TodoModel.create({ inner, owner });
+
+    ctx.resolve({ res });
   },
   toggle: async (ctx) => {
     const { id } = ctx.params;
 
-    const res = await TodoModel.findById(id);
-    const todo = await TodoModel.updateOne(res, { completed: !res.completed });
+    const todo = await TodoModel.findById(id);
+    const res = await TodoModel.updateOne(todo, { completed: !todo.completed });
 
-    ctx.resolve(todo);
+    ctx.resolve({ res });
   },
   delete: async (ctx) => {
     const { id } = ctx.params;
 
-    const todo = await TodoModel.deleteOne({ _id: id });
+    const res = await TodoModel.deleteOne({ _id: id });
 
-    ctx.resolve(todo);
+    ctx.resolve({ res });
   },
   update: async (ctx) => {
     const { id } = ctx.params;
 
-    const { inner } = ctx.query;
-    const res = await TodoModel.findById(id);
-    const todo = await TodoModel.updateOne(res, { inner });
+    const { body } = ctx.request;
+    const { inner } = body;
 
-    ctx.resolve(todo);
+    const todo = await TodoModel.findById(id);
+    const res = await TodoModel.updateOne(todo, { inner });
+
+    ctx.resolve({ res });
   },
 };
 

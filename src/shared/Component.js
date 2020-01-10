@@ -16,10 +16,10 @@ export const createElement = (type = 'div', props = {}, childrens = []) => {
   });
 
   childrens.forEach((children) => {
-    if (typeof children === 'object') {
+    if (children instanceof HTMLElement) {
       element.append(children);
     } else {
-      element.append(children);
+      element.innerText += children;
     }
   });
 
@@ -33,8 +33,8 @@ export class Component {
     this.init();
   }
 
-  createComponent(Comp) {
-    const component = new Comp(this.store);
+  createComponent(Comp, ...props) {
+    const component = new Comp(this.store, ...props);
 
     const element = component.mount();
 
@@ -51,6 +51,10 @@ export class Component {
 
   subscribe(callback) {
     return this.store.subscribe(callback);
+  }
+
+  getState() {
+    return this.store.getState();
   }
 
   render() {

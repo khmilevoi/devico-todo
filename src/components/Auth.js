@@ -28,10 +28,12 @@ export class Auth extends Component {
     const loginInput = createElement('input', {
       class: 'auth__form-input auth__form-item',
       placeholder: 'login',
+      type: 'login',
     });
     const passwordInput = createElement('input', {
       class: 'auth__form-input auth__form-item',
       placeholder: 'password',
+      type: 'password',
     });
     const confirmButton = createElement(
       'button',
@@ -42,9 +44,14 @@ export class Auth extends Component {
       ['Send'],
     );
 
+    const errorContainer = createElement('div', {
+      class: 'auth__form-error',
+    });
+
     const form = createElement('form', { class: 'auth__form' }, [
       loginInput,
       passwordInput,
+      errorContainer,
       confirmButton,
     ]);
 
@@ -90,20 +97,20 @@ export class Auth extends Component {
 
     // subscribes
 
-    this.subscribe(({ type }) => {
-      console.log('AUTH: ', type);
-
+    this.subscribe(({ type, payload }) => {
       switch (type) {
-        case auth.USER.SET: {
-          return authElement.classList.add('disable');
+        case auth.ERROR.SET: {
+          errorContainer.innerHTML = payload.message;
+          break;
         }
 
-        case auth.USER.DELETE: {
-          return authElement.classList.remove('disable');
+        case auth.ERROR.DELETE: {
+          errorContainer.innerHTML = '';
+          break;
         }
 
         default:
-          return null;
+          break;
       }
     });
 

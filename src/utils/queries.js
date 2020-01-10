@@ -37,14 +37,11 @@ const makeQuery = async (query, method = methods.GET, body = {}, token) => {
   return response;
 };
 
-export const getListQuery = (token) => makeQuery('/todos', null, null, token);
-export const addQuery = (inner, token) => makeQuery(`/todos?inner=${inner}`, methods.POST, null, token);
-export const toggleQuery = (id, token) => makeQuery(`/todos/${id}`, methods.PUT, null, token);
-export const deleteQuery = (id, token) => makeQuery(`/todos/${id}`, methods.DELETE, null, token);
-export const updateQuery = (id, inner, token) => makeQuery(`/todos/${id}?inner=${inner}`, methods.PATCH, null, token);
+export const getListQuery = (owner, token) => makeQuery(`/todos?owner=${owner}`, methods.GET, {}, token);
+export const addQuery = (inner, owner, token) => makeQuery('/todos', methods.POST, { inner, owner }, token);
+export const toggleQuery = (id, token) => makeQuery(`/todos/${id}`, methods.PUT, {}, token);
+export const deleteQuery = (id, token) => makeQuery(`/todos/${id}`, methods.DELETE, {}, token);
+export const updateQuery = (id, inner, token) => makeQuery(`/todos/${id}`, methods.PATCH, { inner }, token);
 
-// export const checkQuery = (token) => makeQuery('/auth', methods.GET, null, {
-//   Authorization: `Bearer ${token}`,
-// });
 export const loginQuery = (login, password) => makeQuery('/auth', methods.PUT, { login, password });
 export const registerQuery = (login, password) => makeQuery('/auth', methods.POST, { login, password });

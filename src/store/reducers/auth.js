@@ -1,12 +1,18 @@
+import { User } from 'shared/User';
+
 import { initialState } from 'constants/initialState';
 import { auth } from 'constants/actionTypes';
 
 export const authReducer = (state = initialState.auth, { type, payload }) => {
   switch (type) {
     case auth.USER.SET: {
+      const { id, login, token } = payload;
+
+      const user = new User(id, login, token);
+
       return {
         ...state,
-        user: payload,
+        user,
       };
     }
 
