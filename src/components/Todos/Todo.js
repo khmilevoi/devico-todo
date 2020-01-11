@@ -130,6 +130,7 @@ export class Todo extends Component {
         case todos.LIST.UPDATE: {
           if (this.item.id === payload.id) {
             inner.innerText = payload.inner;
+            this.item.inner = payload.inner;
           }
 
           break;

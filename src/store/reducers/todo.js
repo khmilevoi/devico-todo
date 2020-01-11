@@ -18,9 +18,7 @@ export const todosReducer = (state = initialState.todos, { type, payload }) => {
     }
 
     case todos.LIST.TOGGLE: {
-      const list = state.list.map((item) => (item.id === payload
-        ? { ...item, completed: !item.completed }
-        : item));
+      const list = state.list.map((item) => (item.id === payload ? { ...item, completed: !item.completed } : item));
 
       return { ...state, list };
     }
@@ -32,9 +30,7 @@ export const todosReducer = (state = initialState.todos, { type, payload }) => {
     }
 
     case todos.LIST.UPDATE: {
-      const list = state.list.map((item) => (item.id === payload.id
-        ? { ...item, inner: payload.inner }
-        : item));
+      const list = state.list.map((item) => (item.id === payload.id ? { ...item, inner: payload.inner } : item));
 
       return { ...state, list };
     }
