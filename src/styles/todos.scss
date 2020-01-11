@@ -28,20 +28,20 @@
       line-height: 10px;
       color: white;
       border-radius: #{$infinity}px;
+      background-color: white;
       display: block;
-      background-color: $main;
       border: $main 1px solid;
       transform: rotateY(180deg) rotateZ(-45deg);
       user-select: none;
       cursor: pointer;
     }
-
+    
     &-input {
       display: none;
     }
-
+    
     &-input:checked ~ &-label {
-      background-color: white;
+      background-color: $main;
     }
   }
 
