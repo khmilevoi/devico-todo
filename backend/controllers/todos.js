@@ -6,8 +6,6 @@ const todos = {
 
     const res = await TodoModel.find({ owner });
 
-    console.log(res);
-
     ctx.resolve({ res });
   },
   todo: async (ctx) => {

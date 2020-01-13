@@ -17,7 +17,13 @@ const createToken = (login) => jsonwebtoken.sign(
 const auth = {
   register: async (ctx) => {
     const { body } = ctx.request;
-    const { login, password } = body;
+    let { login, password } = body;
+    login = login.trim();
+    password = password.trim();
+
+    if (login === '' || password === '') {
+      return ctx.forbidden({ message: 'Login or password is empty' });
+    }
 
     const user = await getUserByLogin(login);
 
@@ -34,7 +40,13 @@ const auth = {
   },
   login: async (ctx) => {
     const { body } = ctx.request;
-    const { login, password } = body;
+    let { login, password } = body;
+    login = login.trim();
+    password = password.trim();
+
+    if (login === '' || password === '') {
+      return ctx.forbidden({ message: 'Login or password is empty' });
+    }
 
     const user = await getUserByLogin(login);
 
