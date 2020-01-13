@@ -32,7 +32,10 @@ export const createElement: CreateElement = (
   childrens.forEach((children) => {
     if (children instanceof HTMLElement) {
       element.append(children);
-    } else if (typeof children === 'string' && element.innerText) {
+    } else if (
+      typeof children === 'string'
+      && typeof element.innerText !== 'undefined'
+    ) {
       element.innerText += children;
     }
   });

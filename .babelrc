@@ -1,4 +1,7 @@
 {
   "presets": ["@babel/preset-env"],
-  "plugins": ["transform-flow-comments"]
+  "plugins": [
+    "transform-flow-comments",
+    "@babel/plugin-proposal-class-properties"
+  ]
 }
