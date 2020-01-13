@@ -1,54 +1,65 @@
-import { Component, createElement } from 'shared/Component';
+import React, { useEffect } from 'react';
+import PropTypes from 'prop-types';
 
-import { auth, todos } from 'constants/actionTypes';
-import { getList } from 'store/actions/todo';
+import { connect } from 'dux/connect';
+
+import {
+  getList, toggle, del, update,
+} from 'store/actions/todo';
+
 import { Todo } from './Todo';
 
-export class Todos extends Component {
-  createList(list) {
-    return list.map((item) => this.createComponent(Todo, item));
-  }
+export const Todos = ({
+  getList, list, owner, token, toggle, del, update,
+}) => {
+  useEffect(() => {
+    getList(owner, token);
+  }, [token]);
 
-  render() {
-    const todosElement = createElement('div', { class: 'todos' });
+  return (
+    <div className="todos">
+      {list.map((item) => (
+        <Todo
+          key={item.id}
+          item={item}
+          {...{
+            toggle,
+            del,
+            update,
+            owner,
+            token,
+          }}
+        ></Todo>
+      ))}
+    </div>
+  );
+};
 
-    // listeners
+Todos.propTypes = {
+  list: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+    }),
+  ).isRequired,
+  getList: PropTypes.func.isRequired,
+  owner: PropTypes.string.isRequired,
+  token: PropTypes.string.isRequired,
+  toggle: PropTypes.func.isRequired,
+  del: PropTypes.func.isRequired,
+  update: PropTypes.func.isRequired,
+};
 
-    // subscriptions
+const mapStateToProps = (state) => ({
+  list: state.todos.list,
+  owner: state.auth.user.id,
+  token: state.auth.user.token,
+});
 
-    this.subscribe(({ type, payload }) => {
-      switch (type) {
-        case auth.USER.SET: {
-          const { id, token } = payload;
+const mapDispatchToProps = {
+  getList,
+  toggle,
+  del,
+  update,
+};
 
-          this.dispatch(getList(id, token));
-
-          break;
-        }
-
-        case todos.LIST.SET: {
-          const list = this.createList(payload);
-
-          todosElement.innerHTML = '';
-
-          todosElement.append(...list);
-
-          break;
-        }
-
-        case todos.LIST.ADD: {
-          const item = this.createComponent(Todo, payload);
-
-          todosElement.append(item);
-
-          break;
-        }
-
-        default:
-          break;
-      }
-    });
-
-    return todosElement;
-  }
-}
+export default connect(mapStateToProps, mapDispatchToProps)(Todos);

@@ -1,41 +1,57 @@
-import { Component, createElement } from 'shared/Component';
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 
 import { add } from 'store/actions/todo';
+import { connect } from 'dux/connect';
 
-export class AddTodo extends Component {
-  render() {
-    const input = createElement('input', {
-      class: 'add-todo__input',
-      placeholder: 'type text...',
-    });
-    const button = createElement('button', { class: 'add-todo__button' }, [
-      '+',
-    ]);
+export const AddTodo = ({ add, token, id }) => {
+  const [inner, setInner] = useState('');
 
-    const wrapper = createElement('form', { class: 'add-todo__wrapper' }, [
-      input,
-      button,
-    ]);
+  return (
+    <div className="add-todo">
+      <form
+        className="add-todo__wrapper"
+        onSubmit={(event) => {
+          event.preventDefault();
 
-    const addTodo = createElement('div', { class: 'add-todo' }, [wrapper]);
+          if (inner.trim() !== '') {
+            add(inner, id, token);
+            setInner('');
+          }
+        }}
+      >
+        <input
+          type="text"
+          className="add-todo__input"
+          placeholder="type text..."
+          value={inner}
+          onChange={(event) => setInner(event.target.value)}
+        />
+        <button type="submit" className="add-todo__button">
+          +
+        </button>
+      </form>
+    </div>
+  );
+};
 
-    // listeners
+AddTodo.propTypes = {
+  add: PropTypes.func.isRequired,
+  token: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
+};
 
-    wrapper.addEventListener('submit', (event) => {
-      event.preventDefault();
+AddTodo.propTypes = {
+  add: PropTypes.func.isRequired,
+};
 
-      const { id, token } = this.getState().auth.user;
-      const inner = input.value;
+const mapStateToProps = (state) => ({
+  id: state.auth.user.id,
+  token: state.auth.user.token,
+});
 
-      if (inner.trim().length !== 0) {
-        this.dispatch(add(inner, id, token));
+const mapDispatchToProps = {
+  add,
+};
 
-        input.value = '';
-      }
-    });
-
-    // subscriptions
-
-    return addTodo;
-  }
-}
+export default connect(mapStateToProps, mapDispatchToProps)(AddTodo);

@@ -1,59 +1,43 @@
-import { Component, createElement } from 'shared/Component';
+import React, { useEffect } from 'react';
+import PropTypes from 'prop-types';
+
+import { connect } from 'dux/connect';
 
 import { readLocalStorage } from 'store/actions/localStorage';
-import { auth } from 'constants/actionTypes';
 
-import { Auth } from './Auth';
-import { Header } from './Header';
+import Header from './Header';
+import Auth from './Auth';
 import { Todos } from './Todos/index';
 
-import { AddTodo } from './AddTodo';
+import AddTodo from './AddTodo';
 
-export class App extends Component {
-  mounted() {
-    this.dispatch(readLocalStorage());
-  }
+export const App = ({ online, readLocalStorage }) => {
+  useEffect(() => {
+    readLocalStorage();
+  }, []);
 
-  render() {
-    const authComponent = this.createComponent(Auth);
+  return online ? (
+    <div className="content">
+      <Header></Header>
+      <Todos></Todos>
+      <AddTodo></AddTodo>
+    </div>
+  ) : (
+    <Auth></Auth>
+  );
+};
 
-    const header = this.createComponent(Header);
-    const todos = this.createComponent(Todos);
-    const addTodo = this.createComponent(AddTodo);
+App.propTypes = {
+  online: PropTypes.bool.isRequired,
+  readLocalStorage: PropTypes.func.isRequired,
+};
 
-    const content = createElement('div', { class: 'content' }, [
-      header,
-      todos,
-      addTodo,
-    ]);
+const mapStateToProps = (state) => ({
+  online: !!state.auth.user,
+});
 
-    const root = createElement('div', { id: 'root' }, [authComponent, content]);
+const mapDispatchToProps = {
+  readLocalStorage,
+};
 
-    // listeners
-
-    // subscribes
-
-    this.subscribe(({ type }) => {
-      switch (type) {
-        case auth.USER.SET: {
-          authComponent.classList.add('disable');
-          content.classList.remove('disable');
-
-          break;
-        }
-
-        case auth.USER.DELETE: {
-          authComponent.classList.remove('disable');
-          content.classList.add('disable');
-
-          break;
-        }
-
-        default:
-          break;
-      }
-    });
-
-    return root;
-  }
-}
+export default connect(mapStateToProps, mapDispatchToProps)(App);
