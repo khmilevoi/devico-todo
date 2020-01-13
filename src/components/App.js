@@ -1,59 +1,90 @@
-import { Component, createElement } from 'shared/Component';
+import React, { useEffect } from 'react';
+
+import { connect } from 'dux/connect';
+
+// import { Component, createElement } from 'shared/Component';
 
 import { readLocalStorage } from 'store/actions/localStorage';
-import { auth } from 'constants/actionTypes';
+// import { auth } from 'constants/actionTypes';
 
-import { Auth } from './Auth';
-import { Header } from './Header';
-import { Todos } from './Todos/index';
+// import { Auth } from './Auth';
+// import { Header } from './Header';
+// import { Todos } from './Todos/index';
 
-import { AddTodo } from './AddTodo';
+// import { AddTodo } from './AddTodo';
 
-export class App extends Component {
-  mounted() {
-    this.dispatch(readLocalStorage());
-  }
+const mapStateToProps = (state) => ({
+  ...state,
+});
 
-  render() {
-    const authComponent = this.createComponent(Auth);
+const mapDispatchToProps = {
+  readLocalStorage,
+};
 
-    const header = this.createComponent(Header);
-    const todos = this.createComponent(Todos);
-    const addTodo = this.createComponent(AddTodo);
+export const App = ({ readLocalStorage }) => {
+  useEffect(() => {
+    readLocalStorage();
+  }, [readLocalStorage]);
 
-    const content = createElement('div', { class: 'content' }, [
-      header,
-      todos,
-      addTodo,
-    ]);
+  return (
+    <>
+      <div className="auth">auth</div>
+      <div className="content">
+        <div className="header">header</div>
+        <div className="todos">todos</div>
+        <div className="add-todo">add-todo</div>
+      </div>
+    </>
+  );
+};
 
-    const root = createElement('div', { id: 'root' }, [authComponent, content]);
+export default connect(mapStateToProps, mapDispatchToProps)(App);
 
-    // listeners
+// export class App extends Component {
+//   mounted() {
+//     this.dispatch(readLocalStorage());
+//   }
 
-    // subscribes
+//   render() {
+//     const authComponent = this.createComponent(Auth);
 
-    this.subscribe(({ type }) => {
-      switch (type) {
-        case auth.USER.SET: {
-          authComponent.classList.add('disable');
-          content.classList.remove('disable');
+//     const header = this.createComponent(Header);
+//     const todos = this.createComponent(Todos);
+//     const addTodo = this.createComponent(AddTodo);
 
-          break;
-        }
+//     const content = createElement('div', { class: 'content' }, [
+//       header,
+//       todos,
+//       addTodo,
+//     ]);
 
-        case auth.USER.DELETE: {
-          authComponent.classList.remove('disable');
-          content.classList.add('disable');
+//     const root = createElement('div', { id: 'root' }, [authComponent, content]);
 
-          break;
-        }
+//     // listeners
 
-        default:
-          break;
-      }
-    });
+//     // subscribes
 
-    return root;
-  }
-}
+//     this.subscribe(({ type }) => {
+//       switch (type) {
+//         case auth.USER.SET: {
+//           authComponent.classList.add('disable');
+//           content.classList.remove('disable');
+
+//           break;
+//         }
+
+//         case auth.USER.DELETE: {
+//           authComponent.classList.remove('disable');
+//           content.classList.add('disable');
+
+//           break;
+//         }
+
+//         default:
+//           break;
+//       }
+//     });
+
+//     return root;
+//   }
+// }
