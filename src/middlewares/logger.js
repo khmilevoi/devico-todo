@@ -1,5 +1,10 @@
 export const logger = () => (action, state) => {
-  console.group('LOGGER');
+  const time = new Date();
+
+  console.group(
+    'LOGGER: ',
+    `${time.getMinutes()}:${time.getSeconds()}:${time.getMilliseconds()}`,
+  );
 
   console.log('ACTION: ', action);
 

@@ -22,7 +22,6 @@ app.use(useResolve());
 app.use((ctx, next) => {
   console.log('BODY: ', ctx.request.body);
   console.log('REQUEST: ', ctx.request);
-  console.log(ctx);
   return next();
 });
 

@@ -1,2 +1,3 @@
-export { Todo } from './Todo';
-export { Todos } from './Todos';
+import Todos from './Todos';
+
+export { Todos };

@@ -1,119 +1,85 @@
-import { Component, createElement } from 'shared/Component';
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 
-import { auth } from 'constants/actionTypes';
+import { connect } from 'dux/connect';
+
 import { logIn, register } from 'store/actions/auth';
 
-export class Auth extends Component {
-  init() {
-    this.state = 'login';
-  }
+const isActive = (state, type) => (state === type ? 'active' : '');
 
-  render() {
-    const loginBtn = createElement(
-      'button',
-      { class: 'auth__buttons-button active' },
-      ['Login'],
-    );
-    const registerBtn = createElement(
-      'button',
-      { class: 'auth__buttons-button' },
-      ['Register'],
-    );
+export const Auth = ({ error, logIn, register }) => {
+  const [state, setState] = useState('login');
+  const [login, setLogin] = useState('');
+  const [password, setPassword] = useState('');
 
-    const buttons = createElement('div', { class: 'auth__buttons' }, [
-      loginBtn,
-      registerBtn,
-    ]);
+  return (
+    <div className="auth">
+      <div className="auth__wrapper">
+        <div className="auth__buttons">
+          <button
+            className={`auth__buttons-button ${isActive(state, 'login')}`}
+            onClick={() => setState('login')}
+          >
+            Login
+          </button>
+          <button
+            className={`auth__buttons-button ${isActive(state, 'register')}`}
+            onClick={() => setState('register')}
+          >
+            Register
+          </button>
+        </div>
+        <form
+          className="auth__form"
+          onSubmit={(event) => {
+            event.preventDefault();
 
-    const loginInput = createElement('input', {
-      class: 'auth__form-input auth__form-item',
-      placeholder: 'login',
-      type: 'login',
-    });
-    const passwordInput = createElement('input', {
-      class: 'auth__form-input auth__form-item',
-      placeholder: 'password',
-      type: 'password',
-    });
-    const confirmButton = createElement(
-      'button',
-      {
-        class: 'auth__form-button auth__form-item',
-        type: 'submit',
-      },
-      ['Send'],
-    );
+            if (state === 'login') {
+              logIn(login, password);
+            } else if (state === 'register') {
+              register(login, password);
+            }
+          }}
+        >
+          <input
+            type="login"
+            className="auth__form-input auth__form-item"
+            placeholder="login"
+            value={login}
+            onChange={(event) => setLogin(event.target.value)}
+          />
+          <input
+            type="password"
+            className="auth__form-input auth__form-item"
+            placeholder="password"
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+          />
+          <div className="auth__form-error">{error && error.message}</div>
+          <button type="submit" className="auth__form-button auth__form-item">
+            Send
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+};
 
-    const errorContainer = createElement('div', {
-      class: 'auth__form-error',
-    });
+Auth.propTypes = {
+  error: PropTypes.shape({
+    message: PropTypes.string.isRequired,
+  }),
+  logIn: PropTypes.func.isRequired,
+  register: PropTypes.func.isRequired,
+};
 
-    const form = createElement('form', { class: 'auth__form' }, [
-      loginInput,
-      passwordInput,
-      errorContainer,
-      confirmButton,
-    ]);
+const mapStateToProps = (state) => ({
+  error: state.auth.error,
+});
 
-    const wrapper = createElement('div', { class: 'auth__wrapper' }, [
-      buttons,
-      form,
-    ]);
+const mapDispatchToProps = {
+  logIn,
+  register,
+};
 
-    const authElement = createElement('div', { class: 'auth' }, [wrapper]);
-
-    // listeners
-
-    loginBtn.addEventListener('click', (event) => {
-      event.preventDefault();
-
-      this.state = 'login';
-
-      loginBtn.classList.add('active');
-      registerBtn.classList.remove('active');
-    });
-
-    registerBtn.addEventListener('click', (event) => {
-      event.preventDefault();
-
-      this.state = 'register';
-
-      loginBtn.classList.remove('active');
-      registerBtn.classList.add('active');
-    });
-
-    form.addEventListener('submit', (event) => {
-      event.preventDefault();
-
-      const login = loginInput.value;
-      const password = passwordInput.value;
-
-      if (this.state === 'login') {
-        this.dispatch(logIn(login, password));
-      } else if (this.state === 'register') {
-        this.dispatch(register(login, password));
-      }
-    });
-
-    // subscribes
-
-    this.subscribe(({ type, payload }) => {
-      switch (type) {
-        case auth.ERROR.SET: {
-          errorContainer.innerHTML = payload.message;
-          break;
-        }
-
-        case auth.ERROR.DELETE: {
-          errorContainer.innerHTML = '';
-          break;
-        }
-
-        default:
-          break;
-      }
-    });
-
-    return authElement;
-  }
-}
+export default connect(mapStateToProps, mapDispatchToProps)(Auth);

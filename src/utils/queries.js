@@ -28,8 +28,6 @@ const makeQuery = async (query, method = methods.GET, body = {}, token) => {
 
   const response = await fetch(url, params).then((data) => data.json());
 
-  console.log(response);
-
   if (response.ok === false) {
     throw response;
   }

@@ -24,6 +24,7 @@ module.exports = {
     'no-plusplus': 0,
     'class-methods-use-this': 0,
     'no-return-assign': 0,
-    'no-debugger': 0
+    'no-debugger': 0,
+    'import/no-named-as-default': 0
   }
 };

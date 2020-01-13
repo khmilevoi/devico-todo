@@ -1,52 +1,32 @@
-import { Component, createElement } from 'shared/Component';
+import React from 'react';
+import PropTypes from 'prop-types';
 
-import { auth } from 'constants/actionTypes';
+import { connect } from 'dux/connect';
+
 import { deleteUser } from 'store/actions/auth';
 
-export class Header extends Component {
-  render() {
-    const logoutButton = createElement('button', { class: 'header__inner-logout' }, [
-      'logout',
-    ]);
+export const Header = ({ login, deleteUser }) => (
+  <div className="header">
+    <div className="header__inner">
+      <button className="header__inner-logout" onClick={deleteUser}>
+        logout
+      </button>
+      <div className="header__inner-login">{login}</div>
+    </div>
+  </div>
+);
 
-    const loginContainer = createElement('div', {
-      class: 'header__inner-login',
-    });
+Header.propTypes = {
+  login: PropTypes.string.isRequired,
+  deleteUser: PropTypes.func.isRequired,
+};
 
-    const inner = createElement('div', { class: 'header__inner' }, [
-      logoutButton,
-      loginContainer,
-    ]);
+const mapStateToProps = (state) => ({
+  login: state.auth.user.login,
+});
 
-    const header = createElement('header', { class: 'header' }, [inner]);
+const mapDispatchToProps = {
+  deleteUser,
+};
 
-    // listeners
-
-    logoutButton.addEventListener('click', (event) => {
-      event.preventDefault();
-
-      this.dispatch(deleteUser());
-    });
-
-    // subscriptions
-
-    this.subscribe(({ type, payload }) => {
-      switch (type) {
-        case auth.USER.SET: {
-          loginContainer.innerHTML = payload.login;
-          break;
-        }
-
-        case auth.USER.DELETE: {
-          loginContainer.innerHTML = '';
-          break;
-        }
-
-        default:
-          break;
-      }
-    });
-
-    return header;
-  }
-}
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

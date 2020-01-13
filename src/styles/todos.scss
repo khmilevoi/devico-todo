@@ -54,6 +54,9 @@
     &-text {
       word-break: break-word;
       padding: 2px;
+      font-family: sans-serif;
+      border: transparent 1px solid;
+
 
       &[contenteditable='true'] {
         border: $main 1px solid;

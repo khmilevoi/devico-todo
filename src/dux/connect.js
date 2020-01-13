@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState, useLayoutEffect } from 'react';
 import PropTypes from 'prop-types';
 
 const StoreContext = React.createContext();
@@ -22,13 +22,13 @@ export const useForceUpdate = () => {
 };
 
 export const connect = (
-  mapStateToProps,
-  mapDispatchToProps,
+  mapStateToProps = () => ({}),
+  mapDispatchToProps = {},
 ) => (Component) => (props) => {
   const store = useContext(StoreContext);
   const forceUpdate = useForceUpdate();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const unsubscribe = store.subscribe(() => forceUpdate());
     return () => unsubscribe();
   }, []);

@@ -1,146 +1,168 @@
-import { Component, createElement } from 'shared/Component';
-import { toggle, del, update } from 'store/actions/todo';
-import { todos } from 'constants/actionTypes';
+import React, { useState, useRef } from 'react';
+import PropTypes from 'prop-types';
 
-export class Todo extends Component {
-  constructor(store, item) {
-    super(store);
+export const Todo = ({
+  item, id: owner, token, del, toggle, update,
+}) => {
+  const [state, setState] = useState(false);
+  const inner = useRef(null);
 
-    this.item = item;
-  }
+  return (
+    <div className="todo">
+      <div className="todo__checkbox-wrapper">
+        <input
+          type="checkbox"
+          className="todo__checkbox-input"
+          id={item.id}
+          checked={item.completed}
+          onChange={(event) => {
+            event.preventDefault();
 
-  render() {
-    const label = createElement(
-      'label',
-      {
-        class: 'todo__checkbox-label',
-        for: this.item.id,
-      },
-      ['L'],
-    );
-    const checkbox = createElement('input', {
-      class: 'todo__checkbox-input',
-      type: 'checkbox',
-      id: this.item.id,
-    });
+            const { id } = item;
 
-    checkbox.checked = this.item.completed;
+            toggle(id, token);
+          }}
+        />
+        <label htmlFor={item.id} className="todo__checkbox-label">
+          L
+        </label>
+      </div>
+      <div className="todo__inner-wrapper">
+        <pre
+          ref={inner}
+          className="todo__inner-text"
+          contentEditable={state}
+          suppressContentEditableWarning={true}
+          onDoubleClick={(event) => {
+            event.preventDefault();
+            setState(true);
+          }}
+          onKeyDown={(event) => {
+            if (event.keyCode === 13 && !event.shiftKey) {
+              event.preventDefault();
+              const { id } = item;
+              const text = inner.current.innerText.trim();
+              update(id, text, token);
+              setState(false);
+            } else if (event.keyCode === 27) {
+              inner.current.innerText = item.inner;
+              setState(false);
+            }
+          }}
+        >
+          {item.inner}
+        </pre>
+      </div>
+      <div className="todo__delete-wrapper">
+        <button
+          className="todo__delete-button"
+          onClick={(event) => {
+            event.preventDefault();
 
-    const checkboxWrapper = createElement(
-      'div',
-      {
-        class: 'todo__checkbox-wrapper',
-      },
-      [checkbox, label],
-    );
+            const { id } = item;
 
-    const inner = createElement('div', { class: 'todo__inner-text' }, [
-      this.item.inner,
-    ]);
+            del(id, token);
+          }}
+        >
+          delete
+        </button>
+      </div>
+    </div>
+  );
+};
 
-    const innerWrapper = createElement(
-      'div',
-      { class: 'todo__inner-wrapper' },
-      [inner],
-    );
+Todo.propTypes = {
+  item: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    completed: PropTypes.bool.isRequired,
+    inner: PropTypes.string.isRequired,
+  }).isRequired,
+  id: PropTypes.string.isRequired,
+  token: PropTypes.string.isRequired,
+  toggle: PropTypes.func.isRequired,
+  del: PropTypes.func.isRequired,
+  update: PropTypes.func.isRequired,
+};
 
-    const deleteButton = createElement(
-      'button',
-      { class: 'todo__delete-button' },
-      ['delete'],
-    );
+//     // listeners
 
-    const deleteButtonWrapper = createElement(
-      'div',
-      { class: 'todo__delete-wrapper' },
-      [deleteButton],
-    );
+//     checkbox.addEventListener('click', (event) => {
+//       event.preventDefault();
 
-    const todoElement = createElement('div', { class: 'todo' }, [
-      checkboxWrapper,
-      innerWrapper,
-      deleteButtonWrapper,
-    ]);
+//       const { id } = this.item;
+//       const { token } = this.getState().auth.user;
 
-    // listeners
+//       this.dispatch(toggle(id, token));
+//     });
 
-    checkbox.addEventListener('click', (event) => {
-      event.preventDefault();
+//     deleteButton.addEventListener('click', (event) => {
+//       event.preventDefault();
 
-      const { id } = this.item;
-      const { token } = this.getState().auth.user;
+//       const { id } = this.item;
+//       const { token } = this.getState().auth.user;
 
-      this.dispatch(toggle(id, token));
-    });
+//       this.dispatch(del(id, token));
+//     });
 
-    deleteButton.addEventListener('click', (event) => {
-      event.preventDefault();
+//     inner.addEventListener('dblclick', (event) => {
+//       event.preventDefault();
 
-      const { id } = this.item;
-      const { token } = this.getState().auth.user;
+//       inner.contentEditable = true;
+//       inner.focus();
+//     });
 
-      this.dispatch(del(id, token));
-    });
+//     inner.addEventListener('keydown', (event) => {
+//       if (event.keyCode === 13 && !event.shiftKey) {
+//         event.preventDefault();
 
-    inner.addEventListener('dblclick', (event) => {
-      event.preventDefault();
+//         const { id } = this.item;
+//         const { token } = this.getState().auth.user;
+//         const text = inner.innerText.trim();
 
-      inner.contentEditable = true;
-      inner.focus();
-    });
+//         this.dispatch(update(id, text, token));
 
-    inner.addEventListener('keydown', (event) => {
-      if (event.keyCode === 13 && !event.shiftKey) {
-        event.preventDefault();
+//         inner.contentEditable = false;
+//       } else if (event.keyCode === 27) {
+//         inner.innerText = this.item.inner;
 
-        const { id } = this.item;
-        const { token } = this.getState().auth.user;
-        const text = inner.innerText.trim();
+//         inner.contentEditable = false;
+//       }
+//     });
 
-        this.dispatch(update(id, text, token));
+//     // subscriptions
 
-        inner.contentEditable = false;
-      } else if (event.keyCode === 27) {
-        inner.innerText = this.item.inner;
+//     this.subscribe(({ type, payload }) => {
+//       switch (type) {
+//         case todos.LIST.TOGGLE: {
+//           if (this.item.id === payload) {
+//             checkbox.checked = !checkbox.checked;
+//           }
 
-        inner.contentEditable = false;
-      }
-    });
+//           break;
+//         }
 
-    // subscriptions
+//         case todos.LIST.DELETE: {
+//           if (this.item.id === payload) {
+//             todoElement.remove();
+//           }
 
-    this.subscribe(({ type, payload }) => {
-      switch (type) {
-        case todos.LIST.TOGGLE: {
-          if (this.item.id === payload) {
-            checkbox.checked = !checkbox.checked;
-          }
+//           break;
+//         }
 
-          break;
-        }
+//         case todos.LIST.UPDATE: {
+//           if (this.item.id === payload.id) {
+//             inner.innerText = payload.inner;
+//             this.item.inner = payload.inner;
+//           }
 
-        case todos.LIST.DELETE: {
-          if (this.item.id === payload) {
-            todoElement.remove();
-          }
+//           break;
+//         }
 
-          break;
-        }
+//         default:
+//           break;
+//       }
+//     });
 
-        case todos.LIST.UPDATE: {
-          if (this.item.id === payload.id) {
-            inner.innerText = payload.inner;
-            this.item.inner = payload.inner;
-          }
-
-          break;
-        }
-
-        default:
-          break;
-      }
-    });
-
-    return todoElement;
-  }
-}
+//     return todoElement;
+//   }
+// }
