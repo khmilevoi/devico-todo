@@ -1,3 +1,7 @@
+// @flow
+
+import type { Reducer } from 'types/dux';
+
 import { initialState } from 'constants/initialState';
 import { auth, localStorage } from 'constants/actionTypes';
 
@@ -5,13 +9,9 @@ const loadToLocalStorage = (entries) => {
   entries.forEach(([key, value]) => window.localStorage.setItem(key, value));
 };
 
-const removeFromLocalStorage = (keys) => {
-  keys.forEach((key) => window.localStorage.removeItem(key));
-};
-
 const clearLocalStorage = () => window.localStorage.clear();
 
-export const localStorageReducer = (
+export const localStorageReducer: Reducer = (
   state = initialState.localStorage,
   { type, payload },
 ) => {

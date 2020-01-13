@@ -4,7 +4,8 @@ module.exports = {
     es6: true,
     node: true
   },
-  extends: ['airbnb-base'],
+  extends: ['airbnb-base', 'plugin:flowtype/recommended'],
+  plugins: ['flowtype'],
   globals: {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly'
@@ -24,6 +25,8 @@ module.exports = {
     'no-plusplus': 0,
     'class-methods-use-this': 0,
     'no-return-assign': 0,
-    'no-debugger': 0
+    'no-debugger': 0,
+    'import/named': 0,
+    'flowtype/no-types-missing-file-annotation': 0
   }
 };

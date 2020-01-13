@@ -1,7 +1,14 @@
+// @flow
+
+import type { Reducer } from 'types/dux';
+
 import { initialState } from 'constants/initialState';
 import { todos } from 'constants/actionTypes';
 
-export const todosReducer = (state = initialState.todos, { type, payload }) => {
+export const todosReducer: Reducer = (
+  state = initialState.todos,
+  { type, payload },
+) => {
   switch (type) {
     case todos.LIST.SET: {
       return {

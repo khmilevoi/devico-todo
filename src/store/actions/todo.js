@@ -1,3 +1,7 @@
+// @flow
+
+import type { ActionCreator, Action, ThunkAction } from 'types/dux';
+
 import { todos } from 'constants/actionTypes';
 import {
   addQuery,
@@ -9,32 +13,35 @@ import {
 import { Todo } from 'shared/Todo';
 import { error } from './auth';
 
-export const setList = (list) => ({
+export const setList: ActionCreator<Action> = (list) => ({
   type: todos.LIST.SET,
   payload: list,
 });
 
-export const addItem = (item) => ({
+export const addItem: ActionCreator<Action> = (item) => ({
   type: todos.LIST.ADD,
   payload: item,
 });
 
-export const toggleItem = (id) => ({
+export const toggleItem: ActionCreator<Action> = (id) => ({
   type: todos.LIST.TOGGLE,
   payload: id,
 });
 
-export const deleteItem = (id) => ({
+export const deleteItem: ActionCreator<Action> = (id) => ({
   type: todos.LIST.DELETE,
   payload: id,
 });
 
-export const updateItem = (id, inner) => ({
+export const updateItem: ActionCreator<Action> = (id, inner) => ({
   type: todos.LIST.UPDATE,
   payload: { id, inner },
 });
 
-export const getList = (owner, token) => async (dispatch) => {
+export const getList: ActionCreator<ThunkAction> = (
+  owner,
+  token,
+) => async (dispatch) => {
   try {
     const { res } = await getListQuery(owner, token);
 
@@ -50,7 +57,11 @@ export const getList = (owner, token) => async (dispatch) => {
   }
 };
 
-export const add = (inner, owner, token) => async (dispatch) => {
+export const add: ActionCreator<ThunkAction> = (
+  inner,
+  owner,
+  token,
+) => async (dispatch) => {
   try {
     const { res } = await addQuery(inner, owner, token);
 
@@ -62,7 +73,10 @@ export const add = (inner, owner, token) => async (dispatch) => {
   }
 };
 
-export const toggle = (id, token) => async (dispatch) => {
+export const toggle: ActionCreator<ThunkAction> = (
+  id,
+  token,
+) => async (dispatch) => {
   try {
     await toggleQuery(id, token);
 
@@ -72,7 +86,10 @@ export const toggle = (id, token) => async (dispatch) => {
   }
 };
 
-export const del = (id, token) => async (dispatch) => {
+export const del: ActionCreator<ThunkAction> = (
+  id,
+  token,
+) => async (dispatch) => {
   try {
     await deleteQuery(id, token);
 
@@ -82,7 +99,11 @@ export const del = (id, token) => async (dispatch) => {
   }
 };
 
-export const update = (id, inner, token) => async (dispatch) => {
+export const update: ActionCreator<ThunkAction> = (
+  id,
+  inner,
+  token,
+) => async (dispatch) => {
   try {
     await updateQuery(id, inner, token);
 

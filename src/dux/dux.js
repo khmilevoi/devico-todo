@@ -1,9 +1,17 @@
-export const createStore = (reducer, initialState = {}, middleware) => {
+// @flow
+
+import type { CreateStore } from '../types/dux';
+
+export const createStore: CreateStore = (
+  reducer,
+  initialState = {},
+  middleware,
+) => {
   let state = initialState;
 
   const listeners = [];
 
-  if (typeof middleware === 'function') {
+  if (middleware) {
     return middleware(createStore)(reducer, initialState);
   }
 

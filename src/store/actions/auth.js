@@ -1,25 +1,29 @@
+// @flow
+
 import { auth } from 'constants/actionTypes';
 import { loginQuery, registerQuery } from 'utils/queries';
 
-export const setUser = (id, login, token) => ({
+import type { ActionCreator, Action, ThunkAction } from 'types/dux';
+
+export const setUser: ActionCreator<Action> = (id, login, token) => ({
   type: auth.USER.SET,
   payload: { id, login, token },
 });
 
-export const deleteUser = () => ({
+export const deleteUser: ActionCreator<Action> = () => ({
   type: auth.USER.DELETE,
 });
 
-export const setError = (error) => ({
+export const setError: ActionCreator<Action> = (error) => ({
   type: auth.ERROR.SET,
   payload: error,
 });
 
-export const deleteError = () => ({
+export const deleteError: ActionCreator<Action> = () => ({
   type: auth.ERROR.DELETE,
 });
 
-export const error = (err) => (dispatch) => {
+export const error: ActionCreator<ThunkAction> = (err) => (dispatch) => {
   dispatch(setError(err));
 
   if (err.status === 401) {
@@ -27,7 +31,10 @@ export const error = (err) => (dispatch) => {
   }
 };
 
-export const logIn = (login, password) => async (dispatch) => {
+export const logIn: ActionCreator<ThunkAction> = (
+  login,
+  password,
+) => async (dispatch) => {
   try {
     const { token, _id: id, login: currentLogin } = await loginQuery(
       login,
@@ -41,7 +48,10 @@ export const logIn = (login, password) => async (dispatch) => {
   }
 };
 
-export const register = (login, password) => async (dispatch) => {
+export const register: ActionCreator<ThunkAction> = (
+  login,
+  password,
+) => async (dispatch) => {
   try {
     const { token, _id: id, login: currentLogin } = await registerQuery(
       login,

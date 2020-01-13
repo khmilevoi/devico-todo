@@ -1,5 +1,11 @@
-export const combineReducers = (object) => {
-  const reducers = Object.entries(object);
+// @flow
+
+import type { CombineReducers } from 'types/dux';
+
+import { entries } from 'utils/entries';
+
+export const combineReducers: CombineReducers = (object) => {
+  const reducers = entries(object);
 
   return (state = {}, action) => {
     const newState = {};

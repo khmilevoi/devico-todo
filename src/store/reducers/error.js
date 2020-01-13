@@ -1,7 +1,14 @@
+// @flow
+
+import type { Reducer } from 'types/dux';
+
 import { initialState } from 'constants/initialState';
 import { auth } from 'constants/actionTypes';
 
-export const errorReducer = (state = initialState.error, { type, payload }) => {
+export const errorReducer: Reducer = (
+  state = initialState.error,
+  { type, payload },
+) => {
   switch (type) {
     case auth.ERROR.SET: {
       const list = Array.from(state.list);

@@ -1,9 +1,16 @@
+// @flow
+
+import type { Reducer } from 'types/dux';
+
 import { User } from 'shared/User';
 
 import { initialState } from 'constants/initialState';
 import { auth } from 'constants/actionTypes';
 
-export const authReducer = (state = initialState.auth, { type, payload }) => {
+export const authReducer: Reducer = (
+  state = initialState.auth,
+  { type, payload },
+) => {
   switch (type) {
     case auth.USER.SET: {
       const { id, login, token } = payload;

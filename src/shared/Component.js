@@ -1,12 +1,26 @@
-export const createElement = (type = 'div', props = {}, childrens = []) => {
-  const element = document.createElement(type);
+// @flow
+/* eslint-disable no-use-before-define */
 
-  Object.entries(props).forEach(([name, value]) => {
-    if (name === 'style') {
-      Object.entries(value).forEach(([prop, val]) => {
+import type { CreateElement } from 'types/shared';
+import type {
+  Store, Subscribe, Dispatch, State,
+} from 'types/dux';
+
+import { entries } from 'utils/entries';
+
+export const createElement: CreateElement = (
+  type = 'div',
+  props = {},
+  childrens = [],
+) => {
+  const element: HTMLElement = document.createElement(type);
+
+  entries(props).forEach(([name, value]) => {
+    if (name === 'style' && typeof value === 'object') {
+      entries(value).forEach(([prop, val]) => {
         element.style[prop] = val;
       });
-    } else {
+    } else if (typeof value === 'string') {
       const attr = document.createAttribute(name);
 
       attr.value = value;
@@ -18,7 +32,7 @@ export const createElement = (type = 'div', props = {}, childrens = []) => {
   childrens.forEach((children) => {
     if (children instanceof HTMLElement) {
       element.append(children);
-    } else {
+    } else if (typeof children === 'string' && element.innerText) {
       element.innerText += children;
     }
   });
@@ -26,7 +40,7 @@ export const createElement = (type = 'div', props = {}, childrens = []) => {
   return element;
 };
 
-export const mount = (component) => {
+export const mount = (component: Component): HTMLElement => {
   const element = component.render();
   component.mounted();
 
@@ -34,14 +48,16 @@ export const mount = (component) => {
 };
 
 export class Component {
-  constructor(store) {
+  store: Store;
+
+  constructor(store: Store) {
     this.store = store;
 
     this.init();
   }
 
-  createComponent(Comp, ...props) {
-    const component = new Comp(this.store, ...props);
+  createComponent(Comp: (Store, ...any[]) => Component, ...props: any[]) {
+    const component: Component = new Comp(this.store, ...props);
 
     const element = mount(component);
 
@@ -52,19 +68,15 @@ export class Component {
 
   mounted() {}
 
-  dispatch(action) {
-    return this.store.dispatch(action);
-  }
+  dispatch: Dispatch = (action) => this.store.dispatch(action);
 
-  subscribe(callback) {
-    return this.store.subscribe(callback);
-  }
+  subscribe: Subscribe = (callback) => this.store.subscribe(callback);
 
-  getState() {
+  getState(): State {
     return this.store.getState();
   }
 
-  render() {
+  render(): HTMLElement {
     throw new Error('render not defined');
   }
 }
