@@ -1,57 +1,34 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import {
-  Paper, makeStyles, Tabs, Tab, TextField,
-} from '@material-ui/core';
-
 import { connect } from 'dux/connect';
 
 import { logIn, register } from 'store/actions/auth';
 
 const isActive = (state, type) => (state === type ? 'active' : '');
 
-const useStyles = makeStyles({
-  paper: {
-    minWidth: '500px',
-    minHeight: '300px',
-  },
-  tabs: {
-    width: '100%',
-  },
-  tab: {
-    width: '50%',
-  },
-});
-
 export const Auth = ({ error, logIn, register }) => {
   const [state, setState] = useState('login');
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
 
-  const classes = useStyles();
-
   return (
     <div className="auth">
-      <Paper className={classes.paper}>
-        <Tabs
-          className={classes.tabs}
-          value={state === 'login' ? 0 : 1}
-          indicatorColor="primary"
-          textColor="primary"
-        >
-          <Tab
-            className={classes.tab}
-            label="Login"
+      <div className="auth__wrapper">
+        <div className="auth__buttons">
+          <button
+            className={`auth__buttons-button ${isActive(state, 'login')}`}
             onClick={() => setState('login')}
-          ></Tab>
-          <Tab
-            className={classes.tab}
-            label="Register"
+          >
+            Login
+          </button>
+          <button
+            className={`auth__buttons-button ${isActive(state, 'register')}`}
             onClick={() => setState('register')}
-          ></Tab>
-        </Tabs>
-
+          >
+            Register
+          </button>
+        </div>
         <form
           className="auth__form"
           onSubmit={(event) => {
@@ -64,9 +41,7 @@ export const Auth = ({ error, logIn, register }) => {
             }
           }}
         >
-          <TextField label="login" variant="outlined" type="login"></TextField>
-          <TextField label="password" variant="outlined" type="password"></TextField>
-          {/* <input
+          <input
             type="login"
             className="auth__form-input auth__form-item"
             placeholder="login"
@@ -83,9 +58,9 @@ export const Auth = ({ error, logIn, register }) => {
           <div className="auth__form-error">{error && error.message}</div>
           <button type="submit" className="auth__form-button auth__form-item">
             Send
-          </button> */}
+          </button>
         </form>
-      </Paper>
+      </div>
     </div>
   );
 };
