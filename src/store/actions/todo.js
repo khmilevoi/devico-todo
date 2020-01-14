@@ -52,11 +52,7 @@ export const getList = (owner, token) => async (dispatch) => {
 
 export const add = (inner, owner, token) => async (dispatch) => {
   try {
-    const { res } = await addQuery(inner, owner, token);
-
-    const todo = new Todo(res.inner, res._id, res.completed);
-
-    dispatch(addItem(todo));
+    await addQuery(inner, owner, token);
   } catch (err) {
     dispatch(error(err));
   }
@@ -65,8 +61,6 @@ export const add = (inner, owner, token) => async (dispatch) => {
 export const toggle = (id, token) => async (dispatch) => {
   try {
     await toggleQuery(id, token);
-
-    dispatch(toggleItem(id));
   } catch (err) {
     dispatch(error(err));
   }
@@ -75,8 +69,6 @@ export const toggle = (id, token) => async (dispatch) => {
 export const del = (id, token) => async (dispatch) => {
   try {
     await deleteQuery(id, token);
-
-    dispatch(deleteItem(id));
   } catch (err) {
     dispatch(error(err));
   }
@@ -85,8 +77,6 @@ export const del = (id, token) => async (dispatch) => {
 export const update = (id, inner, token) => async (dispatch) => {
   try {
     await updateQuery(id, inner, token);
-
-    dispatch(updateItem(id, inner));
   } catch (err) {
     dispatch(error(err));
   }

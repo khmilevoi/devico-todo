@@ -8,7 +8,6 @@ export const createStore = (reducer, initialState = {}, middleware) => {
   }
 
   return {
-    listeners,
     getState: () => state,
     dispatch: (action) => {
       state = reducer(state, action);

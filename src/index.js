@@ -4,15 +4,19 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'dux';
 
 import { logger } from 'middlewares/logger';
+import { useSocket } from 'middlewares/useSocket';
+
+import { socketListener } from 'utils/socketListener';
+import { socket } from 'utils/socket';
 
 import { configureStore } from 'store/configureStore';
 import { initialState } from 'constants/initialState';
 
-import App from 'components/App';
+import App from 'App';
 
 import 'styles/index.scss';
 
-const store = configureStore(initialState);
+const store = useSocket(configureStore(initialState), socketListener, socket);
 store.subscribe(logger());
 
 ReactDOM.render(

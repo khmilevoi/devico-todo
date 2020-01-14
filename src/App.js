@@ -5,11 +5,11 @@ import { connect } from 'dux/connect';
 
 import { readLocalStorage } from 'store/actions/localStorage';
 
-import Header from './Header';
-import Auth from './Auth';
-import { Todos } from './Todos/index';
+import Header from './components/Header';
+import Auth from './components/Auth';
+import { Todos } from './components/Todos/index';
 
-import AddTodo from './AddTodo';
+import AddTodo from './components/AddTodo';
 
 export const App = ({ online, readLocalStorage }) => {
   useEffect(() => {

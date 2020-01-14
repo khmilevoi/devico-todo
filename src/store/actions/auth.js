@@ -1,4 +1,5 @@
 import { auth } from 'constants/actionTypes';
+
 import { loginQuery, registerQuery } from 'utils/queries';
 
 export const setUser = (id, login, token) => ({
@@ -27,12 +28,11 @@ export const error = (err) => (dispatch) => {
   }
 };
 
-export const logIn = (login, password) => async (dispatch) => {
+const authorization = (login, password, isLogin) => async (dispatch) => {
   try {
-    const { token, _id: id, login: currentLogin } = await loginQuery(
-      login,
-      password,
-    );
+    const { token, _id: id, login: currentLogin } = await (isLogin
+      ? loginQuery(login, password)
+      : registerQuery(login, password));
 
     dispatch(setUser(id, currentLogin, token));
     dispatch(deleteError());
@@ -41,16 +41,6 @@ export const logIn = (login, password) => async (dispatch) => {
   }
 };
 
-export const register = (login, password) => async (dispatch) => {
-  try {
-    const { token, _id: id, login: currentLogin } = await registerQuery(
-      login,
-      password,
-    );
+export const logIn = (login, password) => authorization(login, password, true);
 
-    dispatch(setUser(id, currentLogin, token));
-    dispatch(deleteError());
-  } catch (err) {
-    dispatch(error(err));
-  }
-};
+export const register = (login, password) => authorization(login, password, false);

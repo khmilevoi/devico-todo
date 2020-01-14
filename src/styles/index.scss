@@ -33,18 +33,18 @@ body {
   display: none !important;
 }
 
-button {
-  outline: none;
-  border: none;
-  cursor: pointer;
-}
+// button {
+//   outline: none;
+//   border: none;
+//   cursor: pointer;
+// }
 
-input {
-  outline: none;
-  border: none;
+// input {
+//   outline: none;
+//   border: none;
 
-  &:active,
-  &:focus {
-    border: $main 1px solid;
-  }
-}
+//   &:active,
+//   &:focus {
+//     border: $main 1px solid;
+//   }
+// }
