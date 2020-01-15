@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
+import { List, makeStyles } from '@material-ui/core';
+
 import { connect } from 'dux/connect';
 
 import {
@@ -9,6 +11,15 @@ import {
 
 import { Todo } from './Todo';
 
+const useStyles = makeStyles({
+  list: {
+    width: '100%',
+    height: 'calc(100% - 100px)',
+    overflow: 'hidden',
+    overflowY: 'scroll',
+  },
+});
+
 export const Todos = ({
   getList, list, owner, token, toggle, del, update,
 }) => {
@@ -16,8 +27,10 @@ export const Todos = ({
     getList(owner, token);
   }, [token]);
 
+  const classes = useStyles();
+
   return (
-    <div className="todos">
+    <List className={classes.list}>
       {list.map((item) => (
         <Todo
           key={item.id}
@@ -31,7 +44,7 @@ export const Todos = ({
           }}
         ></Todo>
       ))}
-    </div>
+    </List>
   );
 };
 
