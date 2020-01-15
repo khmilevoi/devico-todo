@@ -14,7 +14,7 @@ import { connect } from 'dux/connect';
 
 import { logIn, register } from 'store/actions/auth';
 
-// const isActive = (state, type) => (state === type ? 'active' : '');
+import * as s from 'styles/auth';
 
 const useStyles = makeStyles({
   paper: {
@@ -23,6 +23,9 @@ const useStyles = makeStyles({
     maxWidth: '500px',
     maxHeight: '300px',
     padding: '20px 15px',
+    '@media (max-width: 500px)': {
+      maxHeight: '100%',
+    },
   },
   tabs: {
     width: 'calc(100% + 30px)',
@@ -41,8 +44,7 @@ export const Auth = ({ error, logIn, register }) => {
   const classes = useStyles();
 
   return (
-    <div className="auth">
-      {/* <div className="auth__wrapper"> */}
+    <s.Auth>
       <Paper className={classes.paper}>
         <Tabs
           className={classes.tabs}
@@ -54,22 +56,8 @@ export const Auth = ({ error, logIn, register }) => {
           <Tab className={classes.tab} label="Login"></Tab>
           <Tab className={classes.tab} label="Register"></Tab>
         </Tabs>
-        {/* <div className="auth__buttons">
-          <button
-            className={`auth__buttons-button ${isActive(state, 'login')}`}
-            onClick={() => setState('login')}
-          >
-            Login
-          </button>
-          <button
-            className={`auth__buttons-button ${isActive(state, 'register')}`}
-            onClick={() => setState('register')}
-          >
-            Register
-          </button>
-        </div> */}
-        <form
-          className="auth__form"
+
+        <s.Form
           onSubmit={(event) => {
             event.preventDefault();
 
@@ -94,31 +82,13 @@ export const Auth = ({ error, logIn, register }) => {
             value={password}
             onChange={(event) => setPassword(event.target.value)}
           />
-          <div className="auth__form-error">{error && error.message}</div>
+          <s.Error>{error && error.message}</s.Error>
           <Button type="submit" variant="contained" color="primary">
             Send
           </Button>
-          {/* <input
-            type="login"
-            className="auth__form-input auth__form-item"
-            placeholder="login"
-            value={login}
-            onChange={(event) => setLogin(event.target.value)}
-          />
-          <input
-            type="password"
-            className="auth__form-input auth__form-item"
-            placeholder="password"
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-          />
-          <button type="submit" className="auth__form-button auth__form-item">
-            Send
-          </button> */}
-        </form>
+        </s.Form>
       </Paper>
-      {/* </div> */}
-    </div>
+    </s.Auth>
   );
 };
 

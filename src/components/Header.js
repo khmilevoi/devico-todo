@@ -1,19 +1,28 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import { Button } from '@material-ui/core';
+
 import { connect } from 'dux/connect';
 
 import { deleteUser } from 'store/actions/auth';
 
+import * as s from 'styles/header';
+
 export const Header = ({ login, deleteUser }) => (
-  <div className="header">
-    <div className="header__inner">
-      <button className="header__inner-logout" onClick={deleteUser}>
+  <s.Header>
+    <s.Inner>
+      <Button
+        size="small"
+        variant="contained"
+        color="primary"
+        onClick={deleteUser}
+      >
         logout
-      </button>
-      <div className="header__inner-login">{login}</div>
-    </div>
-  </div>
+      </Button>
+      <s.Login>{login}</s.Login>
+    </s.Inner>
+  </s.Header>
 );
 
 Header.propTypes = {
