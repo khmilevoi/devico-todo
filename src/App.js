@@ -5,6 +5,8 @@ import { connect } from 'dux/connect';
 
 import { readLocalStorage } from 'store/actions/localStorage';
 
+import * as s from 'styles/index';
+
 import Header from './components/Header';
 import Auth from './components/Auth';
 import { Todos } from './components/Todos/index';
@@ -17,11 +19,11 @@ export const App = ({ online, readLocalStorage }) => {
   }, []);
 
   return online ? (
-    <div className="content">
+    <s.Content>
       <Header></Header>
       <Todos></Todos>
       <AddTodo></AddTodo>
-    </div>
+    </s.Content>
   ) : (
     <Auth></Auth>
   );

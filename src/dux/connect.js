@@ -13,7 +13,11 @@ Provider.propTypes = {
     dispatch: PropTypes.func,
     subscribe: PropTypes.func,
   }).isRequired,
-  children: PropTypes.oneOfType([PropTypes.element, PropTypes.func]).isRequired,
+  children: PropTypes.oneOfType([
+    PropTypes.element,
+    PropTypes.func,
+    PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.element, PropTypes.func])),
+  ]).isRequired,
 };
 
 export const useForceUpdate = () => {

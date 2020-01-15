@@ -14,13 +14,14 @@ import { initialState } from 'constants/initialState';
 
 import App from 'App';
 
-import 'styles/index.scss';
+import * as s from 'styles/index';
 
 const store = useSocket(configureStore(initialState), socketListener, socket);
 store.subscribe(logger());
 
 ReactDOM.render(
   <Provider store={store}>
+    <s.GlobalStyles></s.GlobalStyles>
     <App></App>
   </Provider>,
   document.getElementById('root'),
