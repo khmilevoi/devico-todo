@@ -1,0 +1,70 @@
+.lists {
+  width: 30%;
+  max-width: 300px;
+  min-width: 200px;
+  background-color: $silver;
+
+  &__add {
+    width: 100%;
+    padding: 0 0 0 8px;
+    display: flex;
+    align-items: center;
+    border-bottom: $transparent-silver 1px solid;
+
+    &-label {
+      width: 20px;
+      height: 20px;
+      padding: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    &-button {
+      width: 100%;
+      height: 100%;
+      background-color: inherit;
+      text-align: center;
+      line-height: 90%;
+    }
+
+    &-input {
+      width: calc(100% - 15px);
+      padding: 6px;
+      background-color: inherit;
+    }
+  }
+}
+
+.section {
+  width: 100%;
+
+  &__title {
+    width: 100%;
+    background-color: $transparent-silver;
+    color: #777777;
+    font-size: 0.8rem;
+    text-transform: lowercase;
+    text-align: left;
+    padding: 2px 8px;
+  }
+}
+
+.list {
+  width: 100%;
+  padding: 2px 8px;
+  cursor: pointer;
+
+  &.active {
+    background-color: #ededed;
+  }
+
+  &:not(.active):hover {
+    background-color: white;
+  }
+
+  &__name {
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+}

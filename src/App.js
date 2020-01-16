@@ -5,10 +5,10 @@ import { connect } from 'dux/connect';
 
 import { readLocalStorage } from 'store/actions/localStorage';
 
+import { Lists } from 'components/Lists';
 import Header from './components/Header';
 import Auth from './components/Auth';
-import { Todos } from './components/Todos/index';
-
+import { Todos } from './components/Todos';
 import AddTodo from './components/AddTodo';
 
 export const App = ({ online, readLocalStorage }) => {
@@ -19,8 +19,14 @@ export const App = ({ online, readLocalStorage }) => {
   return online ? (
     <div className="content">
       <Header></Header>
-      <Todos></Todos>
-      <AddTodo></AddTodo>
+      <div className="content__inner">
+        <Lists></Lists>
+
+        <div className="content__todos">
+          <Todos></Todos>
+          <AddTodo></AddTodo>
+        </div>
+      </div>
     </div>
   ) : (
     <Auth></Auth>

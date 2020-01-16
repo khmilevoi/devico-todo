@@ -4,7 +4,12 @@ export const initialState = {
     error: null,
   },
   todos: {
-    list: [],
+    list: {},
+  },
+  lists: {
+    personal: [],
+    shared: [],
+    active: null,
   },
   error: {
     list: [],

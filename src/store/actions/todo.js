@@ -1,58 +1,60 @@
 import { todos } from 'constants/actionTypes';
+
 import {
-  addQuery,
-  toggleQuery,
-  deleteQuery,
-  updateQuery,
-  getListQuery,
+  addTodoQuery,
+  toggleTodoQuery,
+  deleteTodoQuery,
+  updateTodoQuery,
+  getTodosQuery,
 } from 'utils/queries';
+
 import { Todo } from 'shared/Todo';
 import { error } from './auth';
 
-export const setList = (list) => ({
+export const setList = (res, list) => ({
   type: todos.LIST.SET,
-  payload: list,
+  payload: { res, list },
 });
 
-export const addItem = (item) => ({
+export const addItem = (res, list) => ({
   type: todos.LIST.ADD,
-  payload: item,
+  payload: { res, list },
 });
 
-export const toggleItem = (id) => ({
+export const toggleItem = (id, list) => ({
   type: todos.LIST.TOGGLE,
-  payload: id,
+  payload: { id, list },
 });
 
-export const deleteItem = (id) => ({
+export const deleteItem = (id, list) => ({
   type: todos.LIST.DELETE,
-  payload: id,
+  payload: { id, list },
 });
 
-export const updateItem = (id, inner) => ({
+export const updateItem = (id, inner, list) => ({
   type: todos.LIST.UPDATE,
-  payload: { id, inner },
+  payload: { id, inner, list },
 });
 
-export const getList = (owner, token) => async (dispatch) => {
+export const getTodos = (list, token) => async (dispatch) => {
   try {
-    const { res } = await getListQuery(owner, token);
+    const { res } = await getTodosQuery(list, token);
 
     const todos = res.map(
       ({
-        inner, _id, owner, completed,
-      }) => new Todo(inner, _id, owner, completed),
+        inner, _id, list, completed,
+      }) => new Todo(inner, _id, list, completed),
     );
 
-    dispatch(setList(todos));
+    dispatch(setList(todos, list));
   } catch (err) {
     dispatch(error(err));
   }
 };
 
-export const add = (inner, owner, token) => async (dispatch) => {
+export const add = (list, inner, token) => async (dispatch) => {
   try {
-    await addQuery(inner, owner, token);
+    await addTodoQuery(list, inner, token);
   } catch (err) {
     dispatch(error(err));
   }
@@ -60,7 +62,7 @@ export const add = (inner, owner, token) => async (dispatch) => {
 
 export const toggle = (id, token) => async (dispatch) => {
   try {
-    await toggleQuery(id, token);
+    await toggleTodoQuery(id, token);
   } catch (err) {
     dispatch(error(err));
   }
@@ -68,7 +70,7 @@ export const toggle = (id, token) => async (dispatch) => {
 
 export const del = (id, token) => async (dispatch) => {
   try {
-    await deleteQuery(id, token);
+    await deleteTodoQuery(id, token);
   } catch (err) {
     dispatch(error(err));
   }
@@ -76,7 +78,7 @@ export const del = (id, token) => async (dispatch) => {
 
 export const update = (id, inner, token) => async (dispatch) => {
   try {
-    await updateQuery(id, inner, token);
+    await updateTodoQuery(id, inner, token);
   } catch (err) {
     dispatch(error(err));
   }

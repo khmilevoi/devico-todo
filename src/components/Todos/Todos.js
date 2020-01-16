@@ -4,33 +4,43 @@ import PropTypes from 'prop-types';
 import { connect } from 'dux/connect';
 
 import {
-  getList, toggle, del, update,
+  getTodos, toggle, del, update,
 } from 'store/actions/todo';
 
 import { Todo } from './Todo';
 
 export const Todos = ({
-  getList, list, owner, token, toggle, del, update,
+  getTodos,
+  list,
+  owner,
+  token,
+  toggle,
+  del,
+  update,
+  active,
 }) => {
   useEffect(() => {
-    getList(owner, token);
-  }, [token]);
+    if (active && !list) {
+      getTodos(active, token);
+    }
+  }, [token, active]);
 
   return (
     <div className="todos">
-      {list.map((item) => (
-        <Todo
-          key={item.id}
-          item={item}
-          {...{
-            toggle,
-            del,
-            update,
-            owner,
-            token,
-          }}
-        ></Todo>
-      ))}
+      {list
+        && list.map((item) => (
+          <Todo
+            key={item.id}
+            item={item}
+            {...{
+              toggle,
+              del,
+              update,
+              owner,
+              token,
+            }}
+          ></Todo>
+        ))}
     </div>
   );
 };
@@ -40,8 +50,9 @@ Todos.propTypes = {
     PropTypes.shape({
       id: PropTypes.string.isRequired,
     }),
-  ).isRequired,
-  getList: PropTypes.func.isRequired,
+  ),
+  active: PropTypes.string,
+  getTodos: PropTypes.func.isRequired,
   owner: PropTypes.string.isRequired,
   token: PropTypes.string.isRequired,
   toggle: PropTypes.func.isRequired,
@@ -50,13 +61,14 @@ Todos.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  list: state.todos.list,
+  list: state.todos.list[state.lists.active],
+  active: state.lists.active,
   owner: state.auth.user.id,
   token: state.auth.user.token,
 });
 
 const mapDispatchToProps = {
-  getList,
+  getTodos,
   toggle,
   del,
   update,

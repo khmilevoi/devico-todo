@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { add } from 'store/actions/todo';
 import { connect } from 'dux/connect';
 
-export const AddTodo = ({ add, token, id }) => {
+export const AddTodo = ({ add, token, active }) => {
   const [inner, setInner] = useState('');
 
   return (
@@ -14,8 +14,8 @@ export const AddTodo = ({ add, token, id }) => {
         onSubmit={(event) => {
           event.preventDefault();
 
-          if (inner.trim() !== '') {
-            add(inner, id, token);
+          if (active && inner.trim() !== '') {
+            add(active, inner, token);
             setInner('');
           }
         }}
@@ -38,7 +38,7 @@ export const AddTodo = ({ add, token, id }) => {
 AddTodo.propTypes = {
   add: PropTypes.func.isRequired,
   token: PropTypes.string.isRequired,
-  id: PropTypes.string.isRequired,
+  active: PropTypes.string.isRequired,
 };
 
 AddTodo.propTypes = {
@@ -48,6 +48,7 @@ AddTodo.propTypes = {
 const mapStateToProps = (state) => ({
   id: state.auth.user.id,
   token: state.auth.user.token,
+  active: state.lists.active,
 });
 
 const mapDispatchToProps = {

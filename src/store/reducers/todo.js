@@ -4,33 +4,54 @@ import { todos } from 'constants/actionTypes';
 export const todosReducer = (state = initialState.todos, { type, payload }) => {
   switch (type) {
     case todos.LIST.SET: {
+      const list = { ...state.list, [payload.list]: payload.res };
+
       return {
         ...state,
-        list: payload,
+        list,
       };
     }
 
     case todos.LIST.ADD: {
-      const list = Array.from(state.list);
-      list.push(payload);
+      const list = { ...state.list };
+
+      if (list[payload.list]) {
+        list[payload.list].push(payload.res);
+      }
 
       return { ...state, list };
     }
 
     case todos.LIST.TOGGLE: {
-      const list = state.list.map((item) => (item.id === payload ? { ...item, completed: !item.completed } : item));
+      const list = { ...state.list };
+
+      if (list[payload.list]) {
+        list[payload.list] = list[payload.list].map((item) => (item.id === payload.id
+          ? { ...item, completed: !item.completed }
+          : item));
+      }
 
       return { ...state, list };
     }
 
     case todos.LIST.DELETE: {
-      const list = state.list.filter((item) => item.id !== payload);
+      const list = { ...state.list };
+
+      if (list[payload.list]) {
+        list[payload.list] = list[payload.list].filter(
+          (item) => item.id !== payload.id,
+        );
+      }
 
       return { ...state, list };
     }
 
     case todos.LIST.UPDATE: {
-      const list = state.list.map((item) => (item.id === payload.id ? { ...item, inner: payload.inner } : item));
+      const list = { ...state.list };
+
+      if (list[payload.list]) {
+        list[payload.list] = list[payload.list].map((item) => (item.id === payload.id ? { ...item, inner: payload.inner } : item));
+      }
 
       return { ...state, list };
     }

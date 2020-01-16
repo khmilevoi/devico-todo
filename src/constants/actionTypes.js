@@ -20,6 +20,12 @@ export const todos = {
   LIST: createListActions('TODO'),
 };
 
+export const lists = {
+  PERSONAL: createListActions('PERSONAL'),
+  SHARED: createListActions('SHARED'),
+  ACTIVE: createAccessActions('ACTIVE'),
+};
+
 export const localStorage = {
   ...createAccessActions('LOCAL_STORAGE'),
 };

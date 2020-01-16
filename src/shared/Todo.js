@@ -1,8 +1,8 @@
 export class Todo {
-  constructor(inner, id, owner, completed = false) {
+  constructor(inner, id, list, completed = false) {
     this.id = id;
     this.inner = inner;
-    this.owner = owner;
+    this.list = list;
     this.completed = completed;
   }
 }
