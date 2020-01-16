@@ -1,11 +1,11 @@
 .lists {
-  width: 30%;
-  max-width: 300px;
+  width: 20%;
   min-width: 200px;
   background-color: $silver;
 
   &__add {
     width: 100%;
+    height: 31px;
     padding: 0 0 0 8px;
     display: flex;
     align-items: center;
@@ -36,6 +36,12 @@
   }
 }
 
+.sections-wrapper {
+  height: calc(100% - 31px);
+  overflow: hidden;
+  overflow-y: scroll;
+}
+
 .section {
   width: 100%;
 
@@ -45,8 +51,23 @@
     color: #777777;
     font-size: 0.8rem;
     text-transform: lowercase;
-    text-align: left;
     padding: 2px 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+
+    &:hover {
+      opacity: 0.9;
+    }
+  }
+
+  &__list {
+    overflow: hidden;
+
+    &.collapsed {
+      max-height: 0;
+    }
   }
 }
 

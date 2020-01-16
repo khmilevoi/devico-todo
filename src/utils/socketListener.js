@@ -15,6 +15,7 @@ import {
   toggleItem,
   deleteItem,
   updateItem,
+  removeList,
 } from 'store/actions/todo';
 
 export const socketListener = {
@@ -32,6 +33,8 @@ export const socketListener = {
 
       case 'delete': {
         const { id, listType } = message;
+
+        dispatch(removeList(id));
 
         if (listType === 'personal') {
           dispatch(deletePersonal(id));

@@ -19,6 +19,9 @@ const Lists = ({
 }) => {
   const [name, setName] = useState('');
 
+  const [personalCollapsed, togglePersonal] = useState(false);
+  const [sharedCollapsed, toggleShare] = useState(false);
+
   useEffect(() => {
     getLists(token);
   }, [token]);
@@ -58,32 +61,48 @@ const Lists = ({
           onChange={(event) => setName(event.target.value)}
         />
       </form>
-      <div className="personal section">
-        <div className="section__title">Personal</div>
-        <div className="section__list">
-          {personal.map((item) => (
-            <List
-              key={item.id}
-              item={item}
-              isActive={item.id === active}
-              handleClick={(event) => selectActive(event, item)}
-              handleDelete={() => del(item.id, token)}
-            ></List>
-          ))}
+      <div className="sections-wrapper">
+        <div className="personal section">
+          <div
+            className="section__title"
+            onClick={() => togglePersonal(!personalCollapsed)}
+          >
+            Personal <i>{personalCollapsed ? '+' : '-'}</i>
+          </div>
+          <div
+            className={`section__list ${personalCollapsed ? 'collapsed' : ''}`}
+          >
+            {personal.map((item) => (
+              <List
+                key={item.id}
+                item={item}
+                isActive={item.id === active}
+                handleClick={(event) => selectActive(event, item)}
+                handleDelete={() => del(item.id, token)}
+              ></List>
+            ))}
+          </div>
         </div>
-      </div>
-      <div className="shared section">
-        <div className="section__title">Shared</div>
-        <div className="section__list">
-          {shared.map((item) => (
-            <List
-              key={item.id}
-              item={item}
-              isActive={item.id === active}
-              handleClick={(event) => selectActive(event, item)}
-              handleDelete={() => del(item.id, token)}
-            ></List>
-          ))}
+        <div className="shared section">
+          <div
+            className={'section__title'}
+            onClick={() => toggleShare(!sharedCollapsed)}
+          >
+            Shared <i>{sharedCollapsed ? '+' : '-'}</i>
+          </div>
+          <div
+            className={`section__list ${sharedCollapsed ? 'collapsed' : ''}`}
+          >
+            {shared.map((item) => (
+              <List
+                key={item.id}
+                item={item}
+                isActive={item.id === active}
+                handleClick={(event) => selectActive(event, item)}
+                handleDelete={() => del(item.id, token)}
+              ></List>
+            ))}
+          </div>
         </div>
       </div>
     </div>

@@ -33,11 +33,14 @@ export const Todo = ({
           className="todo__inner-text"
           contentEditable={state}
           suppressContentEditableWarning={true}
-          onDoubleClick={(event) => {
+          onDoubleClick={async (event) => {
             event.preventDefault();
-            setState(true);
+            await setState(true);
+            inner.current.focus();
           }}
           onKeyDown={(event) => {
+            event.stopPropagation();
+
             if (event.keyCode === 13 && !event.shiftKey) {
               event.preventDefault();
               const { id } = item;

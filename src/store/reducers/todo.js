@@ -12,6 +12,14 @@ export const todosReducer = (state = initialState.todos, { type, payload }) => {
       };
     }
 
+    case todos.LIST.REMOVE: {
+      const list = { ...state.list };
+
+      delete list[payload];
+
+      return { ...state, list };
+    }
+
     case todos.LIST.ADD: {
       const list = { ...state.list };
 

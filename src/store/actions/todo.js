@@ -16,6 +16,11 @@ export const setList = (res, list) => ({
   payload: { res, list },
 });
 
+export const removeList = (list) => ({
+  type: todos.LIST.REMOVE,
+  payload: list,
+});
+
 export const addItem = (res, list) => ({
   type: todos.LIST.ADD,
   payload: { res, list },

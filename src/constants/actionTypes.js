@@ -9,6 +9,7 @@ const createListActions = (prefix) => ({
   TOGGLE: `${prefix}.TOGGLE`,
   UPDATE: `${prefix}.UPDATE`,
   DELETE: `${prefix}.DELETE`,
+  REMOVE: `${prefix}.REMOVE`,
 });
 
 export const auth = {

@@ -6,14 +6,21 @@ import { connect } from 'dux/connect';
 import { readLocalStorage } from 'store/actions/localStorage';
 
 import { Lists } from 'components/Lists';
+import { deleteActive } from 'store/actions/list';
 import Header from './components/Header';
 import Auth from './components/Auth';
 import { Todos } from './components/Todos';
 import AddTodo from './components/AddTodo';
 
-export const App = ({ online, readLocalStorage }) => {
+export const App = ({ online, readLocalStorage, deleteActive }) => {
   useEffect(() => {
     readLocalStorage();
+
+    window.addEventListener('keydown', (event) => {
+      if (event.keyCode === 27) {
+        deleteActive();
+      }
+    });
   }, []);
 
   return online ? (
@@ -36,6 +43,7 @@ export const App = ({ online, readLocalStorage }) => {
 App.propTypes = {
   online: PropTypes.bool.isRequired,
   readLocalStorage: PropTypes.func.isRequired,
+  deleteActive: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -44,6 +52,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   readLocalStorage,
+  deleteActive,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
