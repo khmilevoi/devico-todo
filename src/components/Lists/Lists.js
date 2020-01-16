@@ -2,12 +2,15 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'dux/connect';
 
-import { getLists, add, setActive } from 'store/actions/list';
+import {
+  getLists, add, setActive, del,
+} from 'store/actions/list';
 import { List } from './List';
 
 const Lists = ({
   getLists,
   add,
+  del,
   token,
   personal,
   shared,
@@ -64,6 +67,7 @@ const Lists = ({
               item={item}
               isActive={item.id === active}
               handleClick={(event) => selectActive(event, item)}
+              handleDelete={() => del(item.id, token)}
             ></List>
           ))}
         </div>
@@ -77,6 +81,7 @@ const Lists = ({
               item={item}
               isActive={item.id === active}
               handleClick={(event) => selectActive(event, item)}
+              handleDelete={() => del(item.id, token)}
             ></List>
           ))}
         </div>
@@ -88,6 +93,7 @@ const Lists = ({
 Lists.propTypes = {
   getLists: PropTypes.func.isRequired,
   add: PropTypes.func.isRequired,
+  del: PropTypes.func.isRequired,
   token: PropTypes.string.isRequired,
   personal: PropTypes.arrayOf(
     PropTypes.shape({
@@ -113,6 +119,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   getLists,
   add,
+  del,
   setActive,
 };
 

@@ -37,9 +37,9 @@ const makeQuery = async (query, method = methods.GET, body = {}, token) => {
 
 export const getListsQuery = (token) => makeQuery('/lists', methods.GET, {}, token);
 export const addListQuery = (name, token) => makeQuery('/lists', methods.POST, { name }, token);
-export const deleteListQuery = (id, token) => makeQuery(`/todos/${id}`, methods.DELETE, {}, token);
-export const toggleListQuery = (id, token) => makeQuery(`/todos/${id}`, methods.PUT, {}, token);
-export const shareListQuery = (id, owner, token) => makeQuery(`/todos/${id}`, methods.PATCH, { owner }, token);
+export const deleteListQuery = (id, token) => makeQuery(`/lists/${id}`, methods.DELETE, {}, token);
+export const toggleListQuery = (id, token) => makeQuery(`/lists/${id}`, methods.PUT, {}, token);
+export const shareListQuery = (id, owner, token) => makeQuery(`/lists/${id}`, methods.PATCH, { owner }, token);
 
 export const getTodosQuery = (list, token) => makeQuery(`/todos?list=${list}`, methods.GET, {}, token);
 export const addTodoQuery = (list, inner, token) => makeQuery(`/todos?list=${list}`, methods.POST, { inner }, token);

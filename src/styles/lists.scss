@@ -53,6 +53,9 @@
 .list {
   width: 100%;
   padding: 2px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   cursor: pointer;
 
   &.active {
@@ -66,5 +69,37 @@
   &__name {
     text-overflow: ellipsis;
     overflow: hidden;
+  }
+
+  &__buttons {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    opacity: 0;
+  }
+
+  &:hover &__buttons {
+    opacity: 1;
+  }
+
+  &__delete {
+    color: $red;
+  }
+
+  &__share {
+    color: $main;
+  }
+
+  &__button {
+    width: 20px;
+    height: 20px;
+    padding: 2px;
+    margin: 0 2px;
+    background-color: inherit;
+    opacity: 0.5;
+
+    &:hover {
+      opacity: 1;
+    }
   }
 }
