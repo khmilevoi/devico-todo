@@ -35,11 +35,11 @@
       user-select: none;
       cursor: pointer;
     }
-    
+
     &-input {
       display: none;
     }
-    
+
     &-input:checked ~ &-label {
       background-color: $main;
     }
@@ -56,7 +56,6 @@
       padding: 2px;
       font-family: sans-serif;
       border: transparent 1px solid;
-
 
       &[contenteditable='true'] {
         border: $main 1px solid;
@@ -78,10 +77,12 @@
     }
 
     &-button {
-      padding: 2px 3px;
-      border-radius: 5px;
+      width: 20px;
+      height: 20px;
+      border-radius: #{$infinity}px;
       background-color: $red;
       color: white;
+      font-size: 0.5rem;
     }
   }
 }

@@ -1,6 +1,8 @@
 import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 
+import { DeleteIcon } from 'shared/icons';
+
 export const Todo = ({
   item, token, del, toggle, update,
 }) => {
@@ -67,7 +69,7 @@ export const Todo = ({
             del(id, token);
           }}
         >
-          delete
+          <DeleteIcon></DeleteIcon>
         </button>
       </div>
     </div>

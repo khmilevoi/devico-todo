@@ -49,7 +49,7 @@
     width: 100%;
     background-color: $transparent-silver;
     color: #777777;
-    font-size: 0.8rem;
+    font-size: 0.7rem;
     text-transform: lowercase;
     padding: 2px 8px;
     display: flex;
@@ -112,12 +112,13 @@
   }
 
   &__button {
-    width: 20px;
-    height: 20px;
+    width: 15px;
+    height: 15px;
     padding: 2px;
     margin: 0 2px;
     background-color: inherit;
     opacity: 0.5;
+    font-size: 0.6rem;
 
     &:hover {
       opacity: 1;

@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import { DeleteIcon, ShareIcon } from 'shared/icons';
+
 export const List = ({
   item, handleClick, handleDelete, isActive,
 }) => (
@@ -16,9 +18,11 @@ export const List = ({
           handleDelete();
         }}
       >
-        -
+        <DeleteIcon></DeleteIcon>
       </button>
-      <button className="list__share list__button">s</button>
+      <button className="list__share list__button">
+        <ShareIcon></ShareIcon>
+      </button>
     </div>
   </div>
 );
