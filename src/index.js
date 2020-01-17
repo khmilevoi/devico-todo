@@ -3,6 +3,9 @@ import ReactDOM from 'react-dom';
 
 import { Provider } from 'dux';
 
+import { DndProvider } from 'react-dnd';
+import Backend from 'react-dnd-html5-backend';
+
 import { logger } from 'middlewares/logger';
 import { useSocket } from 'middlewares/useSocket';
 
@@ -21,7 +24,9 @@ store.subscribe(logger());
 
 ReactDOM.render(
   <Provider store={store}>
-    <App></App>
+    <DndProvider backend={Backend}>
+      <App></App>
+    </DndProvider>
   </Provider>,
   document.getElementById('root'),
 );

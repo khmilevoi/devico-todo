@@ -1,16 +1,24 @@
 import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 
-import { DeleteIcon } from 'shared/icons';
+import { useDrag } from 'react-dnd';
 
-export const Todo = ({
-  item, token, del, toggle, update, disabled,
-}) => {
+import { DeleteIcon, Dots } from 'shared/icons';
+
+export const Todo = ({ item, token, del, toggle, update, disabled }) => {
+  const [{ dragged: isDragging }, drag, preview] = useDrag({
+    item: { type: 'todo' },
+    collect: monitor => ({ dragged: !!monitor.isDragging() })
+  });
+
   const [state, setState] = useState(false);
   const inner = useRef(null);
 
   return (
-    <div className="todo">
+    <div className={`todo ${isDragging ? 'dragged' : ''}`} ref={preview}>
+      <div className="todo__drag" ref={drag}>
+        <Dots></Dots>
+      </div>
       <div className="todo__checkbox-wrapper">
         <input
           type="checkbox"
@@ -18,7 +26,7 @@ export const Todo = ({
           className="todo__checkbox-input"
           id={item.id}
           checked={item.completed}
-          onChange={(event) => {
+          onChange={event => {
             event.preventDefault();
 
             const { id } = item;
@@ -36,14 +44,14 @@ export const Todo = ({
           className="todo__inner-text"
           contentEditable={state}
           suppressContentEditableWarning={true}
-          onDoubleClick={async (event) => {
+          onDoubleClick={async event => {
             event.preventDefault();
             if (!disabled) {
               await setState(true);
               inner.current.focus();
             }
           }}
-          onKeyDown={(event) => {
+          onKeyDown={event => {
             event.stopPropagation();
 
             if (event.keyCode === 13 && !event.shiftKey) {
@@ -65,7 +73,7 @@ export const Todo = ({
         <button
           disabled={disabled}
           className="todo__delete-button"
-          onClick={(event) => {
+          onClick={event => {
             event.preventDefault();
 
             const { id } = item;
@@ -84,11 +92,11 @@ Todo.propTypes = {
   item: PropTypes.shape({
     id: PropTypes.string.isRequired,
     completed: PropTypes.bool.isRequired,
-    inner: PropTypes.string.isRequired,
+    inner: PropTypes.string.isRequired
   }).isRequired,
   token: PropTypes.string.isRequired,
   toggle: PropTypes.func.isRequired,
   del: PropTypes.func.isRequired,
   update: PropTypes.func.isRequired,
-  disabled: PropTypes.bool.isRequired,
+  disabled: PropTypes.bool.isRequired
 };

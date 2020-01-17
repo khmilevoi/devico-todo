@@ -52,6 +52,7 @@ Todos.propTypes = {
     }),
   ),
   active: PropTypes.shape({
+    id: PropTypes.string,
     creator: PropTypes.string,
     isPublic: PropTypes.bool,
   }).isRequired,

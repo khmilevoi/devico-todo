@@ -13,7 +13,19 @@
   margin: 0 auto;
   padding: 15px;
   display: flex;
+  background-color: #fff;
   border-bottom: $transparent-silver 1px solid;
+
+  &.dragged {
+    opacity: 0;
+  }
+
+  &__drag {
+    padding-right: 15px;
+    cursor: pointer;
+    color: $transparent-silver;
+    opacity: 0;
+  }
 
   &__checkbox {
     &-wrapper {
@@ -70,7 +82,8 @@
     }
   }
 
-  &:hover &__delete-wrapper {
+  &:hover &__delete-wrapper,
+  &:hover &__drag {
     opacity: 1;
   }
 
