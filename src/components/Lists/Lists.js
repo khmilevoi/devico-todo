@@ -3,19 +3,23 @@ import PropTypes from 'prop-types';
 import { connect } from 'dux/connect';
 
 import {
-  getLists, add, setActive, del,
+  getLists, add, setActive, del, toggle,
 } from 'store/actions/list';
+import { setList } from 'store/actions/share';
 import { List } from './List';
 
 const Lists = ({
   getLists,
   add,
   del,
+  toggle,
   token,
   personal,
   shared,
   setActive,
+  setList,
   active,
+  userId,
 }) => {
   const [name, setName] = useState('');
 
@@ -30,9 +34,22 @@ const Lists = ({
     event.preventDefault();
 
     if (active !== item.id) {
-      setActive(item.id);
+      setActive(item);
     }
   };
+
+  const drawList = (list) => list.map((item) => (
+      <List
+        key={item.id}
+        item={item}
+        isActive={item.id === active}
+        handleClick={(event) => selectActive(event, item)}
+        handleDelete={() => del(item.id, token)}
+        handleToggle={() => toggle(item.id, token)}
+        handleShare={() => setList(item.id)}
+        isCreator={userId === item.creator}
+      ></List>
+  ));
 
   return (
     <div className="lists">
@@ -72,15 +89,7 @@ const Lists = ({
           <div
             className={`section__list ${personalCollapsed ? 'collapsed' : ''}`}
           >
-            {personal.map((item) => (
-              <List
-                key={item.id}
-                item={item}
-                isActive={item.id === active}
-                handleClick={(event) => selectActive(event, item)}
-                handleDelete={() => del(item.id, token)}
-              ></List>
-            ))}
+            {drawList(personal)}
           </div>
         </div>
         <div className="shared section">
@@ -93,15 +102,7 @@ const Lists = ({
           <div
             className={`section__list ${sharedCollapsed ? 'collapsed' : ''}`}
           >
-            {shared.map((item) => (
-              <List
-                key={item.id}
-                item={item}
-                isActive={item.id === active}
-                handleClick={(event) => selectActive(event, item)}
-                handleDelete={() => del(item.id, token)}
-              ></List>
-            ))}
+            {drawList(shared)}
           </div>
         </div>
       </div>
@@ -113,6 +114,7 @@ Lists.propTypes = {
   getLists: PropTypes.func.isRequired,
   add: PropTypes.func.isRequired,
   del: PropTypes.func.isRequired,
+  toggle: PropTypes.func.isRequired,
   token: PropTypes.string.isRequired,
   personal: PropTypes.arrayOf(
     PropTypes.shape({
@@ -125,7 +127,11 @@ Lists.propTypes = {
     }),
   ).isRequired,
   setActive: PropTypes.func.isRequired,
-  active: PropTypes.string,
+  setList: PropTypes.func.isRequired,
+  active: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+  }),
+  userId: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -133,12 +139,15 @@ const mapStateToProps = (state) => ({
   personal: state.lists.personal,
   shared: state.lists.shared,
   active: state.lists.active,
+  userId: state.auth.user.id,
 });
 
 const mapDispatchToProps = {
   getLists,
   add,
   del,
+  toggle,
+  setList,
   setActive,
 };
 

@@ -1,0 +1,73 @@
+.share {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-color: $transparent-silver;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: $infinity;
+
+  &__modal {
+    width: 100%;
+    max-width: 500px;
+    background-color: white;
+    border-radius: 5px;
+    overflow: hidden;
+    padding: 0 10px;
+  }
+
+  &__title {
+    margin: 15px 0 5px 0;
+  }
+
+  &__input {
+    width: 100%;
+    padding: 5px;
+    margin: 10px 0;
+    border-radius: 5px;
+  }
+
+  &__users {
+    max-height: 10%;
+    overflow: hidden;
+    overflow-y: scroll;
+  }
+
+  &__user {
+    cursor: pointer;
+    padding: 5px 10px;
+
+    &:hover {
+      background-color: $silver;
+    }
+  }
+
+  &__buttons {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 15px 0;
+  }
+
+  &__button {
+    padding: 4px 7px;
+    border-radius: 5px;
+    margin: 0 5px;
+    color: white;
+    opacity: 0.5;
+
+    &:hover {
+      opacity: 1;
+    }
+
+    &-share {
+      background-color: $main;
+    }
+
+    &-close {
+      background-color: $red;
+    }
+  }
+}

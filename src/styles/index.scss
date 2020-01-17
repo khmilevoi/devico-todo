@@ -5,6 +5,7 @@
 @import './todos.scss';
 @import './addTodo.scss';
 @import './lists.scss';
+@import './share.scss';
 
 * {
   margin: 0;
@@ -32,8 +33,8 @@ body {
 
   &__inner {
     width: 100%;
-    height: calc(100% - 50px);
-    max-width: 1200px;
+    height: calc(100% - 50px - 20px);
+    max-width: 900px;
     display: flex;
     margin: 0 auto;
   }
@@ -41,6 +42,18 @@ body {
   &__todos {
     width: 80%;
     min-width: 200px;
+
+    &-info {
+      display: flex;
+      height: 20px;
+      color: #777777;
+      background-color: $transparent-silver;
+      text-transform: lowercase;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 2px 3px;
+    }
   }
 }
 
@@ -52,6 +65,10 @@ button {
   outline: none;
   border: none;
   cursor: pointer;
+}
+
+button:disabled {
+  visibility: hidden;
 }
 
 input {

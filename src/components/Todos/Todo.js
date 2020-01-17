@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { DeleteIcon } from 'shared/icons';
 
 export const Todo = ({
-  item, token, del, toggle, update,
+  item, token, del, toggle, update, disabled,
 }) => {
   const [state, setState] = useState(false);
   const inner = useRef(null);
@@ -14,6 +14,7 @@ export const Todo = ({
       <div className="todo__checkbox-wrapper">
         <input
           type="checkbox"
+          disabled={disabled}
           className="todo__checkbox-input"
           id={item.id}
           checked={item.completed}
@@ -37,8 +38,10 @@ export const Todo = ({
           suppressContentEditableWarning={true}
           onDoubleClick={async (event) => {
             event.preventDefault();
-            await setState(true);
-            inner.current.focus();
+            if (!disabled) {
+              await setState(true);
+              inner.current.focus();
+            }
           }}
           onKeyDown={(event) => {
             event.stopPropagation();
@@ -60,6 +63,7 @@ export const Todo = ({
       </div>
       <div className="todo__delete-wrapper">
         <button
+          disabled={disabled}
           className="todo__delete-button"
           onClick={(event) => {
             event.preventDefault();
@@ -86,4 +90,5 @@ Todo.propTypes = {
   toggle: PropTypes.func.isRequired,
   del: PropTypes.func.isRequired,
   update: PropTypes.func.isRequired,
+  disabled: PropTypes.bool.isRequired,
 };

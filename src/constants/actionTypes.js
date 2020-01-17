@@ -27,6 +27,9 @@ export const lists = {
   ACTIVE: createAccessActions('ACTIVE'),
 };
 
-export const localStorage = {
-  ...createAccessActions('LOCAL_STORAGE'),
+export const localStorage = createAccessActions('LOCAL_STORAGE');
+
+export const share = {
+  LIST: createAccessActions('SHARE_LIST'),
+  USERS: createAccessActions('SHARE_USER'),
 };

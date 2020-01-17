@@ -12,7 +12,7 @@ import { Todo } from './Todo';
 export const Todos = ({
   getTodos,
   list,
-  owner,
+  userId,
   token,
   toggle,
   del,
@@ -21,9 +21,9 @@ export const Todos = ({
 }) => {
   useEffect(() => {
     if (active && !list) {
-      getTodos(active, token);
+      getTodos(active.id, token);
     }
-  }, [token, active]);
+  }, [token, active.id]);
 
   return (
     <div className="todos">
@@ -32,11 +32,11 @@ export const Todos = ({
           <Todo
             key={item.id}
             item={item}
+            disabled={active.creator !== userId && !active.isPublic}
             {...{
               toggle,
               del,
               update,
-              owner,
               token,
             }}
           ></Todo>
@@ -51,9 +51,12 @@ Todos.propTypes = {
       id: PropTypes.string.isRequired,
     }),
   ),
-  active: PropTypes.string,
+  active: PropTypes.shape({
+    creator: PropTypes.string,
+    isPublic: PropTypes.bool,
+  }).isRequired,
   getTodos: PropTypes.func.isRequired,
-  owner: PropTypes.string.isRequired,
+  userId: PropTypes.string.isRequired,
   token: PropTypes.string.isRequired,
   toggle: PropTypes.func.isRequired,
   del: PropTypes.func.isRequired,
@@ -61,9 +64,9 @@ Todos.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  list: state.todos.list[state.lists.active],
-  active: state.lists.active,
-  owner: state.auth.user.id,
+  list: state.todos.list[state.lists.active && state.lists.active.id],
+  active: state.lists.active || {},
+  userId: state.auth.user.id,
   token: state.auth.user.token,
 });
 

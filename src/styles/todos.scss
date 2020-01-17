@@ -43,6 +43,11 @@
     &-input:checked ~ &-label {
       background-color: $main;
     }
+
+    &-input:disabled ~ &-label {
+      opacity: 0.5;
+      cursor: auto;
+    }
   }
 
   &__inner {

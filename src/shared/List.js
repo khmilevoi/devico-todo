@@ -3,6 +3,6 @@ export class List {
     this.id = id;
     this.name = name;
     this.creator = creator;
-    this.public = isPublic;
+    this.isPublic = isPublic;
   }
 }

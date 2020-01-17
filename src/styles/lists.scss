@@ -114,6 +114,10 @@
   &__button {
     width: 15px;
     height: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 0;
     padding: 2px;
     margin: 0 2px;
     background-color: inherit;

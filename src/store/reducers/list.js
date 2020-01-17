@@ -18,7 +18,7 @@ export const listsReducer = (state = initialState.lists, { type, payload }) => {
     }
 
     case lists.PERSONAL.TOGGLE: {
-      const personal = state.personal.map((item) => (item.id === payload ? { ...item, isPublic: !item.public } : item));
+      const personal = state.personal.map((item) => (item.id === payload ? { ...item, isPublic: !item.isPublic } : item));
 
       return { ...state, personal };
     }
@@ -38,15 +38,24 @@ export const listsReducer = (state = initialState.lists, { type, payload }) => {
 
     case lists.SHARED.ADD: {
       const shared = Array.from(state.shared);
-      shared.push(payload);
+
+      if (!shared.find((item) => item.id === payload.id)) {
+        shared.push(payload);
+      }
 
       return { ...state, shared };
     }
 
     case lists.SHARED.TOGGLE: {
-      const shared = state.shared.map((item) => (item.id === payload ? { ...item, isPublic: !item.public } : item));
+      const shared = state.shared.map((item) => (item.id === payload ? { ...item, isPublic: !item.isPublic } : item));
 
-      return { ...state, shared };
+      const { active } = state;
+
+      if (active && active.id === payload) {
+        active.isPublic = !active.isPublic;
+      }
+
+      return { ...state, shared, active };
     }
 
     case lists.SHARED.DELETE: {

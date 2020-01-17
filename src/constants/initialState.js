@@ -15,4 +15,8 @@ export const initialState = {
     list: [],
   },
   localStorage: null,
+  share: {
+    list: null,
+    users: [],
+  },
 };

@@ -1,11 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import { add } from 'store/actions/todo';
 import { connect } from 'dux/connect';
 
-export const AddTodo = ({ add, token, active }) => {
+export const AddTodo = ({
+  add, token, active, userId,
+}) => {
   const [inner, setInner] = useState('');
+
+  const input = useRef(null);
+
+  useEffect(() => {
+    if (active && input) {
+      input.current.focus();
+    }
+  }, [active]);
 
   return (
     <div className="add-todo">
@@ -15,7 +25,7 @@ export const AddTodo = ({ add, token, active }) => {
           event.preventDefault();
 
           if (active && inner.trim() !== '') {
-            add(active, inner, token);
+            add(active.id, inner, token);
             setInner('');
           }
         }}
@@ -25,7 +35,9 @@ export const AddTodo = ({ add, token, active }) => {
           className="add-todo__input"
           placeholder="type text..."
           value={inner}
+          ref={input}
           onChange={(event) => setInner(event.target.value)}
+          disabled={!active || (userId !== active.creator && !active.isPublic)}
         />
         <button type="submit" className="add-todo__button">
           +
@@ -46,7 +58,7 @@ AddTodo.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  id: state.auth.user.id,
+  userId: state.auth.user.id,
   token: state.auth.user.token,
   active: state.lists.active,
 });
