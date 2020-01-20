@@ -13,4 +13,4 @@ export const DeleteIcon = Icon(faTrashAlt);
 
 export const ShareIcon = Icon(faShareSquare);
 
-export const Dots = Icon(faEllipsisV);
+export const DotsIcon = Icon(faEllipsisV);

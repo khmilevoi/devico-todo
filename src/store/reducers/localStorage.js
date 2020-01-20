@@ -1,15 +1,14 @@
 import { initialState } from 'constants/initialState';
-import { auth, localStorage } from 'constants/actionTypes';
+import { auth, localStorage, lists } from 'constants/actionTypes';
+import { AUTH_ITEM, ACTIVE_ITEM } from 'constants/localStorage';
 
-const loadToLocalStorage = (entries) => {
-  entries.forEach(([key, value]) => window.localStorage.setItem(key, value));
+const loadToLocalStorage = (item, data) => {
+  window.localStorage.setItem(item, JSON.stringify(data));
 };
 
-const removeFromLocalStorage = (keys) => {
-  keys.forEach((key) => window.localStorage.removeItem(key));
+const removeFromLocalStorage = (item) => {
+  window.localStorage.removeItem(item);
 };
-
-const clearLocalStorage = () => window.localStorage.clear();
 
 export const localStorageReducer = (
   state = initialState.localStorage,
@@ -17,17 +16,27 @@ export const localStorageReducer = (
 ) => {
   switch (type) {
     case auth.USER.SET: {
-      const entries = Object.entries(payload);
+      loadToLocalStorage(AUTH_ITEM, payload);
 
-      loadToLocalStorage(entries);
-
-      return payload;
+      return window.localStorage;
     }
 
     case auth.USER.DELETE: {
-      clearLocalStorage();
+      removeFromLocalStorage(AUTH_ITEM);
 
-      return null;
+      return window.localStorage;
+    }
+
+    case lists.ACTIVE.SET: {
+      loadToLocalStorage(ACTIVE_ITEM, payload.id);
+
+      return window.localStorage;
+    }
+
+    case lists.ACTIVE.DELETE: {
+      removeFromLocalStorage(ACTIVE_ITEM);
+
+      return window.localStorage;
     }
 
     case localStorage.SET: {

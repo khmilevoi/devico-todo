@@ -10,6 +10,7 @@ export const applyMiddleware = (...middlewares) => (createStore) => (
 
   const middlewareAPI = {
     dispatch: (...args) => dispatch(...args),
+    getState: store.getState,
   };
 
   const chain = middlewares.map((middleware) => middleware(middlewareAPI));

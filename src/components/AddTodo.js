@@ -5,7 +5,7 @@ import { add } from 'store/actions/todo';
 import { connect } from 'dux/connect';
 
 export const AddTodo = ({
-  add, token, active, userId,
+  add, token, active, userId, todos,
 }) => {
   const [inner, setInner] = useState('');
 
@@ -24,9 +24,16 @@ export const AddTodo = ({
         onSubmit={(event) => {
           event.preventDefault();
 
-          if (active && inner.trim() !== '') {
-            add(active.id, inner, token);
-            setInner('');
+          if (active.id && inner.trim() !== '') {
+            const list = todos[active.id];
+
+            if (list) {
+              const last = list[list.length - 1];
+              const id = (last && last.id) || null;
+
+              add(active.id, inner, id, token);
+              setInner('');
+            }
           }
         }}
       >
@@ -51,6 +58,8 @@ AddTodo.propTypes = {
   add: PropTypes.func.isRequired,
   token: PropTypes.string.isRequired,
   active: PropTypes.string.isRequired,
+  userId: PropTypes.string.isRequired,
+  todos: PropTypes.object.isRequired,
 };
 
 AddTodo.propTypes = {
@@ -61,6 +70,7 @@ const mapStateToProps = (state) => ({
   userId: state.auth.user.id,
   token: state.auth.user.token,
   active: state.lists.active,
+  todos: state.todos.list,
 });
 
 const mapDispatchToProps = {

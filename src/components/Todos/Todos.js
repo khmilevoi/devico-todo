@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'dux/connect';
 
 import {
-  getTodos, toggle, del, update,
+  getTodos, toggle, del, update, move,
 } from 'store/actions/todo';
 
 import { Todo } from './Todo';
@@ -18,9 +18,10 @@ export const Todos = ({
   del,
   update,
   active,
+  move,
 }) => {
   useEffect(() => {
-    if (active && !list) {
+    if (active.id && !list) {
       getTodos(active.id, token);
     }
   }, [token, active.id]);
@@ -28,16 +29,18 @@ export const Todos = ({
   return (
     <div className="todos">
       {list
-        && list.map((item) => (
+        && list.map((item, index) => (
           <Todo
             key={item.id}
             item={item}
+            index={index}
             disabled={active.creator !== userId && !active.isPublic}
             {...{
               toggle,
               del,
               update,
               token,
+              move,
             }}
           ></Todo>
         ))}
@@ -62,7 +65,9 @@ Todos.propTypes = {
   toggle: PropTypes.func.isRequired,
   del: PropTypes.func.isRequired,
   update: PropTypes.func.isRequired,
+  move: PropTypes.func.isRequired,
 };
+
 
 const mapStateToProps = (state) => ({
   list: state.todos.list[state.lists.active && state.lists.active.id],
@@ -76,6 +81,7 @@ const mapDispatchToProps = {
   toggle,
   del,
   update,
+  move,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Todos);

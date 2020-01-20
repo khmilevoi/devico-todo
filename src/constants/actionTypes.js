@@ -18,7 +18,7 @@ export const auth = {
 };
 
 export const todos = {
-  LIST: createListActions('TODO'),
+  LIST: { ...createListActions('TODO'), MOVE: 'TODO.MOVE' },
 };
 
 export const lists = {

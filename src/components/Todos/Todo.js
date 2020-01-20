@@ -1,23 +1,74 @@
 import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 
-import { useDrag } from 'react-dnd';
+import { useDrag, useDrop } from 'react-dnd';
 
-import { DeleteIcon, Dots } from 'shared/icons';
+import { DeleteIcon, DotsIcon } from 'shared/icons';
 
-export const Todo = ({ item, token, del, toggle, update, disabled }) => {
-  const [{ dragged: isDragging }, drag, preview] = useDrag({
-    item: { type: 'todo' },
-    collect: monitor => ({ dragged: !!monitor.isDragging() })
+export const Todo = ({
+  item,
+  token,
+  del,
+  toggle,
+  update,
+  disabled,
+  index,
+  move,
+}) => {
+  const ref = useRef(null);
+
+  const [, drop] = useDrop({
+    accept: 'todo',
+    hover: (currentItem, monitor) => {
+      if (!ref.current) {
+        return;
+      }
+
+      const current = currentItem;
+
+      const dragIndex = current.index;
+      const hoverIndex = index;
+
+      if (dragIndex === hoverIndex) {
+        return;
+      }
+
+      const hoverBoundingRect = ref.current.getBoundingClientRect();
+      const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+
+      const clientOffset = monitor.getClientOffset();
+      const hoverClientY = clientOffset.y - hoverBoundingRect.top;
+
+      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+        return;
+      }
+
+      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+        return;
+      }
+
+      // dispatch
+
+      move(currentItem.id, item.id, token);
+
+      current.index = hoverIndex;
+    },
+  });
+
+  const [{ isDragging }, drag, preview] = useDrag({
+    item: { type: 'todo', index, id: item.id },
+    collect: (monitor) => ({ isDragging: !!monitor.isDragging() }),
   });
 
   const [state, setState] = useState(false);
   const inner = useRef(null);
 
+  drag(drop(ref));
+
   return (
     <div className={`todo ${isDragging ? 'dragged' : ''}`} ref={preview}>
-      <div className="todo__drag" ref={drag}>
-        <Dots></Dots>
+      <div className="todo__drag" ref={ref}>
+        <DotsIcon></DotsIcon>
       </div>
       <div className="todo__checkbox-wrapper">
         <input
@@ -26,7 +77,7 @@ export const Todo = ({ item, token, del, toggle, update, disabled }) => {
           className="todo__checkbox-input"
           id={item.id}
           checked={item.completed}
-          onChange={event => {
+          onChange={(event) => {
             event.preventDefault();
 
             const { id } = item;
@@ -44,14 +95,14 @@ export const Todo = ({ item, token, del, toggle, update, disabled }) => {
           className="todo__inner-text"
           contentEditable={state}
           suppressContentEditableWarning={true}
-          onDoubleClick={async event => {
+          onDoubleClick={async (event) => {
             event.preventDefault();
             if (!disabled) {
               await setState(true);
               inner.current.focus();
             }
           }}
-          onKeyDown={event => {
+          onKeyDown={(event) => {
             event.stopPropagation();
 
             if (event.keyCode === 13 && !event.shiftKey) {
@@ -73,7 +124,7 @@ export const Todo = ({ item, token, del, toggle, update, disabled }) => {
         <button
           disabled={disabled}
           className="todo__delete-button"
-          onClick={event => {
+          onClick={(event) => {
             event.preventDefault();
 
             const { id } = item;
@@ -92,11 +143,13 @@ Todo.propTypes = {
   item: PropTypes.shape({
     id: PropTypes.string.isRequired,
     completed: PropTypes.bool.isRequired,
-    inner: PropTypes.string.isRequired
+    inner: PropTypes.string.isRequired,
   }).isRequired,
   token: PropTypes.string.isRequired,
+  index: PropTypes.number.isRequired,
   toggle: PropTypes.func.isRequired,
   del: PropTypes.func.isRequired,
   update: PropTypes.func.isRequired,
-  disabled: PropTypes.bool.isRequired
+  move: PropTypes.func.isRequired,
+  disabled: PropTypes.bool.isRequired,
 };

@@ -6,6 +6,7 @@ import {
   deleteTodoQuery,
   updateTodoQuery,
   getTodosQuery,
+  moveTodoQuery,
 } from 'utils/queries';
 
 import { Todo } from 'shared/Todo';
@@ -41,15 +42,36 @@ export const updateItem = (id, inner, list) => ({
   payload: { id, inner, list },
 });
 
+export const moveItem = (list, id, prev) => ({
+  type: todos.LIST.MOVE,
+  payload: { list, id, prev },
+});
+
 export const getTodos = (list, token) => async (dispatch) => {
   try {
-    const { res } = await getTodosQuery(list, token);
+    const { res, head } = await getTodosQuery(list, token);
 
-    const todos = res.map(
-      ({
-        inner, _id, list, completed,
-      }) => new Todo(inner, _id, list, completed),
-    );
+    const todos = [];
+
+    const findById = (id) => res.find((item) => item._id === id);
+
+    let current = findById(head);
+
+    for (let i = 0; i < res.length; ++i) {
+      if (current) {
+        const todo = new Todo(
+          current.inner,
+          current._id,
+          current.list,
+          current.next,
+          current.completed,
+        );
+
+        todos.push(todo);
+
+        current = findById(current.next);
+      }
+    }
 
     dispatch(setList(todos, list));
   } catch (err) {
@@ -57,9 +79,9 @@ export const getTodos = (list, token) => async (dispatch) => {
   }
 };
 
-export const add = (list, inner, token) => async (dispatch) => {
+export const add = (list, inner, prev, token) => async (dispatch) => {
   try {
-    await addTodoQuery(list, inner, token);
+    await addTodoQuery(list, inner, prev, token);
   } catch (err) {
     dispatch(error(err));
   }
@@ -84,6 +106,14 @@ export const del = (id, token) => async (dispatch) => {
 export const update = (id, inner, token) => async (dispatch) => {
   try {
     await updateTodoQuery(id, inner, token);
+  } catch (err) {
+    dispatch(error(err));
+  }
+};
+
+export const move = (id, prev, token) => async (dispatch) => {
+  try {
+    await moveTodoQuery(id, prev, token);
   } catch (err) {
     dispatch(error(err));
   }

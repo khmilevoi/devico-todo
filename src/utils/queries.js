@@ -44,10 +44,11 @@ export const toggleListQuery = (id, token) => makeQuery(`/lists/${id}`, methods.
 export const shareListQuery = (id, newOwner, token) => makeQuery(`/lists/${id}`, methods.PATCH, { newOwner }, token);
 
 export const getTodosQuery = (list, token) => makeQuery(`/todos?list=${list}`, methods.GET, {}, token);
-export const addTodoQuery = (list, inner, token) => makeQuery(`/todos?list=${list}`, methods.POST, { inner }, token);
+export const addTodoQuery = (list, inner, prev, token) => makeQuery(`/todos?list=${list}`, methods.POST, { inner, prev }, token);
 export const toggleTodoQuery = (id, token) => makeQuery(`/todos/${id}`, methods.PUT, {}, token);
 export const deleteTodoQuery = (id, token) => makeQuery(`/todos/${id}`, methods.DELETE, {}, token);
-export const updateTodoQuery = (id, inner, token) => makeQuery(`/todos/${id}`, methods.PATCH, { inner }, token);
+export const updateTodoQuery = (id, inner, token) => makeQuery(`/todos/${id}`, methods.PATCH, { inner, type: 'update' }, token);
+export const moveTodoQuery = (id, prev, token) => makeQuery(`/todos/${id}`, methods.PATCH, { prev, type: 'move' }, token);
 
 export const loginQuery = (login, password) => makeQuery('/auth', methods.PUT, { login, password });
 export const registerQuery = (login, password) => makeQuery('/auth', methods.POST, { login, password });

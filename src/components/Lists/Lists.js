@@ -6,6 +6,9 @@ import {
   getLists, add, setActive, del, toggle,
 } from 'store/actions/list';
 import { setList } from 'store/actions/share';
+
+import { ACTIVE_ITEM } from 'constants/localStorage';
+
 import { List } from './List';
 
 const Lists = ({
@@ -28,6 +31,17 @@ const Lists = ({
 
   useEffect(() => {
     getLists(token);
+
+    // const active = window.localStorage.getItem(ACTIVE_ITEM) || null;
+
+    // if (active) {
+    //   let item = personal.find((item) => item.id === active);
+    //   item = item || shared.find((item) => item.id === active);
+
+    //   if (item) {
+    //     setActive(item);
+    //   }
+    // }
   }, [token]);
 
   const selectActive = (event, item) => {
