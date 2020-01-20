@@ -20,6 +20,10 @@ export const Todo = ({
   const [, drop] = useDrop({
     accept: 'todo',
     hover: (currentItem, monitor) => {
+      if (disabled) {
+        return;
+      }
+
       if (!ref.current) {
         return;
       }

@@ -21,7 +21,10 @@
   }
 
   &__drag {
-    padding-right: 15px;
+    margin: -15px 0 0 -15px;
+    width: 35px;
+    height: calc(100% + 30px);
+    padding: 15px;
     cursor: pointer;
     color: $transparent-silver;
     opacity: 0;
