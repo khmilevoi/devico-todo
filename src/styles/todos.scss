@@ -23,11 +23,11 @@
   &__drag {
     margin: -15px 0 0 -15px;
     width: 35px;
-    height: calc(100% + 30px);
+    min-height: calc(100% + 30px);
     padding: 15px;
     cursor: pointer;
     color: $transparent-silver;
-    opacity: 0;
+    opacity: 1;
   }
 
   &__checkbox {

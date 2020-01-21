@@ -19,7 +19,7 @@ export const Todo = ({
 
   const [, drop] = useDrop({
     accept: 'todo',
-    hover: (currentItem, monitor) => {
+    hover: (current, monitor) => {
       if (disabled) {
         return;
       }
@@ -28,9 +28,9 @@ export const Todo = ({
         return;
       }
 
-      const current = currentItem;
+      const currentItem = current;
 
-      const dragIndex = current.index;
+      const dragIndex = currentItem.index;
       const hoverIndex = index;
 
       if (dragIndex === hoverIndex) {
@@ -38,24 +38,17 @@ export const Todo = ({
       }
 
       const hoverBoundingRect = ref.current.getBoundingClientRect();
-      const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
 
       const clientOffset = monitor.getClientOffset();
       const hoverClientY = clientOffset.y - hoverBoundingRect.top;
 
-      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+      if (dragIndex < hoverIndex && hoverClientY > hoverBoundingRect.height) {
         return;
       }
 
-      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
-        return;
-      }
+      move(current.id, item.id, token);
 
-      // dispatch
-
-      move(currentItem.id, item.id, token);
-
-      current.index = hoverIndex;
+      currentItem.index = hoverIndex;
     },
   });
 

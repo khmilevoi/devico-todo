@@ -20,6 +20,12 @@ export const listsReducer = (state = initialState.lists, { type, payload }) => {
     case lists.PERSONAL.TOGGLE: {
       const personal = state.personal.map((item) => (item.id === payload ? { ...item, isPublic: !item.isPublic } : item));
 
+      const { active } = state;
+
+      if (active && active.id === payload) {
+        active.isPublic = !active.isPublic;
+      }
+
       return { ...state, personal };
     }
 
