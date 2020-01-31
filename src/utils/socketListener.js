@@ -93,7 +93,7 @@ export const socketListener = {
       case 'add': {
         const { res, list } = message;
 
-        const todo = new Todo(res.inner, res.id, list, res.next, res.completed);
+        const todo = new Todo(res.text, res.id, list, res.next, res.completed);
 
         dispatch(addItem(todo, list));
 

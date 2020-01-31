@@ -53,15 +53,15 @@ export const getTodos = (list, token) => async (dispatch) => {
 
     const todos = [];
 
-    const findById = (id) => res.find((item) => item._id === id);
+    const findById = (id) => res.find((item) => item.id === id);
 
     let current = findById(head);
 
     for (let i = 0; i < res.length; ++i) {
       if (current) {
         const todo = new Todo(
-          current.inner,
-          current._id,
+          current.text,
+          current.id,
           current.list,
           current.next,
           current.completed,

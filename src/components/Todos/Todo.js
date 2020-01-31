@@ -106,6 +106,7 @@ export const Todo = ({
               event.preventDefault();
               const { id } = item;
               const text = inner.current.innerText.trim();
+              inner.current.innerText = item.inner;
               update(id, text, token);
               setState(false);
             } else if (event.keyCode === 27) {
