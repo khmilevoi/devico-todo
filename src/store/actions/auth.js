@@ -30,7 +30,7 @@ export const error = (err) => (dispatch) => {
 
 const authorization = (login, password, isLogin) => async (dispatch) => {
   try {
-    const { token, _id: id, login: currentLogin } = await (isLogin
+    const { token, id, login: currentLogin } = await (isLogin
       ? loginQuery(login, password)
       : registerQuery(login, password));
 

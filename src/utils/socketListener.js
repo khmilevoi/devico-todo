@@ -26,7 +26,7 @@ export const socketListener = {
         const { res } = message;
 
         const list = new List(
-          res._id,
+          res.id,
           res.name,
           res.creator,
           res.public,
@@ -72,7 +72,7 @@ export const socketListener = {
       case 'share': {
         const { res, listType } = message;
 
-        const list = new List(res._id, res.name, res.creator, res.public);
+        const list = new List(res.id, res.name, res.creator, res.public);
 
         // if (listType === 'personal') {
         // }
@@ -93,13 +93,7 @@ export const socketListener = {
       case 'add': {
         const { res, list } = message;
 
-        const todo = new Todo(
-          res.inner,
-          res._id,
-          list,
-          res.next,
-          res.completed,
-        );
+        const todo = new Todo(res.inner, res.id, list, res.next, res.completed);
 
         dispatch(addItem(todo, list));
 
