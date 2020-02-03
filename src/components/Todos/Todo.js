@@ -139,7 +139,7 @@ export const Todo = ({
 
 Todo.propTypes = {
   item: PropTypes.shape({
-    id: PropTypes.string.isRequired,
+    id: PropTypes.number.isRequired,
     completed: PropTypes.bool.isRequired,
     inner: PropTypes.string.isRequired,
   }).isRequired,

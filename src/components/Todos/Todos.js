@@ -51,23 +51,22 @@ export const Todos = ({
 Todos.propTypes = {
   list: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.string.isRequired,
+      id: PropTypes.number.isRequired,
     }),
   ),
   active: PropTypes.shape({
-    id: PropTypes.string,
-    creator: PropTypes.string,
+    id: PropTypes.number,
+    creator: PropTypes.number,
     isPublic: PropTypes.bool,
   }).isRequired,
   getTodos: PropTypes.func.isRequired,
-  userId: PropTypes.string.isRequired,
+  userId: PropTypes.number.isRequired,
   token: PropTypes.string.isRequired,
   toggle: PropTypes.func.isRequired,
   del: PropTypes.func.isRequired,
   update: PropTypes.func.isRequired,
   move: PropTypes.func.isRequired,
 };
-
 
 const mapStateToProps = (state) => ({
   list: state.todos.list[state.lists.active && state.lists.active.id],

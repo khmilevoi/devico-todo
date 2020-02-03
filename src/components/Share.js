@@ -31,11 +31,11 @@ const Share = ({
           {users.map((user) => (
             <div
               className="share__user"
-              key={user._id}
+              key={user.id}
               onClick={(event) => {
                 event.preventDefault();
 
-                share(list, user._id, token);
+                share(list, user.id, token);
                 deleteList();
               }}
             >
@@ -63,7 +63,7 @@ const Share = ({
 Share.propTypes = {
   getUserList: PropTypes.func.isRequired,
   deleteList: PropTypes.func.isRequired,
-  list: PropTypes.string.isRequired,
+  list: PropTypes.number.isRequired,
   users: PropTypes.array.isRequired,
   share: PropTypes.func.isRequired,
   token: PropTypes.string.isRequired,

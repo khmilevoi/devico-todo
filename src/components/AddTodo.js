@@ -58,7 +58,7 @@ AddTodo.propTypes = {
   add: PropTypes.func.isRequired,
   token: PropTypes.string.isRequired,
   active: PropTypes.string.isRequired,
-  userId: PropTypes.string.isRequired,
+  userid: PropTypes.number.isRequired,
   todos: PropTypes.object.isRequired,
 };
 

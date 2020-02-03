@@ -132,20 +132,20 @@ Lists.propTypes = {
   token: PropTypes.string.isRequired,
   personal: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.string.isRequired,
+      id: PropTypes.number.isRequired,
     }),
   ).isRequired,
   shared: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.string.isRequired,
+      id: PropTypes.number.isRequired,
     }),
   ).isRequired,
   setActive: PropTypes.func.isRequired,
   setList: PropTypes.func.isRequired,
   active: PropTypes.shape({
-    id: PropTypes.string.isRequired,
+    id: PropTypes.number.isRequired,
   }),
-  userId: PropTypes.string.isRequired,
+  userId: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = (state) => ({
