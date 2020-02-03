@@ -58,6 +58,8 @@ export const socketListener = {
       case 'toggle': {
         const { id, listType } = message;
 
+        // debugger;
+
         if (listType === 'personal') {
           dispatch(togglePersonal(id));
         }
@@ -72,7 +74,7 @@ export const socketListener = {
       case 'share': {
         const { res, listType } = message;
 
-        const list = new List(res.id, res.name, res.creator, res.public);
+        const list = new List(res.id, res.name, res.creator, !!res.public);
 
         // if (listType === 'personal') {
         // }

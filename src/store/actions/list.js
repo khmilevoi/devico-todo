@@ -65,13 +65,13 @@ export const getLists = (token) => async (dispatch) => {
     const personalList = personal.map(
       ({
         name, creator, public: isPublic, id, head, tail,
-      }) => new List(id, name, creator, isPublic, head, tail),
+      }) => new List(id, name, creator, !!isPublic, head, tail),
     );
 
     const sharedList = shared.map(
       ({
         name, creator, public: isPublic, id, head, tail,
-      }) => new List(id, name, creator, isPublic, head, tail),
+      }) => new List(id, name, creator, !!isPublic, head, tail),
     );
 
     dispatch(setPersonal(personalList));

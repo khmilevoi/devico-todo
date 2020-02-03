@@ -79,7 +79,7 @@
   cursor: pointer;
 
   &.active {
-    background-color: #ededed;
+    border-left: 5px solid $main;
   }
 
   &:not(.active):hover {

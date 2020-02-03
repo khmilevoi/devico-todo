@@ -56,7 +56,7 @@ const Lists = ({
       <List
         key={item.id}
         item={item}
-        isActive={item.id === active}
+        isActive={item.id === active.id}
         handleClick={(event) => selectActive(event, item)}
         handleDelete={() => del(item.id, token)}
         handleToggle={() => toggle(item.id, token)}
@@ -143,8 +143,8 @@ Lists.propTypes = {
   setActive: PropTypes.func.isRequired,
   setList: PropTypes.func.isRequired,
   active: PropTypes.shape({
-    id: PropTypes.number.isRequired,
-  }),
+    id: PropTypes.number,
+  }).isRequired,
   userId: PropTypes.number.isRequired,
 };
 
@@ -152,7 +152,7 @@ const mapStateToProps = (state) => ({
   token: state.auth.user.token,
   personal: state.lists.personal,
   shared: state.lists.shared,
-  active: state.lists.active,
+  active: state.lists.active || {},
   userId: state.auth.user.id,
 });
 
