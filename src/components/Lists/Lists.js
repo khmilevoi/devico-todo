@@ -42,7 +42,7 @@ const Lists = ({
     //     setActive(item);
     //   }
     // }
-  }, [token]);
+  }, [userId]);
 
   const selectActive = (event, item) => {
     event.preventDefault();

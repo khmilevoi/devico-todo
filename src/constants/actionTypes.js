@@ -13,8 +13,12 @@ const createListActions = (prefix) => ({
 });
 
 export const auth = {
-  USER: createAccessActions('USER'),
+  USER: {
+    ...createAccessActions('USER'),
+    TOKEN: createAccessActions('USER_TOKEN'),
+  },
   ERROR: createAccessActions('ERROR'),
+  REFRESH_TOKEN: createAccessActions('REFRESH_TOKEN'),
 };
 
 export const todos = {

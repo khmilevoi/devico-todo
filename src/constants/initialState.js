@@ -2,6 +2,10 @@ export const initialState = {
   auth: {
     user: null,
     error: null,
+    refreshToken: {
+      token: null,
+      live: null,
+    },
   },
   todos: {
     list: {},

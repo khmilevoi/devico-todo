@@ -23,7 +23,8 @@ const makeQuery = async (query, method = methods.GET, body = {}, token) => {
   };
 
   if (method !== methods.GET) {
-    params.body = JSON.stringify(body);
+    const json = JSON.stringify(body);
+    params.body = json;
   }
 
   const response = await fetch(url, params).then((data) => data.json());
@@ -52,3 +53,6 @@ export const moveTodoQuery = (id, prev, token) => makeQuery(`/todos/${id}`, meth
 
 export const loginQuery = (login, password) => makeQuery('/auth', methods.PUT, { login, password });
 export const registerQuery = (login, password) => makeQuery('/auth', methods.POST, { login, password });
+
+export const updateRefreshQuery = (refreshToken, token) => makeQuery('/token/refresh', methods.POST, { refreshToken }, token);
+export const updateSessionQuery = (refreshToken, token) => makeQuery('/token', methods.POST, { refreshToken }, token);

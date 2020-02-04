@@ -3,18 +3,21 @@ import { AUTH_ITEM } from 'constants/localStorage';
 
 import { setUser, deleteUser } from './auth';
 
-export const setLocalStorage = (ls) => ({
+export const setLocalStorage = () => ({
   type: localStorage.SET,
-  payload: ls,
 });
 
-export const readLocalStorage = () => (dispatch) => {
-  const auth = JSON.parse(window.localStorage.getItem(AUTH_ITEM)) || {};
-  const { login, token, id } = auth;
+export const getLocalStorage = (item) => JSON.parse(window.localStorage.getItem(item)) || {};
 
-  if (login && token && id) {
-    dispatch(setUser(id, login, token));
-    dispatch(setLocalStorage(window.localStorage));
+export const readLocalStorage = () => (dispatch) => {
+  const auth = getLocalStorage(AUTH_ITEM);
+  const {
+    login, token, id, live,
+  } = auth;
+
+  if (login && token && id && live) {
+    dispatch(setUser(id, login, token, live));
+    dispatch(setLocalStorage());
   } else {
     dispatch(deleteUser());
   }

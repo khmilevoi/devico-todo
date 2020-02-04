@@ -2,13 +2,28 @@ import { auth } from 'constants/actionTypes';
 
 import { loginQuery, registerQuery } from 'utils/queries';
 
-export const setUser = (id, login, token) => ({
+export const setUser = (id, login, token, live) => ({
   type: auth.USER.SET,
-  payload: { id, login, token },
+  payload: {
+    id,
+    login,
+    token,
+    live,
+  },
 });
 
 export const deleteUser = () => ({
   type: auth.USER.DELETE,
+});
+
+export const setSessionToken = (token) => ({
+  type: auth.USER.TOKEN.SET,
+  payload: token,
+});
+
+export const setRefreshToken = (token) => ({
+  type: auth.REFRESH_TOKEN.SET,
+  payload: token,
 });
 
 export const setError = (error) => ({
@@ -30,11 +45,13 @@ export const error = (err) => (dispatch) => {
 
 const authorization = (login, password, isLogin) => async (dispatch) => {
   try {
-    const { token, id, login: currentLogin } = await (isLogin
+    const {
+      token, id, login: currentLogin, live,
+    } = await (isLogin
       ? loginQuery(login, password)
       : registerQuery(login, password));
 
-    dispatch(setUser(id, currentLogin, token));
+    dispatch(setUser(id, currentLogin, token, live));
     dispatch(deleteError());
   } catch (err) {
     dispatch(error(err));

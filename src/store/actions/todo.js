@@ -47,9 +47,9 @@ export const moveItem = (list, id, prev) => ({
   payload: { list, id, prev },
 });
 
-export const getTodos = (list, token) => async (dispatch) => {
+export const getTodos = (list, token, refreshToken) => async (dispatch) => {
   try {
-    const { res, head } = await getTodosQuery(list, token);
+    const { res, head } = await getTodosQuery(list, token, refreshToken);
 
     const todos = [];
 
@@ -79,41 +79,47 @@ export const getTodos = (list, token) => async (dispatch) => {
   }
 };
 
-export const add = (list, inner, prev, token) => async (dispatch) => {
+export const add = (
+  list,
+  inner,
+  prev,
+  token,
+  refreshToken,
+) => async (dispatch) => {
   try {
-    await addTodoQuery(list, inner, prev, token);
+    await addTodoQuery(list, inner, prev, token, refreshToken);
   } catch (err) {
     dispatch(error(err));
   }
 };
 
-export const toggle = (id, token) => async (dispatch) => {
+export const toggle = (id, token, refreshToken) => async (dispatch) => {
   try {
-    await toggleTodoQuery(id, token);
+    await toggleTodoQuery(id, token, refreshToken);
   } catch (err) {
     dispatch(error(err));
   }
 };
 
-export const del = (id, token) => async (dispatch) => {
+export const del = (id, token, refreshToken) => async (dispatch) => {
   try {
-    await deleteTodoQuery(id, token);
+    await deleteTodoQuery(id, token, refreshToken);
   } catch (err) {
     dispatch(error(err));
   }
 };
 
-export const update = (id, inner, token) => async (dispatch) => {
+export const update = (id, inner, token, refreshToken) => async (dispatch) => {
   try {
-    await updateTodoQuery(id, inner, token);
+    await updateTodoQuery(id, inner, token, refreshToken);
   } catch (err) {
     dispatch(error(err));
   }
 };
 
-export const move = (id, prev, token) => async (dispatch) => {
+export const move = (id, prev, token, refreshToken) => async (dispatch) => {
   try {
-    await moveTodoQuery(id, prev, token);
+    await moveTodoQuery(id, prev, token, refreshToken);
   } catch (err) {
     dispatch(error(err));
   }

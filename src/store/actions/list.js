@@ -81,33 +81,33 @@ export const getLists = (token) => async (dispatch) => {
   }
 };
 
-export const add = (name, token) => async (dispatch) => {
+export const add = (name, token, refreshToken) => async (dispatch) => {
   try {
-    await addListQuery(name, token);
+    await addListQuery(name, token, refreshToken);
   } catch (err) {
     dispatch(error(err));
   }
 };
 
-export const del = (id, token) => async (dispatch) => {
+export const del = (id, token, refreshToken) => async (dispatch) => {
   try {
-    await deleteListQuery(id, token);
+    await deleteListQuery(id, token, refreshToken);
   } catch (err) {
     dispatch(error(err));
   }
 };
 
-export const toggle = (id, token) => async (dispatch) => {
+export const toggle = (id, token, refreshToken) => async (dispatch) => {
   try {
-    await toggleListQuery(id, token);
+    await toggleListQuery(id, token, refreshToken);
   } catch (err) {
     dispatch(error(err));
   }
 };
 
-export const share = (id, owner, token) => async (dispatch) => {
+export const share = (id, owner, token, refreshToken) => async (dispatch) => {
   try {
-    await shareListQuery(id, owner, token);
+    await shareListQuery(id, owner, token, refreshToken);
   } catch (err) {
     dispatch(error(err));
   }

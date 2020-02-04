@@ -1,6 +1,7 @@
 import { initialState } from 'constants/initialState';
 import { auth, localStorage, lists } from 'constants/actionTypes';
 import { AUTH_ITEM, ACTIVE_ITEM } from 'constants/localStorage';
+import { getLocalStorage } from 'store/actions/localStorage';
 
 const loadToLocalStorage = (item, data) => {
   window.localStorage.setItem(item, JSON.stringify(data));
@@ -18,29 +19,37 @@ export const localStorageReducer = (
     case auth.USER.SET: {
       loadToLocalStorage(AUTH_ITEM, payload);
 
-      return window.localStorage;
+      return getLocalStorage(AUTH_ITEM);
+    }
+
+    case auth.USER.TOKEN.SET: {
+      const ls = { ...state, token: payload };
+
+      loadToLocalStorage(AUTH_ITEM, ls);
+
+      return getLocalStorage(AUTH_ITEM);
     }
 
     case auth.USER.DELETE: {
       removeFromLocalStorage(AUTH_ITEM);
 
-      return window.localStorage;
+      return getLocalStorage(AUTH_ITEM);
     }
 
     case lists.ACTIVE.SET: {
       loadToLocalStorage(ACTIVE_ITEM, payload.id);
 
-      return window.localStorage;
+      return getLocalStorage(AUTH_ITEM);
     }
 
     case lists.ACTIVE.DELETE: {
       removeFromLocalStorage(ACTIVE_ITEM);
 
-      return window.localStorage;
+      return getLocalStorage(AUTH_ITEM);
     }
 
     case localStorage.SET: {
-      return payload;
+      return getLocalStorage(AUTH_ITEM);
     }
 
     default: {

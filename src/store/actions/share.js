@@ -22,9 +22,9 @@ export const deleteUsers = () => ({
   type: share.USERS.DELETE,
 });
 
-export const getUserList = (login) => async (dispatch) => {
+export const getUserList = (login, refreshToken) => async (dispatch) => {
   try {
-    const { users } = await getUserListQuery(login);
+    const { users } = await getUserListQuery(login, refreshToken);
 
     dispatch(setUsers(users.sort((a, b) => b.coefficient - a.coefficient)));
   } catch (err) {

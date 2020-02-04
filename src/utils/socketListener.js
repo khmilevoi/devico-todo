@@ -19,7 +19,60 @@ import {
   removeList,
 } from 'store/actions/todo';
 
+import { setRefreshToken, setSessionToken, error } from 'store/actions/auth';
+
+import { Interval } from './interval';
+import { updateRefreshQuery, updateSessionQuery } from './queries';
+
+export const interval = new Interval();
+
 export const socketListener = {
+  auth: (dispatch, getState, { refreshToken }) => {
+    const { auth } = getState();
+    const { user } = auth;
+
+    dispatch(setRefreshToken(refreshToken));
+
+    interval.add(
+      'session',
+      async () => {
+        try {
+          const { auth } = getState();
+          const { user, refreshToken } = auth;
+
+          const { token: newToken } = await updateSessionQuery(
+            refreshToken.token,
+            user.token,
+          );
+
+          dispatch(setSessionToken(newToken));
+        } catch (err) {
+          dispatch(error(err));
+        }
+      },
+      user.live / 2,
+    );
+
+    interval.add(
+      'refresh',
+      async () => {
+        try {
+          const { auth } = getState();
+          const { user, refreshToken } = auth;
+
+          const { token: newToken } = await updateRefreshQuery(
+            refreshToken.token,
+            user.token,
+          );
+
+          dispatch(setRefreshToken({ ...refreshToken, token: newToken }));
+        } catch (err) {
+          dispatch(error(err));
+        }
+      },
+      refreshToken.live / 2,
+    );
+  },
   lists: (dispatch, _, message) => {
     switch (message.type) {
       case 'add': {
