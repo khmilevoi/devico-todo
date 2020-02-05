@@ -28,5 +28,5 @@ ReactDOM.render(
       <App></App>
     </DndProvider>
   </Provider>,
-  document.getElementById('root'),
+  document.getElementById('root')
 );

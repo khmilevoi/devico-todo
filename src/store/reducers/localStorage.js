@@ -1,19 +1,20 @@
 import { initialState } from 'constants/initialState';
 import { auth, localStorage, lists } from 'constants/actionTypes';
 import { AUTH_ITEM, ACTIVE_ITEM } from 'constants/localStorage';
+
 import { getLocalStorage } from 'store/actions/localStorage';
 
 const loadToLocalStorage = (item, data) => {
   window.localStorage.setItem(item, JSON.stringify(data));
 };
 
-const removeFromLocalStorage = (item) => {
+const removeFromLocalStorage = item => {
   window.localStorage.removeItem(item);
 };
 
 export const localStorageReducer = (
   state = initialState.localStorage,
-  { type, payload },
+  { type, payload }
 ) => {
   switch (type) {
     case auth.REFRESH_TOKEN.SET: {

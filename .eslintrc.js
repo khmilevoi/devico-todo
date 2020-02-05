@@ -1,7 +1,7 @@
 module.exports = {
   env: {
     browser: true,
-    es6: true,
+    es8: true,
     node: true
   },
   extends: ['airbnb-base', 'plugin:react/recommended'],
@@ -25,6 +25,7 @@ module.exports = {
     'class-methods-use-this': 0,
     'no-return-assign': 0,
     'no-debugger': 0,
-    'import/no-named-as-default': 0
+    'import/no-named-as-default': 0,
+    'no-use-before-define': 0
   }
 };

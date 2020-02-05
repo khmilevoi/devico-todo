@@ -4,13 +4,13 @@ import { loginQuery, registerQuery, checkQuery } from 'utils/queries';
 import { interval } from 'utils/socketListener';
 import { socket } from 'utils/socket';
 
-export const setRefreshToken = (token) => ({
+export const setRefreshToken = token => ({
   type: auth.REFRESH_TOKEN.SET,
-  payload: token,
+  payload: token
 });
 
 export const deleteRefreshToken = () => ({
-  type: auth.REFRESH_TOKEN.DELETE,
+  type: auth.REFRESH_TOKEN.DELETE
 });
 
 export const setUser = (id, login, token, live) => ({
@@ -19,45 +19,43 @@ export const setUser = (id, login, token, live) => ({
     id,
     login,
     token,
-    live,
-  },
+    live
+  }
 });
 
-export const deleteUser = () => (dispatch) => {
+export const deleteUser = () => dispatch => {
   dispatch(deleteRefreshToken());
 
   dispatch({
-    type: auth.USER.DELETE,
+    type: auth.USER.DELETE
   });
 };
 
-export const setSessionToken = (token) => ({
+export const setSessionToken = token => ({
   type: auth.USER.TOKEN.SET,
-  payload: token,
+  payload: token
 });
 
-export const setError = (error) => ({
+export const setError = error => ({
   type: auth.ERROR.SET,
-  payload: error,
+  payload: error
 });
 
 export const deleteError = () => ({
-  type: auth.ERROR.DELETE,
+  type: auth.ERROR.DELETE
 });
 
-export const error = (err) => (dispatch) => {
+export const error = err => dispatch => {
   dispatch(setError(err));
 
   if (err.status === 401) {
-    dispatch(deleteUser());
+    dispatch(logout());
   }
 };
 
-const authorization = (login, password, isLogin) => async (dispatch) => {
+const authorization = (login, password, isLogin) => async dispatch => {
   try {
-    const {
-      token, id, login: currentLogin, live,
-    } = await (isLogin
+    const { token, id, login: currentLogin, live } = await (isLogin
       ? loginQuery(login, password)
       : registerQuery(login, password));
 
@@ -70,9 +68,10 @@ const authorization = (login, password, isLogin) => async (dispatch) => {
 
 export const logIn = (login, password) => authorization(login, password, true);
 
-export const register = (login, password) => authorization(login, password, false);
+export const register = (login, password) =>
+  authorization(login, password, false);
 
-export const logout = () => (dispatch) => {
+export const logout = () => dispatch => {
   socket.emit('exit');
   interval.clear('session');
   interval.clear('refresh');
@@ -80,11 +79,9 @@ export const logout = () => (dispatch) => {
   dispatch(deleteUser());
 };
 
-export const check = (refreshToken) => async (dispatch) => {
+export const check = refreshToken => async dispatch => {
   try {
-    const {
-      id, login, live, token,
-    } = await checkQuery(refreshToken);
+    const { id, login, live, token } = await checkQuery(refreshToken);
 
     dispatch(setUser(id, login, token, live));
   } catch (err) {

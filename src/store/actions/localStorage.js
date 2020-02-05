@@ -2,12 +2,13 @@ import { localStorage } from 'constants/actionTypes';
 import { AUTH_ITEM } from 'constants/localStorage';
 
 import { deleteUser, check } from './auth';
+import { tabs } from 'index';
 
 export const setLocalStorage = () => ({
-  type: localStorage.SET,
+  type: localStorage.SET
 });
 
-export const getLocalStorage = (item) => {
+export const getLocalStorage = item => {
   if (item) {
     return JSON.parse(window.localStorage.getItem(item)) || {};
   }
@@ -25,7 +26,7 @@ export const getLocalStorage = (item) => {
   }, {});
 };
 
-export const readLocalStorage = () => (dispatch) => {
+export const readLocalStorage = () => dispatch => {
   const auth = getLocalStorage(AUTH_ITEM);
   const { token } = auth;
 
