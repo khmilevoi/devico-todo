@@ -1,6 +1,17 @@
 import { auth } from 'constants/actionTypes';
 
-import { loginQuery, registerQuery } from 'utils/queries';
+import { loginQuery, registerQuery, checkQuery } from 'utils/queries';
+import { interval } from 'utils/socketListener';
+import { socket } from 'utils/socket';
+
+export const setRefreshToken = (token) => ({
+  type: auth.REFRESH_TOKEN.SET,
+  payload: token,
+});
+
+export const deleteRefreshToken = () => ({
+  type: auth.REFRESH_TOKEN.DELETE,
+});
 
 export const setUser = (id, login, token, live) => ({
   type: auth.USER.SET,
@@ -12,17 +23,16 @@ export const setUser = (id, login, token, live) => ({
   },
 });
 
-export const deleteUser = () => ({
-  type: auth.USER.DELETE,
-});
+export const deleteUser = () => (dispatch) => {
+  dispatch(deleteRefreshToken());
+
+  dispatch({
+    type: auth.USER.DELETE,
+  });
+};
 
 export const setSessionToken = (token) => ({
   type: auth.USER.TOKEN.SET,
-  payload: token,
-});
-
-export const setRefreshToken = (token) => ({
-  type: auth.REFRESH_TOKEN.SET,
   payload: token,
 });
 
@@ -61,3 +71,23 @@ const authorization = (login, password, isLogin) => async (dispatch) => {
 export const logIn = (login, password) => authorization(login, password, true);
 
 export const register = (login, password) => authorization(login, password, false);
+
+export const logout = () => (dispatch) => {
+  socket.emit('exit');
+  interval.clear('session');
+  interval.clear('refresh');
+
+  dispatch(deleteUser());
+};
+
+export const check = (refreshToken) => async (dispatch) => {
+  try {
+    const {
+      id, login, live, token,
+    } = await checkQuery(refreshToken);
+
+    dispatch(setUser(id, login, token, live));
+  } catch (err) {
+    dispatch(error(err));
+  }
+};

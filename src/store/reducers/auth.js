@@ -4,7 +4,6 @@ import { initialState } from 'constants/initialState';
 import { auth } from 'constants/actionTypes';
 
 import { socket } from 'utils/socket';
-import { interval } from 'utils/socketListener';
 
 export const authReducer = (state = initialState.auth, { type, payload }) => {
   switch (type) {
@@ -24,10 +23,6 @@ export const authReducer = (state = initialState.auth, { type, payload }) => {
     }
 
     case auth.USER.DELETE: {
-      socket.emit('exit');
-      interval.clear('session');
-      interval.clear('refresh');
-
       return {
         ...state,
         user: null,

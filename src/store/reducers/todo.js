@@ -12,7 +12,7 @@ export const todosReducer = (state = initialState.todos, { type, payload }) => {
       };
     }
 
-    case todos.LIST.REMOVE: {
+    case todos.LIST.DELETE_LIST: {
       const list = { ...state.list };
 
       delete list[payload];

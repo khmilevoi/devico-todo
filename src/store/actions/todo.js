@@ -18,7 +18,7 @@ export const setList = (res, list) => ({
 });
 
 export const removeList = (list) => ({
-  type: todos.LIST.REMOVE,
+  type: todos.LIST.DELETE_LIST,
   payload: list,
 });
 

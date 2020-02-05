@@ -51,6 +51,7 @@ export const deleteTodoQuery = (id, token) => makeQuery(`/todos/${id}`, methods.
 export const updateTodoQuery = (id, inner, token) => makeQuery(`/todos/${id}`, methods.PATCH, { inner, type: 'update' }, token);
 export const moveTodoQuery = (id, prev, token) => makeQuery(`/todos/${id}`, methods.PATCH, { prev, type: 'move' }, token);
 
+export const checkQuery = (refreshToken) => makeQuery('/auth/check', methods.POST, { refreshToken });
 export const loginQuery = (login, password) => makeQuery('/auth', methods.PUT, { login, password });
 export const registerQuery = (login, password) => makeQuery('/auth', methods.POST, { login, password });
 

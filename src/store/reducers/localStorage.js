@@ -16,40 +16,32 @@ export const localStorageReducer = (
   { type, payload },
 ) => {
   switch (type) {
-    case auth.USER.SET: {
+    case auth.REFRESH_TOKEN.SET: {
       loadToLocalStorage(AUTH_ITEM, payload);
 
-      return getLocalStorage(AUTH_ITEM);
+      return { ...getLocalStorage() };
     }
 
-    case auth.USER.TOKEN.SET: {
-      const ls = { ...state, token: payload };
-
-      loadToLocalStorage(AUTH_ITEM, ls);
-
-      return getLocalStorage(AUTH_ITEM);
-    }
-
-    case auth.USER.DELETE: {
+    case auth.REFRESH_TOKEN.DELETE: {
       removeFromLocalStorage(AUTH_ITEM);
 
-      return getLocalStorage(AUTH_ITEM);
+      return { ...getLocalStorage() };
     }
 
     case lists.ACTIVE.SET: {
       loadToLocalStorage(ACTIVE_ITEM, payload.id);
 
-      return getLocalStorage(AUTH_ITEM);
+      return { ...getLocalStorage() };
     }
 
     case lists.ACTIVE.DELETE: {
       removeFromLocalStorage(ACTIVE_ITEM);
 
-      return getLocalStorage(AUTH_ITEM);
+      return { ...getLocalStorage() };
     }
 
     case localStorage.SET: {
-      return getLocalStorage(AUTH_ITEM);
+      return { ...getLocalStorage() };
     }
 
     default: {

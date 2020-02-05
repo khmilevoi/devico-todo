@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 
 import { connect } from 'dux/connect';
 
-import { deleteUser } from 'store/actions/auth';
+import { logout } from 'store/actions/auth';
 
-export const Header = ({ login, deleteUser }) => (
+export const Header = ({ login, logout }) => (
   <div className="header">
     <div className="header__inner">
-      <button className="header__inner-logout" onClick={deleteUser}>
+      <button className="header__inner-logout" onClick={logout}>
         logout
       </button>
       <div className="header__inner-login">{login}</div>
@@ -18,7 +18,7 @@ export const Header = ({ login, deleteUser }) => (
 
 Header.propTypes = {
   login: PropTypes.string.isRequired,
-  deleteUser: PropTypes.func.isRequired,
+  logout: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -26,7 +26,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-  deleteUser,
+  logout,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);
