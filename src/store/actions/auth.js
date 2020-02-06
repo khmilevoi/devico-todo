@@ -13,15 +13,19 @@ export const deleteRefreshToken = () => ({
   type: auth.REFRESH_TOKEN.DELETE,
 });
 
-export const setUser = (id, login, token, live) => ({
-  type: auth.USER.SET,
-  payload: {
-    id,
-    login,
-    token,
-    live,
-  },
-});
+export const setUser = (id, login, token, live) => (dispatch) => {
+  socket.emit('auth', token);
+
+  dispatch({
+    type: auth.USER.SET,
+    payload: {
+      id,
+      login,
+      token,
+      live,
+    },
+  });
+};
 
 export const deleteUser = () => (dispatch) => {
   dispatch(deleteRefreshToken());
@@ -45,11 +49,31 @@ export const deleteError = () => ({
   type: auth.ERROR.DELETE,
 });
 
+export const logout = () => (dispatch) => {
+  socket.emit('exit');
+  interval.clear('session');
+  interval.clear('refresh');
+
+  dispatch(deleteUser());
+};
+
 export const error = (err) => (dispatch) => {
   dispatch(setError(err));
 
   if (err.status === 401) {
-    dispatch(deleteUser());
+    dispatch(logout());
+  }
+};
+
+export const check = (refreshToken) => async (dispatch) => {
+  try {
+    const {
+      id, login, live, token,
+    } = await checkQuery(refreshToken);
+
+    dispatch(setUser(id, login, token, live));
+  } catch (err) {
+    dispatch(error(err));
   }
 };
 
@@ -71,23 +95,3 @@ const authorization = (login, password, isLogin) => async (dispatch) => {
 export const logIn = (login, password) => authorization(login, password, true);
 
 export const register = (login, password) => authorization(login, password, false);
-
-export const logout = () => (dispatch) => {
-  socket.emit('exit');
-  interval.clear('session');
-  interval.clear('refresh');
-
-  dispatch(deleteUser());
-};
-
-export const check = (refreshToken) => async (dispatch) => {
-  try {
-    const {
-      id, login, live, token,
-    } = await checkQuery(refreshToken);
-
-    dispatch(setUser(id, login, token, live));
-  } catch (err) {
-    dispatch(error(err));
-  }
-};

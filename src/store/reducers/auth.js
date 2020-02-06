@@ -3,8 +3,6 @@ import { User } from 'shared/User';
 import { initialState } from 'constants/initialState';
 import { auth } from 'constants/actionTypes';
 
-import { socket } from 'utils/socket';
-
 export const authReducer = (state = initialState.auth, { type, payload }) => {
   switch (type) {
     case auth.USER.SET: {
@@ -13,8 +11,6 @@ export const authReducer = (state = initialState.auth, { type, payload }) => {
       } = payload;
 
       const user = new User(id, login, token, live);
-
-      socket.emit('auth', token);
 
       return {
         ...state,
