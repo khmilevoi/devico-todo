@@ -47,6 +47,7 @@ export const wait = () => new Promise((resolve) => {
   };
 
   console.groupCollapsed(
+    '\x1b[31m%s\x1b[0m',
     'START WAITING: ',
     `${start.getMinutes()}:${start.getSeconds()}:${start.getMilliseconds()}`,
   );
