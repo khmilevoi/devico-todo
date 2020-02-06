@@ -20,11 +20,63 @@ import {
 } from 'store/actions/todo';
 
 import { setRefreshToken, setSessionToken, error } from 'store/actions/auth';
+import { getLocalStorage, loadToLocalStorage } from 'utils/localStorage';
+
+import { AUTH_ITEM, BUSY_ITEM } from 'constants/localStorage';
+
+import { wait } from 'store/actions/localStorage';
 
 import { Interval } from './interval';
 import { updateRefreshQuery, updateSessionQuery } from './queries';
 
 export const interval = new Interval();
+
+const updateSession = async (dispatch, getState) => {
+  try {
+    await wait();
+    loadToLocalStorage(BUSY_ITEM, false);
+
+    const { auth } = getState();
+    const { user } = auth;
+
+    if (user && user.token) {
+      const refresh = getLocalStorage(AUTH_ITEM) || auth.refreshToken;
+
+      const { token: newToken } = await updateSessionQuery(
+        refresh.token,
+        user.token,
+      );
+
+      dispatch(setSessionToken(newToken));
+    }
+  } catch (err) {
+    dispatch(error(err));
+  }
+};
+
+const updateRefresh = async (dispatch, getState) => {
+  try {
+    await wait();
+
+    // debugger;
+
+    const { auth } = getState();
+    const { user } = auth;
+
+    const refresh = getLocalStorage(AUTH_ITEM) || auth.refreshToken;
+
+    const { token: newToken } = await updateRefreshQuery(
+      refresh.token,
+      user.token,
+    );
+
+    dispatch(setRefreshToken({ ...refresh, token: newToken }));
+
+    loadToLocalStorage(BUSY_ITEM, false);
+  } catch (err) {
+    dispatch(error(err));
+  }
+};
 
 export const socketListener = {
   auth: (dispatch, getState, { refreshToken }) => {
@@ -33,43 +85,17 @@ export const socketListener = {
 
     dispatch(setRefreshToken(refreshToken));
 
+    loadToLocalStorage(BUSY_ITEM, false);
+
     interval.add(
       'session',
-      async () => {
-        try {
-          const { auth } = getState();
-          const { user, refreshToken } = auth;
-
-          const { token: newToken } = await updateSessionQuery(
-            refreshToken.token,
-            user.token,
-          );
-
-          dispatch(setSessionToken(newToken));
-        } catch (err) {
-          dispatch(error(err));
-        }
-      },
+      () => updateSession(dispatch, getState),
       user.live / 2,
     );
 
     interval.add(
       'refresh',
-      async () => {
-        try {
-          const { auth } = getState();
-          const { user, refreshToken } = auth;
-
-          const { token: newToken } = await updateRefreshQuery(
-            refreshToken.token,
-            user.token,
-          );
-
-          dispatch(setRefreshToken({ ...refreshToken, token: newToken }));
-        } catch (err) {
-          dispatch(error(err));
-        }
-      },
+      () => updateRefresh(dispatch, getState),
       refreshToken.live / 2,
     );
   },

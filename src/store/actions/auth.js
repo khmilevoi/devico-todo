@@ -3,6 +3,9 @@ import { auth } from 'constants/actionTypes';
 import { loginQuery, registerQuery, checkQuery } from 'utils/queries';
 import { interval } from 'utils/socketListener';
 import { socket } from 'utils/socket';
+import { loadToLocalStorage } from 'utils/localStorage';
+
+import { BUSY_ITEM } from 'constants/localStorage';
 
 export const setRefreshToken = (token) => ({
   type: auth.REFRESH_TOKEN.SET,
@@ -29,6 +32,8 @@ export const setUser = (id, login, token, live) => (dispatch) => {
 
 export const deleteUser = () => (dispatch) => {
   dispatch(deleteRefreshToken());
+
+  loadToLocalStorage(BUSY_ITEM, false);
 
   dispatch({
     type: auth.USER.DELETE,
@@ -63,6 +68,8 @@ export const error = (err) => (dispatch) => {
   if (err.status === 401) {
     dispatch(logout());
   }
+
+  throw err;
 };
 
 export const check = (refreshToken) => async (dispatch) => {

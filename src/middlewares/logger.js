@@ -1,14 +1,14 @@
 export const logger = () => (action, state) => {
   const time = new Date();
 
-  console.group(
-    'LOGGER: ',
+  console.groupCollapsed(
+    `LOGGER: ${action.type}`,
     `${time.getMinutes()}:${time.getSeconds()}:${time.getMilliseconds()}`,
   );
 
   console.log('ACTION: ', action);
 
-  console.groupCollapsed('STATE: ');
+  console.group('STATE: ');
 
   Object.entries(state).forEach(([key, value]) => {
     console.log(`\t${key.toUpperCase()}: `, value);
