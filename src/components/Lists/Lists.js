@@ -7,7 +7,7 @@ import {
 } from 'store/actions/list';
 import { setList } from 'store/actions/share';
 
-import { ACTIVE_ITEM } from 'constants/localStorage';
+// import { ACTIVE_ITEM } from 'constants/localStorage';
 
 import { List } from './List';
 
