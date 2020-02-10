@@ -8,15 +8,18 @@ import {
   deleteShared,
   togglePersonal,
   toggleShared,
+  updatePersonal,
+  updateShared,
 } from 'store/actions/list';
 
 import {
-  setList,
   addItem,
   toggleItem,
   deleteItem,
-  updateItem,
+  updateInner,
   removeList,
+  updateItem,
+  setList,
 } from 'store/actions/todo';
 
 import { setRefreshToken, setSessionToken, error } from 'store/actions/auth';
@@ -172,9 +175,25 @@ export const socketListener = {
   todos: (dispatch, getState, message) => {
     switch (message.type) {
       case 'add': {
-        const { res, list } = message;
+        const {
+          res, list, tail, isCreator,
+        } = message;
 
-        const todo = new Todo(res.text, res.id, list, res.next, res.completed);
+        const todo = new Todo(
+          res.text,
+          res.id,
+          list,
+          res.next,
+          !!res.completed,
+        );
+
+        if (tail) {
+          dispatch(updateItem(tail, list, { next: todo.id }));
+        } else if (isCreator) {
+          dispatch(updatePersonal(list, { head: res.id }));
+        } else {
+          dispatch(updateShared(list, { head: res.id }));
+        }
 
         dispatch(addItem(todo, list));
 
@@ -190,7 +209,17 @@ export const socketListener = {
       }
 
       case 'delete': {
-        const { id, list } = message;
+        const {
+          id, list, prev, isCreator, next,
+        } = message;
+
+        if (prev) {
+          dispatch(updateItem(prev, list, { next }));
+        } else if (isCreator) {
+          dispatch(updatePersonal(list, { head: next }));
+        } else {
+          dispatch(updateShared(list, { head: next }));
+        }
 
         dispatch(deleteItem(id, list));
 
@@ -200,29 +229,36 @@ export const socketListener = {
       case 'update': {
         const { id, inner, list } = message;
 
-        dispatch(updateItem(id, inner, list));
+        dispatch(updateInner(id, inner, list));
 
         break;
       }
 
       case 'move': {
-        const { id, prev, list: listId } = message;
+        const {
+          id, prev: prevId, list: listId, isCreator,
+        } = message;
 
         const { todos } = getState();
         const { list } = todos;
 
         const currentList = list[listId];
 
-        if (currentList) {
-          const currentItemIndex = currentList.findIndex(
-            (item) => item.id === id,
-          );
-          const [item] = currentList.splice(currentItemIndex, 1);
+        const current = currentList.find((item) => item.id === id);
+        const prevCurrent = currentList.find((item) => item.next === id);
 
-          const prevItemIndex = currentList.findIndex((item) => item.id === prev);
+        const prev = currentList.find((item) => item.id === prevId);
 
-          currentList.splice(prevItemIndex + 1, 0, item);
+        if (prevCurrent) {
+          prevCurrent.next = current.next;
+        } else if (isCreator) {
+          dispatch(updatePersonal(listId, { head: current.next }));
+        } else {
+          dispatch(updateShared(listId, { head: current.next }));
         }
+
+        current.next = prev.next;
+        prev.next = id;
 
         dispatch(setList(currentList, listId));
 

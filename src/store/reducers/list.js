@@ -26,7 +26,19 @@ export const listsReducer = (state = initialState.lists, { type, payload }) => {
         active.isPublic = !active.isPublic;
       }
 
-      return { ...state, personal };
+      return { ...state, personal, active };
+    }
+
+    case lists.PERSONAL.UPDATE: {
+      const personal = state.personal.map((item) => (item.id === payload.id ? { ...item, ...payload.data } : item));
+
+      let { active } = state;
+
+      if (active && active.id === payload.id) {
+        active = { ...active, ...payload.data };
+      }
+
+      return { ...state, personal, active };
     }
 
     case lists.PERSONAL.DELETE: {
@@ -62,6 +74,18 @@ export const listsReducer = (state = initialState.lists, { type, payload }) => {
       }
 
       return { ...state, shared, active };
+    }
+
+    case lists.SHARED.UPDATE: {
+      const shared = state.shared.map((item) => (item.id === payload.id ? { ...item, ...payload.data } : item));
+
+      let { active } = state;
+
+      if (active && active.id === payload.id) {
+        active = { ...active, ...payload.data };
+      }
+
+      return { ...state, personal: shared, active };
     }
 
     case lists.SHARED.DELETE: {

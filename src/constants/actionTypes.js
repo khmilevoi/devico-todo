@@ -10,6 +10,7 @@ const createListActions = (prefix) => ({
   UPDATE: `${prefix}.UPDATE`,
   DELETE: `${prefix}.DELETE`,
   REMOVE: `${prefix}.REMOVE`,
+  CONCAT: `${prefix}.CONCAT`,
 });
 
 export const auth = {

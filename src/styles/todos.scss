@@ -1,6 +1,6 @@
 .todos {
   width: 100%;
-  height: calc(100% - 50px);
+  height: calc(100% - 50px - 20px);
   overflow: hidden;
   overflow-y: scroll;
   border-bottom: $transparent-silver 1px solid;

@@ -44,7 +44,7 @@ export const deleteListQuery = (id, token) => makeQuery(`/lists/${id}`, methods.
 export const toggleListQuery = (id, token) => makeQuery(`/lists/${id}`, methods.PUT, {}, token);
 export const shareListQuery = (id, newOwner, token) => makeQuery(`/lists/${id}`, methods.PATCH, { newOwner }, token);
 
-export const getTodosQuery = (list, token) => makeQuery(`/todos?list=${list}`, methods.GET, {}, token);
+export const getTodosQuery = (list, start, token) => makeQuery(`/todos?list=${list}&start=${start}`, methods.GET, {}, token);
 export const addTodoQuery = (list, inner, prev, token) => makeQuery(`/todos?list=${list}`, methods.POST, { inner, prev }, token);
 export const toggleTodoQuery = (id, token) => makeQuery(`/todos/${id}`, methods.PUT, {}, token);
 export const deleteTodoQuery = (id, token) => makeQuery(`/todos/${id}`, methods.DELETE, {}, token);

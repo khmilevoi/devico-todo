@@ -17,6 +17,11 @@ export const setList = (res, list) => ({
   payload: { res, list },
 });
 
+export const concatList = (res, list) => ({
+  type: todos.LIST.CONCAT,
+  payload: { res, list },
+});
+
 export const removeList = (list) => ({
   type: todos.LIST.DELETE_LIST,
   payload: list,
@@ -27,99 +32,83 @@ export const addItem = (res, list) => ({
   payload: { res, list },
 });
 
-export const toggleItem = (id, list) => ({
-  type: todos.LIST.TOGGLE,
-  payload: { id, list },
-});
-
 export const deleteItem = (id, list) => ({
   type: todos.LIST.DELETE,
   payload: { id, list },
 });
 
-export const updateItem = (id, inner, list) => ({
+export const updateItem = (id, list, data) => ({
   type: todos.LIST.UPDATE,
-  payload: { id, inner, list },
+  payload: { id, list, data },
 });
+
+export const toggleItem = (id, list) => ({
+  type: todos.LIST.TOGGLE,
+  payload: { id, list },
+});
+
+export const updateInner = (id, inner, list) => updateItem(id, list, { inner });
 
 export const moveItem = (list, id, prev) => ({
   type: todos.LIST.MOVE,
   payload: { list, id, prev },
 });
 
-export const getTodos = (list, token, refreshToken) => async (dispatch) => {
+export const getTodos = (list, token, start) => async (dispatch) => {
   try {
-    const { res, head } = await getTodosQuery(list, token, refreshToken);
+    const { res } = await getTodosQuery(list, start, token);
 
-    const todos = [];
+    const todos = res.map(
+      (current) => new Todo(
+        current.text,
+        current.id,
+        current.list,
+        current.next,
+        !!current.completed,
+      ),
+    );
 
-    const findById = (id) => res.find((item) => item.id === id);
-
-    let current = findById(head);
-
-    for (let i = 0; i < res.length; ++i) {
-      if (current) {
-        const todo = new Todo(
-          current.text,
-          current.id,
-          current.list,
-          current.next,
-          current.completed,
-        );
-
-        todos.push(todo);
-
-        current = findById(current.next);
-      }
-    }
-
-    dispatch(setList(todos, list));
+    dispatch(concatList(todos, list));
   } catch (err) {
     dispatch(error(err));
   }
 };
 
-export const add = (
-  list,
-  inner,
-  prev,
-  token,
-  refreshToken,
-) => async (dispatch) => {
+export const add = (list, inner, prev, token) => async (dispatch) => {
   try {
-    await addTodoQuery(list, inner, prev, token, refreshToken);
+    await addTodoQuery(list, inner, prev, token);
   } catch (err) {
     dispatch(error(err));
   }
 };
 
-export const toggle = (id, token, refreshToken) => async (dispatch) => {
+export const toggle = (id, token) => async (dispatch) => {
   try {
-    await toggleTodoQuery(id, token, refreshToken);
+    await toggleTodoQuery(id, token);
   } catch (err) {
     dispatch(error(err));
   }
 };
 
-export const del = (id, token, refreshToken) => async (dispatch) => {
+export const del = (id, token) => async (dispatch) => {
   try {
-    await deleteTodoQuery(id, token, refreshToken);
+    await deleteTodoQuery(id, token);
   } catch (err) {
     dispatch(error(err));
   }
 };
 
-export const update = (id, inner, token, refreshToken) => async (dispatch) => {
+export const update = (id, inner, token) => async (dispatch) => {
   try {
-    await updateTodoQuery(id, inner, token, refreshToken);
+    await updateTodoQuery(id, inner, token);
   } catch (err) {
     dispatch(error(err));
   }
 };
 
-export const move = (id, prev, token, refreshToken) => async (dispatch) => {
+export const move = (id, prev, token) => async (dispatch) => {
   try {
-    await moveTodoQuery(id, prev, token, refreshToken);
+    await moveTodoQuery(id, prev, token);
   } catch (err) {
     dispatch(error(err));
   }

@@ -12,6 +12,18 @@ export const todosReducer = (state = initialState.todos, { type, payload }) => {
       };
     }
 
+    case todos.LIST.CONCAT: {
+      const list = { ...state.list };
+
+      list[payload.list] = list[payload.list] || [];
+      list[payload.list] = list[payload.list].concat(payload.res);
+
+      return {
+        ...state,
+        list,
+      };
+    }
+
     case todos.LIST.DELETE_LIST: {
       const list = { ...state.list };
 
@@ -23,9 +35,9 @@ export const todosReducer = (state = initialState.todos, { type, payload }) => {
     case todos.LIST.ADD: {
       const list = { ...state.list };
 
-      if (list[payload.list]) {
-        list[payload.list].push(payload.res);
-      }
+      list[payload.list] = list[payload.list] || [];
+
+      list[payload.list].push(payload.res);
 
       return { ...state, list };
     }
@@ -58,7 +70,7 @@ export const todosReducer = (state = initialState.todos, { type, payload }) => {
       const list = { ...state.list };
 
       if (list[payload.list]) {
-        list[payload.list] = list[payload.list].map((item) => (item.id === payload.id ? { ...item, inner: payload.inner } : item));
+        list[payload.list] = list[payload.list].map((item) => (item.id === payload.id ? { ...item, ...payload.data } : item));
       }
 
       return { ...state, list };

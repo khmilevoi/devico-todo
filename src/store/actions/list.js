@@ -29,6 +29,11 @@ export const togglePersonal = (id) => ({
   payload: id,
 });
 
+export const updatePersonal = (id, data) => ({
+  type: lists.PERSONAL.UPDATE,
+  payload: { id, data },
+});
+
 export const setShared = (list) => ({
   type: lists.SHARED.SET,
   payload: list,
@@ -47,6 +52,11 @@ export const deleteShared = (id) => ({
 export const toggleShared = (id) => ({
   type: lists.SHARED.TOGGLE,
   payload: id,
+});
+
+export const updateShared = (id, data) => ({
+  type: lists.SHARED.UPDATE,
+  payload: { id, data },
 });
 
 export const setActive = (active) => ({
