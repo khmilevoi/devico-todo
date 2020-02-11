@@ -6,6 +6,7 @@ import { socket } from 'utils/socket';
 import { loadToLocalStorage } from 'utils/localStorage';
 
 import { BUSY_ITEM } from 'constants/localStorage';
+import { registerServiceWorker } from 'utils/serviceWorker';
 
 export const setRefreshToken = (token) => ({
   type: auth.REFRESH_TOKEN.SET,
@@ -16,8 +17,20 @@ export const deleteRefreshToken = () => ({
   type: auth.REFRESH_TOKEN.DELETE,
 });
 
-export const setUser = (id, login, token, live) => (dispatch) => {
-  socket.emit('auth', token);
+export const setUser = (id, login, token, live) => async (dispatch) => {
+  setTimeout(async () => {
+    const getSubscription = await registerServiceWorker();
+
+    if (getSubscription) {
+      const subscription = await getSubscription();
+
+      console.log(subscription);
+
+      socket.emit('subscription', { token, subscription });
+    }
+  }, 1);
+
+  socket.emit('auth', { token });
 
   dispatch({
     type: auth.USER.SET,

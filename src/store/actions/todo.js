@@ -54,9 +54,9 @@ export const moveItem = (list, id, prev) => ({
   payload: { list, id, prev },
 });
 
-export const getTodos = (list, token, start) => async (dispatch) => {
+export const getTodos = (list, token, start, amount) => async (dispatch) => {
   try {
-    const { res } = await getTodosQuery(list, start, token);
+    const { res, prev } = await getTodosQuery(list, start, token, amount);
 
     const todos = res.map(
       (current) => new Todo(
@@ -67,6 +67,10 @@ export const getTodos = (list, token, start) => async (dispatch) => {
         !!current.completed,
       ),
     );
+
+    if (prev && res[0]) {
+      dispatch(updateItem(prev.id, list, { next: res[0].id }));
+    }
 
     dispatch(concatList(todos, list));
   } catch (err) {

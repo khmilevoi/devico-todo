@@ -20,6 +20,7 @@ import {
   removeList,
   updateItem,
   setList,
+  getTodos,
 } from 'store/actions/todo';
 
 import { setRefreshToken, setSessionToken, error } from 'store/actions/auth';
@@ -187,6 +188,8 @@ export const socketListener = {
           !!res.completed,
         );
 
+        debugger;
+
         if (tail) {
           dispatch(updateItem(tail, list, { next: todo.id }));
         } else if (isCreator) {
@@ -210,18 +213,31 @@ export const socketListener = {
 
       case 'delete': {
         const {
-          id, list, prev, isCreator, next,
+          id, list: listId, prev, isCreator, next,
         } = message;
 
         if (prev) {
-          dispatch(updateItem(prev, list, { next }));
+          dispatch(updateItem(prev, listId, { next }));
         } else if (isCreator) {
-          dispatch(updatePersonal(list, { head: next }));
+          dispatch(updatePersonal(listId, { head: next }));
         } else {
-          dispatch(updateShared(list, { head: next }));
+          dispatch(updateShared(listId, { head: next }));
         }
 
-        dispatch(deleteItem(id, list));
+        dispatch(deleteItem(id, listId));
+
+        const { todos, auth } = getState();
+
+        const { list } = todos;
+        const { user } = auth;
+
+        const currentList = list[listId];
+
+        const last = currentList[currentList.length - 1];
+
+        if (last.next) {
+          dispatch(getTodos(listId, user.token, last.next, 1));
+        }
 
         break;
       }

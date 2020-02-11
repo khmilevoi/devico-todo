@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 import { connect } from 'dux/connect';
@@ -21,14 +21,18 @@ export const Todos = ({
   move,
 }) => {
   const [flag, setFlag] = useState(false);
+  const wrapper = useRef(null);
 
   useEffect(() => {
-    if (active.id && !list) {
-      getTodos(active.id, token);
+    if (active.id && !list && wrapper) {
+      const height = wrapper.current.clientHeight;
+      const amount = Math.floor(height / 40);
+
+      getTodos(active.id, token, undefined, amount < 15 ? 15 : amount);
     }
 
     setFlag(true);
-  }, [token, active.id, list && list.length]);
+  }, [token, active.id, list && list.length, wrapper]);
 
   const orderedList = [];
 
@@ -49,6 +53,7 @@ export const Todos = ({
   return (
     <div
       className="todos"
+      ref={wrapper}
       onScroll={(event) => {
         const { scrollTop, scrollHeight, clientHeight } = event.target;
 

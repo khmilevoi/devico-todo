@@ -85,7 +85,7 @@ export const listsReducer = (state = initialState.lists, { type, payload }) => {
         active = { ...active, ...payload.data };
       }
 
-      return { ...state, personal: shared, active };
+      return { ...state, shared, active };
     }
 
     case lists.SHARED.DELETE: {
