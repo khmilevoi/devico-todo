@@ -188,8 +188,6 @@ export const socketListener = {
           !!res.completed,
         );
 
-        debugger;
-
         if (tail) {
           dispatch(updateItem(tail, list, { next: todo.id }));
         } else if (isCreator) {
